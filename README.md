@@ -556,25 +556,98 @@ There are some general knowledge listing here. In computers, there are 3 differe
 
 A floating-point constant consists of an **integer part整数部分**, a **decimal separator小数点**, a **decimal小数部分**, and an **exponential part指数部分**. You can use either the *decimal form* or the *exponential form* to represent floating-point constants.
 
-When using the fractional form, you must include the integer part, the fractional part, or both. When using exponential form, you must include the decimal part, the exponent, or both. The signed exponent is introduced with e or E.
+
+
+:pushpin:**Character Constant**
+
+Wide character `wchar_t` , normally starts with `L` and single quote `''`	 e.g. `L'x'`
+
+Normal character `char`, single quote,	e.g. `'x'`
 
 
 
+:pushpin:**Escape Character**
+
+:star:Big picture: What *escape character* really means is that the C++ compiler would take these character then translate to another form. For example, I wrote
+
+```c++
+std::cout << "This is escape character. \\" << std::endl;
+```
+
+The output would be
+
+```
+This is escape character. \
+```
+
+| escape character | meaning                 |
+| ---------------- | ----------------------- |
+| `\\`             | `\`                     |
+| `\'`             | `'`                     |
+| `\"`             | `"`                     |
+| `\?`             | `?`                     |
+| `\a`             | Alarm                   |
+| `\b`             | Backspace               |
+| `\f`             | Change Page             |
+| `\n`             | Change Line             |
+| `\r`             | Enter                   |
+| `\t`             | Tab                     |
+| `\v`             | Vertical Tab            |
+| `\ooo`           | 1 to 3 octal            |
+| `xhh...`         | One or More Hexadecimal |
 
 
 
+:pushpin:**Define Constant**
 
-:pushpin:****
+There are **2** ways of defining constant.
+
+1. use `#define` before compiling.
+2. use `const` keyword
+
+```c++
+#include <iostream>
+using namespace std;
+ 
+#define LENGTH 10   
+#define WIDTH  5
+#define NEWLINE '\n'
+ 
+int main()
+{
+ 
+   int area;  
+   
+   area = LENGTH * WIDTH;
+   cout << area;
+   cout << NEWLINE;
+   return 0;
+}
+```
+
+:star:Convention: Use **uppercase** for CONSTANT.
+
+```c++
+#include <iostream>
+using namespace std;
+ 
+int main()
+{
+   const int  LENGTH = 10;
+   const int  WIDTH  = 5;
+   const char NEWLINE = '\n';
+   int area;  
+   
+   area = LENGTH * WIDTH;
+   cout << area;
+   cout << NEWLINE;
+   return 0;
+}
+```
 
 
 
-:pushpin:****
-
-
-
-:pushpin:****
-
-
+# 7.Modifier
 
 :pushpin:****
 
