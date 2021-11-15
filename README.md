@@ -4,9 +4,9 @@
 
 # Table of Content
 
+# A. C++ Basics
 
-
-# 1.Environment Setup
+## 1.Environment Setup
 
 :pushpin:**Text Editor**
 
@@ -18,7 +18,7 @@ Visual Studio IDE, CMake, g++
 
 
 
-# 2.Basics of C++
+## 2.Basics of C++
 
 :star: Big picture: A C++ program can be seen as a set of objects where they can interact.
 
@@ -162,7 +162,7 @@ The output will be
 
 
 
-# 3.Data Type
+## 3.Data Type
 
 :pushpin:**Fundamental Primitive Data Type**
 
@@ -371,7 +371,7 @@ void TestPointer()
 
 
 
-# 4.Variable Type
+## 4.Variable Type
 
 A variable is really nothing more than the name of a storage area. Each variable in C++ has a specified type, and the type determines the size and location of the variable's storage. 
 
@@ -449,7 +449,7 @@ You can see `extern` as telling the compiler that I will have a variable called 
 
 
 
-# 5.Scope of Variable
+## 5.Scope of Variable
 
 :star:Big picture: A trick to find out the scope of a variable - The variable only affects inside its nearest curly bracket `{}`.
 
@@ -517,7 +517,7 @@ int main ()
 
 
 
-# 6.Constant
+## 6.Constant/Literals
 
 There are some general knowledge listing here. In computers, there are 3 different types of integer.
 
@@ -537,7 +537,7 @@ There are some general knowledge listing here. In computers, there are 3 differe
 
 
 
-:pushpin:**Integer Constant**
+:pushpin:**Integer Literals**
 
 ```c++
 85         // decimal
@@ -552,13 +552,13 @@ There are some general knowledge listing here. In computers, there are 3 differe
 
 
 
-:pushpin:**Floating Constant**
+:pushpin:**Floating Literals**
 
 A floating-point constant consists of an **integer part整数部分**, a **decimal separator小数点**, a **decimal小数部分**, and an **exponential part指数部分**. You can use either the *decimal form* or the *exponential form* to represent floating-point constants.
 
 
 
-:pushpin:**Character Constant**
+:pushpin:**Character Literals**
 
 Wide character `wchar_t` , normally starts with `L` and single quote `''`	 e.g. `L'x'`
 
@@ -566,7 +566,7 @@ Normal character `char`, single quote,	e.g. `'x'`
 
 
 
-:pushpin:**Escape Character**
+:pushpin:**Escape Sequence**
 
 :star:Big picture: What *escape character* really means is that the C++ compiler would take these character then translate to another form. For example, I wrote
 
@@ -647,281 +647,1888 @@ int main()
 
 
 
-# 7.Modifier
+## 7.Modifier
 
-:pushpin:****
+:pushpin:**In front of what?**
 
+The modifier is in front of:
 
+- `char`
+- `int`
+- `double`
 
-:pushpin:****
 
 
+:pushpin:**They are?**
 
-:pushpin:****
+The modifiers are: 
 
+- `unsigned`  => for `int`, `char`
+- `signed`  => for `int`, `char`
+- `long ` => for `int`, `double`
+- `short`  => for `int`
 
 
-:pushpin:****
 
+:pushpin:**Type qualifier**
 
+- `const`: short for CONSTANT, can't be modified during execution
+- `volatile`: ask compiler not to optimize this variable, just read from the memory. 
+- `restrict`: restrict the way to read it
 
-:pushpin:****
 
 
+## 8.Storage Class
 
-:pushpin:****
+:pushpin:**What is storage class**
 
+A storage class defines the **scope** (visibility) and **life-time** of variables and/or functions.
 
 
-:pushpin:****
 
+:pushpin:**They are ?...**
 
+- `auto`
+- `register`
+- `static`
+- `extern`
+- `mutable`
 
-:pushpin:****
 
 
+:pushpin:**`auto`, the default**
 
-:pushpin:****
+There is no difference between following variables.
 
+```c++
+{
+   int mount;
+   auto int month;
+}
+```
 
 
-:pushpin:****
 
+:pushpin:**`register`**
 
+The **register** storage class is used to define local variables that should be **stored in a register(寄存器)** instead of RAM.
 
-:pushpin:****
+```c++
+{
+   register int  miles;
+}
+```
 
+It has following properties:
 
+- usually it is small
+- good at quick access such as counters
+- does not 100% guarantee saving in register
 
-:pushpin:****
 
 
+:pushpin:**`static` **
 
-:pushpin:****
+:warning: The `static` in C++ is very **different** from the `static` in C#.
 
+The **static** storage class **instructs the compiler to keep a local variable in existence during the life-time of the program** instead of creating and destroying it each time it comes into and goes out of scope. Therefore, **making local variables static allows them to maintain their values between function calls**.
 
+Following is a very nice example:
 
-:pushpin:****
+```c++
+#include <iostream>
+ 
+// Function declaration
+void func(void);
+ 
+static int count = 10; /* Global variable */
+ 
+int main()
+{
+    while(count--)
+    {
+       func();
+    }
+    return 0;
+}
+// Function definition
+void func( void )
+{
+    static int i = 5; // local static variable
+    i++;
+    std::cout << "i is " << i ;
+    std::cout << " and count is " << count << std::endl;
+}
+```
 
+:star: Take a careful look at `static int i = 5;`! Frankly, it loops for **10** times which it was declared for **10** times. But it increments! That's what `static` means in C++(**making local variables static allows them to maintain their values between function calls**).
 
 
-:pushpin:****
 
+:pushpin:**`extern`**
 
+The **extern** storage class is used to give a reference of a global variable that is visible to ALL the program files.
 
-:pushpin:****
+:star: In short, `extern` is to use the same variable across different files.
 
+File: `main.cpp`
 
+```c++
+#include <iostream>
+ 
+int count ;
+extern void write_extern();
+ 
+int main()
+{
+   count = 5;
+   write_extern();
+}
+```
 
-:pushpin:****
+File: `support.cpp`
 
+```c++
+#include <iostream>
+ 
+extern int count;
+ 
+void write_extern(void)
+{
+   std::cout << "Count is " << count << std::endl;
+}
+```
 
+You can compile it 
 
-:pushpin:****
+```bash
+$ g++ main.cpp support.cpp -o write
+$ ./write
+Count is 5
+```
 
+In above files, there are 2 crossing variables.
 
+Use `void write_extern()` **IN** `main.cpp` **FROM** `support.cpp`
 
-:pushpin:****
+Use `int count` **FROM** `main.cpp` **IN** `support.cpp`
 
 
 
-:pushpin:****
+:pushpin:**`mutable`**
 
+To be continued...
 
 
-:pushpin:****
 
+:pushpin:**`thread_local` **
 
+It deals with threads.    To be continued...
 
-:pushpin:****
 
 
+## 9.Operators
 
-:pushpin:****
+There are:
 
+- Arithmetic Operators 算术运算符
+- Relational Operators关系运算符
+- Logical Operators逻辑运算符
+- Bitwise Operators位运算符
+- Assignment Operators赋值运算符
+- Misc Operators杂项运算符
 
 
-:pushpin:****
 
+:pushpin:**Arithmetic Operators**
 
+- `+`
+- `-`
+- `*`
+- `/`
+- `%`
+- `++`
+- `--`
 
-:pushpin:****
+These are no difference with most languages.
 
 
 
-:pushpin:****
+:pushpin:**Relational Operators**
 
+- `==`
+- `!=`
+- `>`
+- `<`
+- `>=`
+- `<=`
 
+These are no difference with most languages.
 
-:pushpin:****
 
 
+:pushpin:**Logical Operators**
 
-:pushpin:****
+- `&&`
+- `||`
+- `!`
 
 
 
-:pushpin:****
+:pushpin:**Bitwise Operators**
 
+- `&`, binary AND
+- `|`, binary OR
+- `^`, binary XOR
+- `~`, binary Flip
+- `<<`, left shift
+- `>>`, right shift
 
+```c++
+A = 0011 1100
+B = 0000 1101
+    
+A&B = 0000 1100
+A|B = 0011 1101
+A^B = 0011 0001
+~A  = 1100 0011
+```
 
-:pushpin:****
 
 
+:pushpin:**Assignment Operators**
 
-:pushpin:****
+- `=`
+- `+=`, `-=`, `*=`, `/=`, `%=`
+- `<<=` Left shift AND assignment operator.
+- `>>=` Right shift AND assignment operator.
+- `&=`  Bitwise AND assignment operator.
+- `^=` Bitwise exclusive OR and assignment operator.
+- `|=` Bitwise inclusive OR and assignment operator.
 
 
 
-:pushpin:****
+:pushpin:**Misc Operators**
 
+- `sizeof()` , return the size of such variable
+- `<condition>? X:Y` , similar to C#,  e.g. `bool gender = flag? true:false;`
+- `.` and `->` can BOTH be used to reference individual members of classes, structures, and unions.
+- `Cast`, cast value
+- `&`,  Pointer operator `&` returns the address of a variable.
+- `*`, is pointer to a variable.
 
 
-:pushpin:****
 
+## 10.Loop Types
 
+:pushpin:**What are they?**
 
-:pushpin:****
+- `for`, `while`, `do-while`
+- `break`, `continue`, `goto`
 
 
 
-:pushpin:****
+:pushpin:**The Infinite Loop**
 
+C++ programmers use `; ;` to indicate infinity.
 
+```c++
+#include <iostream>
+using namespace std;
+ 
+int main ()
+{
+ 
+   for( ; ; )
+   {
+      printf("This loop will run forever.\n");
+   }
+ 
+   return 0;
+}
+```
 
-:pushpin:****
 
 
+## 11.Decision Making
 
-:pushpin:****
+:pushpin:**What are they?**
 
+- `if`, `if-else`, `switch`
+- `Exp1 ? Exp2 : Exp3;`
 
 
-:pushpin:****
 
+## 12.Functions
 
+:pushpin:**Defining a Function**
 
-:pushpin:****
+```c++
+return_type function_name( parameter list )
+{
+   body of the function
+}
+```
 
 
 
-:pushpin:****
+:pushpin:**Example of Defining a Function**
 
+```c++
+// function returning the max between two numbers
+ 
+int max(int num1, int num2) 
+{
+   // local variable declaration
+   int result;
+ 
+   if (num1 > num2)
+      result = num1;
+   else
+      result = num2;
+ 
+   return result; 
+}
+```
 
 
-:pushpin:****
 
+:pushpin:**What's difference between declaration and definition?**
 
+```c++
+#include <iostream>
+using namespace std;
+ 
+// Function declaration, no need to specify the params. The compiler will know
+int max(int, int );
+ 
+int main ()
+{
+   // local variable
+   int a = 100;
+   int b = 200;
+   int ret;
+ 
+   // call function to calculate the max value
+   ret = max(a, b);
+ 
+   cout << "Max value is : " << ret << endl;
+ 
+   return 0;
+}
+ 
+// Function definition, now you can write very specifically
+int max(int num1, int num2) 
+{
+   // local variable declaration
+   int result;
+ 
+   if (num1 > num2)
+      result = num1;
+   else
+      result = num2;
+ 
+   return result; 
+}
+```
 
-:pushpin:****
 
 
+## 13.Numbers
 
-:pushpin:****
+:pushpin:**Defining Numbers in C++**
 
+```c++
+#include <iostream>
+using namespace std;
+ 
+int main () {
+   // number definition:
+   short  s;
+   int    i;
+   long   l;
+   float  f;
+   double d;
+   
+   // number assignments;
+   s = 10;      
+   i = 1000;    
+   l = 1000000; 
+   f = 230.47;  
+   d = 30949.374;
+   
+   // number printing;
+   cout << "short  s :" << s << endl;
+   cout << "int    i :" << i << endl;
+   cout << "long   l :" << l << endl;
+   cout << "float  f :" << f << endl;
+   cout << "double d :" << d << endl;
+ 
+   return 0;
+}
+```
 
 
-:pushpin:****
 
+:pushpin:**Math Operations in C++**
 
+The default math library in C++ is **cmath**.
 
-:pushpin:****
+```c++
+#include <iostream>
+#include <cmath>
+using namespace std;
+ 
+int main () {
+   // number definition:
+   short  s = 10;
+   int    i = -1000;
+   long   l = 100000;
+   float  f = 230.47;
+   double d = 200.374;
 
+   // mathematical operations;
+   cout << "sin(d) :" << sin(d) << endl;
+   cout << "abs(i)  :" << abs(i) << endl;
+   cout << "floor(d) :" << floor(d) << endl;
+   cout << "sqrt(f) :" << sqrt(f) << endl;
+   cout << "pow( d, 2) :" << pow(d, 2) << endl;
+ 
+   return 0;
+}
+```
 
 
-:pushpin:****
 
+:pushpin:**Random Numbers in C++**
 
+There are **2** ways calling random numbers:
 
-:pushpin:****
+- `rand()`, return a **pseudo** random number
+- `srand()`,  throw a random number relates to time
 
 
 
-:pushpin:****
+:pushpin:**Example**
 
+To avoid pseudo random number, you can do it like this:
 
+- include the time component, `#include <ctime>`
+- use time as the seed, `srand( (unsigned)time( NULL ) );`
 
-:pushpin:****
+```c++
+#include <iostream>
+#include <ctime>
+#include <cstdlib>
+ 
+using namespace std;
+ 
+int main ()
+{
+   int i,j;
+ 
+   // set the seed
+   srand( (unsigned)time( NULL ) );
+ 
+   /* loop 10  times */
+   for( i = 0; i < 10; i++ )
+   {
+      // generate random number
+      j= rand();
+      cout <<"Number： " << j << endl;
+   }
+ 
+   return 0;
+}
+```
 
 
 
-:pushpin:****
+## 14.Arrays
 
+:pushpin:**What is it?**
 
+**Array** stores a fixed-size sequential collection of elements of the same type.
 
-:pushpin:****
 
 
+:pushpin:**Declaring Arrays**
 
-:pushpin:****
+Template of Definition:
 
+```
+type arrayName [ arraySize ];
+```
 
+Example:
 
-:pushpin:****
+```c++
+double balance[10];
+```
 
 
 
-:pushpin:****
+:pushpin:**Initializing Arrays**
 
+- Initialize whole array with `{ }`
 
+```c++
+double balance[5] = {1000.0, 2.0, 3.4, 17.0, 50.0};
+```
 
-:pushpin:****
+- Initialize one element
 
+```c++
+balance[4] = 50.0;
+```
 
 
-:pushpin:****
 
+:pushpin:**Accessing Array Elements**
 
+```c++
+double salary = balance[9];
+```
 
-:pushpin:****
 
 
+:pushpin:**Example**
 
-:pushpin:****
+```c++
+#include <iostream>
+using namespace std;
+ 
+#include <iomanip>
+using std::setw;
+ 
+int main ()
+{
+   int n[ 10 ]; // n is an array of 10 integers
+ 
+   // initialize elements of array n to 0           
+   for ( int i = 0; i < 10; i++ )
+   {
+      n[ i ] = i + 100; // set element at location i to i + 100
+   }
+   cout << "Element" << setw( 13 ) << "Value" << endl;
+ 
+   // output each array element's value                   
+   for ( int j = 0; j < 10; j++ )
+   {
+      cout << setw( 7 )<< j << setw( 13 ) << n[ j ] << endl;
+   }
+ 
+   return 0;
+}
+```
 
 
 
-:pushpin:****
+:pushpin:**What is `setw()` function?**
 
+It is for layout.  `setw(n)`,  n is number for how many spaces it should be.
 
+```c++
+cout << "Element" << setw( 13 ) << "Value" << endl;
+```
 
-:pushpin:****
+It **affects the strings behind**. For example, the above code means the `Value` should be with `13` spaces. If not? Then `8` spaces will be in front of `Value`.
 
 
 
-:pushpin:****
+## 15.Arrays Advanced//TODO
 
+https://www.tutorialspoint.com/cplusplus/cpp_arrays.htm
 
+//TODO
 
 :pushpin:****
 
+## 16.Strings
 
+:pushpin:**The C-Style Character String**
 
-:pushpin:****
+In short, the string is terminated by a **null** character `\0`. 
 
+```c++
+//C-Style
+char greeting[6] = {'H', 'e', 'l', 'l', 'o', '\0'};
+//Equivalent to
+char greeting[] = "Hello";
+```
 
 
-:pushpin:****
 
+:pushpin:**Regular String function of C-Style Character String**
 
+`strcpy(string s1, string s2)`
 
-:pushpin:****
+Copies string s2 into string s1.
 
 
 
-:pushpin:****
+`strcat(string s1, string s2)`
 
+Concatenates string s2 onto the end of string s1.
 
 
-:pushpin:****
 
+`strlen(string s1)`
 
+Returns the length of string s1.
 
-:pushpin:****
+
+
+`strcmp(string s1, string s2)`
+
+Returns 0 if s1 and s2 are the same; less than 0 if s1<s2; greater than 0 if s1>s2.
+
+
+
+`strchr(string s1, char ch)`
+
+Returns a pointer to the first occurrence of character ch in string s1.
+
+
+
+`strstr(string s1, string s2)`
+
+Returns a pointer to the first occurrence of string s2 in string s1.
+
+
+
+:pushpin:**Example**
+
+```c++
+#include <iostream>
+#include <cstring>
+
+using namespace std;
+
+int main () {
+
+   char str1[10] = "Hello";
+   char str2[10] = "World";
+   char str3[10];
+   int  len ;
+
+   // copy str1 into str3
+   strcpy( str3, str1);
+   cout << "strcpy( str3, str1) : " << str3 << endl;
+
+   // concatenates str1 and str2
+   strcat( str1, str2);
+   cout << "strcat( str1, str2): " << str1 << endl;
+
+   // total lenghth of str1 after concatenation
+   len = strlen(str1);
+   cout << "strlen(str1) : " << len << endl;
+
+   return 0;
+}
+```
+
+
+
+:pushpin:**The String Class in C++**
+
+```c++
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+int main () {
+
+   string str1 = "Hello";
+   string str2 = "World";
+   string str3;
+   int  len ;
+
+   // copy str1 into str3
+   str3 = str1;
+   cout << "str3 : " << str3 << endl;
+
+   // concatenates str1 and str2
+   str3 = str1 + str2;
+   cout << "str1 + str2 : " << str3 << endl;
+
+   // total length of str3 after concatenation
+   len = str3.size();
+   cout << "str3.size() :  " << len << endl;
+
+   return 0;
+}
+```
+
+
+
+## 17.Pointers
+
+In short, `pointer` is important! Use `*` to interact with pointer.
+
+:pushpin:**Example**
+
+```c++
+#include <iostream>
+ 
+using namespace std;
+ 
+int main ()
+{
+   int  var1;
+   char var2[10];
+ 
+   cout << "Address of var1 variable: ";
+   cout << &var1 << endl;
+ 
+   cout << "Address of var2 variable: ";
+   cout << &var2 << endl;
+ 
+   return 0;
+}
+```
+
+Then we have:
+
+```
+Address of var1 variable: 0xbfebd5c0
+Address of var2 variable: 0xbfebd5b6
+```
+
+
+
+:pushpin:**What is pointer?**
+
+:star:A **pointer** is a variable whose value is the address of another variable. Different from normal variable, use `*` to identify this is a pointer.
+
+```
+type *var-name;
+```
+
+A clear example:
+
+```c++
+int    *ip;    // pointer to an integer
+double *dp;    // pointer to a double
+float  *fp;    // pointer to a float
+char   *ch     // pointer to character
+```
+
+
+
+:pushpin:**Using Pointers in C++**
+
+In C++, using pointers have followings:
+
+- Define a pointer variable.
+- Assign the address of a variable to a pointer
+- Access the value at the address available in the pointer variable
+
+Example:
+
+```c++
+#include <iostream>
+
+using namespace std;
+
+int main () {
+   int  var = 20;   // actual variable declaration.
+   int  *ip;        // pointer variable 
+
+   ip = &var;       // store address of var in pointer variable
+
+   cout << "Value of var variable: ";
+   cout << var << endl;
+
+   // print the address stored in ip pointer variable
+   cout << "Address stored in ip variable: ";
+   cout << ip << endl;
+
+   // access the value at the address available in pointer
+   cout << "Value of *ip variable: ";
+   cout << *ip << endl;
+
+   return 0;
+}
+```
+
+
+
+:pushpin:**`*` and `&`** 
+
+`*` can:
+
+1. it appears in pointer declaration
+2. it can access the value from the pointer
+
+`&`:
+
+1. read the address of this variable
+
+## 18.Advanced Pointers//TODO
+
+https://www.tutorialspoint.com/cplusplus/cpp_pointers.htm
+
+
+
+## 19.References
+
+:warning:References sometimes can be easily confused with Pointers!
+
+
+
+:pushpin:**References VS Pointers**
+
+| References                             | Pointers                            |
+| -------------------------------------- | ----------------------------------- |
+| No NULL references                     | Yes NULL pointers                   |
+| Cannot refer to another obj after init | Can refer to another obj after init |
+| Init and create at the same time       | Init any time                       |
+
+It's very easy to understand why there is no NULL references. Because `reference` literally means reference, if it has nothing to be referred, it makes no sense.
+
+
+
+:pushpin:**`&`**
+
+Use `&` to refer value.
+
+
+
+:pushpin:**Example**
+
+```c++
+#include <iostream>
+ 
+using namespace std;
+ 
+int main () {
+   // declare simple variables
+   int    i;
+   double d;
+ 
+   // declare reference variables
+   int&    r = i;
+   double& s = d;
+   
+   i = 5;
+   cout << "Value of i : " << i << endl;
+   cout << "Value of i reference : " << r  << endl;
+ 
+   d = 11.7;
+   cout << "Value of d : " << d << endl;
+   cout << "Value of d reference : " << s  << endl;
+   
+   return 0;
+}
+```
+
+
+
+## 20.Date&Time
+
+Include `<ctime>` header file. Please refer to the document when you need to use it.
+
+
+
+:pushpin:**Current Date and Time**
+
+```c++
+#include <iostream>
+#include <ctime>
+
+using namespace std;
+
+int main() {
+   // current date/time based on current system
+   time_t now = time(0);
+   
+   // convert now to string form
+   char* dt = ctime(&now);
+
+   cout << "The local date and time is: " << dt << endl;
+
+   // convert now to tm struct for UTC
+   tm *gmtm = gmtime(&now);
+   dt = asctime(gmtm);
+   cout << "The UTC date and time is:"<< dt << endl;
+}
+```
+
+
+
+:pushpin:**Format Time using `struct` tm**
+
+```c++
+#include <iostream>
+#include <ctime>
+
+using namespace std;
+
+int main() {
+   // current date/time based on current system
+   time_t now = time(0);
+
+   cout << "Number of sec since January 1,1970 is:: " << now << endl;
+
+   tm *ltm = localtime(&now);
+
+   // print various components of tm structure.
+   cout << "Year:" << 1900 + ltm->tm_year<<endl;
+   cout << "Month: "<< 1 + ltm->tm_mon<< endl;
+   cout << "Day: "<< ltm->tm_mday << endl;
+   cout << "Time: "<< 5+ltm->tm_hour << ":";
+   cout << 30+ltm->tm_min << ":";
+   cout << ltm->tm_sec << endl;
+}
+```
+
+
+
+## 21.Basic Input/Output
+
+:pushpin:**I/O Library Header Files**
+
+There are:
+
+- `<iostream>`, regularly used header
+- `<iomanip>`, for formatting
+- `<fstream>`, services for user-controlled file processing
+
+
+
+:pushpin:**The Standard Output Stream (cout)**
+
+When you saw `<<` , it means the stream is flow out of the screen... :laughing:
+
+```c++
+#include <iostream>
+ 
+using namespace std;
+ 
+int main( )
+{
+   char str[] = "Hello C++";
+ 
+   cout << "Value of str is : " << str << endl;
+}
+```
+
+
+
+:pushpin:**The Standard Input Stream (cin)**
+
+When you saw `>>` , it means the stream is flow into the screen... :laughing:
+
+```c++
+#include <iostream>
+ 
+using namespace std;
+ 
+int main() {
+   char name[50];
+ 
+   cout << "Please enter your name: ";
+   cin >> name;
+   cout << "Your name is: " << name << endl;
+ 
+}
+```
+
+
+
+:pushpin:**The Standard Error Stream (cerr)**
+
+Display **error** messages using `cerr` stream
+
+```c++
+#include <iostream>
+ 
+using namespace std;
+ 
+int main( )
+{
+   char str[] = "Unable to read....";
+ 
+   cerr << "Error message : " << str << endl;
+}
+```
+
+
+
+:pushpin:**The Standard Log Stream (clog)**
+
+Display **log** messages using `clog` stream
+
+```c++
+#include <iostream>
+ 
+using namespace std;
+ 
+int main() {
+   char str[] = "Unable to read....";
+ 
+   clog << "Error message : " << str << endl;
+}
+```
+
+
+
+## 22.Data Structure
+
+:pushpin:**What is a structure? (`struct`)**
+
+**Structure** is **a user-defined data type** which allows you to combine data items of different kinds.
+
+Pseudo struct:
+
+```
+struct [structure tag] {
+   member definition;
+   member definition;
+   ...
+   member definition;
+} [one or more structure variables];  
+```
+
+Example:
+
+```c++
+struct Books {
+   char  title[50];
+   char  author[50];
+   char  subject[100];
+   int   book_id;
+} book;  
+```
+
+
+
+:pushpin:**Pointers to Structures**
 
+No difference with defining a pointer to other variables
 
+```
+struct Books *struct_pointer;
+```
 
+Use `&` to have the address of `Book1`
+
+```
+struct_pointer = &Book1;
+```
+
+Access the members of a structure using a pointer to that structure, you must use the `->` rather than `.`
+
+```
+struct_pointer->title;
+```
+
+
+
+:pushpin:**Access `struct` members with `.`**
+
+There is no difference doing it in C#.
+
+```c++
+#include <iostream>
+#include <cstring>
+ 
+using namespace std;
+ 
+struct Books {
+   char  title[50];
+   char  author[50];
+   char  subject[100];
+   int   book_id;
+};
+ 
+int main() {
+   struct Books Book1;        // Declare Book1 of type Book
+   struct Books Book2;        // Declare Book2 of type Book
+ 
+   // book 1 specification
+   strcpy( Book1.title, "Learn C++ Programming");
+   strcpy( Book1.author, "Chand Miyan"); 
+   strcpy( Book1.subject, "C++ Programming");
+   Book1.book_id = 6495407;
+
+   // book 2 specification
+   strcpy( Book2.title, "Telecom Billing");
+   strcpy( Book2.author, "Yakit Singha");
+   strcpy( Book2.subject, "Telecom");
+   Book2.book_id = 6495700;
+ 
+   // Print Book1 info
+   cout << "Book 1 title : " << Book1.title <<endl;
+   cout << "Book 1 author : " << Book1.author <<endl;
+   cout << "Book 1 subject : " << Book1.subject <<endl;
+   cout << "Book 1 id : " << Book1.book_id <<endl;
+
+   // Print Book2 info
+   cout << "Book 2 title : " << Book2.title <<endl;
+   cout << "Book 2 author : " << Book2.author <<endl;
+   cout << "Book 2 subject : " << Book2.subject <<endl;
+   cout << "Book 2 id : " << Book2.book_id <<endl;
+
+   return 0;
+}
+```
+
+
+
+:pushpin:**Access `struct` member with `&`** 
+
+```c++
+#include <iostream>
+#include <cstring>
+ 
+using namespace std;
+void printBook( struct Books *book );
+
+struct Books {
+   char  title[50];
+   char  author[50];
+   char  subject[100];
+   int   book_id;
+};
+int main() {
+   struct Books Book1;        // Declare Book1 of type Book
+   struct Books Book2;        // Declare Book2 of type Book
+ 
+   // Book 1 specification
+   strcpy( Book1.title, "Learn C++ Programming");
+   strcpy( Book1.author, "Chand Miyan"); 
+   strcpy( Book1.subject, "C++ Programming");
+   Book1.book_id = 6495407;
+
+   // Book 2 specification
+   strcpy( Book2.title, "Telecom Billing");
+   strcpy( Book2.author, "Yakit Singha");
+   strcpy( Book2.subject, "Telecom");
+   Book2.book_id = 6495700;
+ 
+   // Print Book1 info, passing address of structure
+   printBook( &Book1 );
+
+   // Print Book1 info, passing address of structure
+   printBook( &Book2 );
+
+   return 0;
+}
+
+// This function accept pointer to structure as parameter.
+void printBook( struct Books *book ) {
+   cout << "Book title : " << book->title <<endl;
+   cout << "Book author : " << book->author <<endl;
+   cout << "Book subject : " << book->subject <<endl;
+   cout << "Book id : " << book->book_id <<endl;
+}
+```
+
+
+
+:pushpin:**What is the difference?**
+
+1.Function declaration
+
+```c++
+void printBook( struct Books book );
+```
+
+```c++
+void printBook( struct Books *book );
+```
+
+2.Calling function
+
+```c++
+printBook( Book1 );
+```
+
+```c++
+printBook( &Book1 );
+```
+
+3.Access member
+
+```c++
+cout << "Book subject : " << book.subject <<endl;
+```
+
+```c++
+cout << "Book subject : " << book->subject <<endl;
+```
+
+
+
+:pushpin:**The `typedef` Keyword**
+
+You can use `typedef` to define a `struct`.
+
+Before:
+
+```c++
+struct Books {
+   char  title[50];
+   char  author[50];
+   char  subject[100];
+   int   book_id;
+};
+```
+
+```c++
+struct Books Book1;        // Declare Book1 of type Book
+struct Books Book2;  
+```
+
+After:
+
+```c++
+typedef struct {
+   char  title[50];
+   char  author[50];
+   char  subject[100];
+   int   book_id;
+} Books;
+```
+
+```c++
+Books Book1, Book2;
+```
+
+
+
+:pushpin:**Misc of `typedef`**
+
+You can also use `typedef` in non-structs:
+
+```c++
+typedef long int *pint32;
+ 
+pint32 x, y, z;
+```
+
+`x`,`y`,`z` are all pointers to `long` `int`.
+
+
+
+# B.C++ Object Oriented
+
+## 1.Classes&Objects
+
+:pushpin:**How to define a class?**
+
+```c++
+class ClassName
+{
+  	Access specifiers:
+    		Date members/variables;
+    		Member functions(){}
+    
+};
+```
+
+- access specifiers are: `private`, `public`, `protected`
+- variables(members) are fields in C#
+- :warning:different from C#, there should be a `;` at the end of class declaration.
+
+
+
+:pushpin:**Example of class definition**
+
+```c++
+class Box
+{
+   public:
+      double length;   // Box's length
+      double breadth;  // Box's breadth
+      double height;   // Box's height
+};
+```
+
+
+
+:pushpin:**Define C++ Objects(Create Instance)**
+
+```c++
+Box Box1;          // Declare Box1 of type Box
+Box Box2;          // Declare Box2 of type Box
+```
+
+
+
+:pushpin:**Accessing the Data Members**
+
+If the members are decorated with `public`, you can access them via `.`
+
+```c++
+#include <iostream>
+
+using namespace std;
+
+class Box {
+   public:
+      double length;   // Length of a box
+      double breadth;  // Breadth of a box
+      double height;   // Height of a box
+};
+
+int main() {
+   Box Box1;        // Declare Box1 of type Box
+   Box Box2;        // Declare Box2 of type Box
+   double volume = 0.0;     // Store the volume of a box here
+ 
+   // box 1 specification
+   Box1.height = 5.0; 
+   Box1.length = 6.0; 
+   Box1.breadth = 7.0;
+
+   // box 2 specification
+   Box2.height = 10.0;
+   Box2.length = 12.0;
+   Box2.breadth = 13.0;
+   
+   // volume of box 1
+   volume = Box1.height * Box1.length * Box1.breadth;
+   cout << "Volume of Box1 : " << volume <<endl;
+
+   // volume of box 2
+   volume = Box2.height * Box2.length * Box2.breadth;
+   cout << "Volume of Box2 : " << volume <<endl;
+   return 0;
+}
+```
+
+## 2.Advanced Classes//TODO
+
+https://www.tutorialspoint.com/cplusplus/cpp_classes_objects.htm
+
+## 3.Inheritance
+
+:pushpin:**Base and Derived Classes**
+
+Similar to C#, you can also have inheritance in C++.
+
+```c++
+class derived-class: access-specifier base-class
+```
+
+Example:
+
+```c++
+#include <iostream>
+ 
+using namespace std;
+
+// Base class
+class Shape {
+   public:
+      void setWidth(int w) {
+         width = w;
+      }
+      void setHeight(int h) {
+         height = h;
+      }
+   //protected member can be inherited by derived class   
+   protected:
+      int width;
+      int height;
+};
+
+// Derived class
+class Rectangle: public Shape {
+   public:
+      int getArea() { 
+         return (width * height); 
+      }
+};
+
+int main(void) {
+   Rectangle Rect;
+ 
+   Rect.setWidth(5);
+   Rect.setHeight(7);
+
+   // Print the area of the object.
+   cout << "Total area: " << Rect.getArea() << endl;
+
+   return 0;
+}
+```
+
+
+
+:pushpin:**Access Control and Inheritance**
+
+The following is the table illustrating the access among `public`, `protected`, and `private`.
+
+|     Access      | public | protected | private |
+| :-------------: | :----: | :-------: | :-----: |
+|   Same class    |  yes   |    yes    |   yes   |
+| Derived classes |  yes   |    yes    |   no    |
+| Outside classes |  yes   |    no     |   no    |
+
+A derived class inherits all base class methods with the following exceptions −
+
+- Constructors, destructors and copy constructors of the base class.
+- Overloaded operators of the base class.
+- The friend functions of the base class.
+
+//TODO Please explain above 3 conditions.
+
+
+
+:pushpin:**Type of Inheritance**
+
+In practice, the frequency of use are:
+
+`public` : commonly used :arrow_double_up::arrow_double_up::arrow_double_up:
+
+`protected`&`private` : hardly used :arrow_double_up:
+
+
+
+:arrow_right: **Public Inheritance**
+
+```c++
+class DerivedClass: public BaseClass
+```
+
+| BaseClass           | Transform:arrow_right: | DerivedClass                                                 |
+| ------------------- | ---------------------- | ------------------------------------------------------------ |
+| `public` members    | :arrow_right:          | still `public`                                               |
+| `protected` members | :arrow_right:          | still `protected`                                            |
+| `private` members   | :arrow_right:          | can't be accessed directly, but it can be access via `public`/`protected` function |
+
+
+
+:arrow_right: **Protected Inheritance**
+
+```c++
+class DerivedClass: protected BaseClass
+```
+
+| BaseClass           | Transform:arrow_right: | DerivedClass                                                 |
+| ------------------- | ---------------------- | ------------------------------------------------------------ |
+| `public` members    | :arrow_right:          | become `protected`                                           |
+| `protected` members | :arrow_right:          | still `protected`                                            |
+| `private` members   | :arrow_right:          | can't be accessed directly, but it can be access via `protected` function |
+
+
+
+:arrow_right: **Private Inheritance**
+
+```c++
+class DerivedClass: private BaseClass
+```
+
+| BaseClass           | Transform:arrow_right: | DerivedClass     |
+| ------------------- | ---------------------- | ---------------- |
+| `public` members    | :arrow_right:          | become `private` |
+| `protected` members | :arrow_right:          | become `private` |
+| `private` members   | :arrow_right:          | still `private`  |
+
+
+
+:pushpin:**Multiple Inheritance**
+
+A C++ Class can inherit members from more than one class!
+
+```c++
+class DerivedClass: access baseA, access baseB....
+```
+
+Example:
+
+```c++
+#include <iostream>
+
+using namespace std;
+
+// Base class Shape
+class Shape {
+   public:
+      void setWidth(int w) {
+         width = w;
+      }
+      void setHeight(int h) {
+         height = h;
+      }
+      
+   protected:
+      int width;
+      int height;
+};
+
+// Base class PaintCost
+class PaintCost {
+   public:
+      int getCost(int area) {
+         return area * 70;
+      }
+};
+
+// Derived class
+class Rectangle: public Shape, public PaintCost {
+   public:
+      int getArea() {
+         return (width * height); 
+      }
+};
+
+int main(void) {
+   Rectangle Rect;
+   int area;
+ 
+   Rect.setWidth(5);
+   Rect.setHeight(7);
+
+   area = Rect.getArea();
+   
+   // Print the area of the object.
+   cout << "Total area: " << Rect.getArea() << endl;
+
+   // Print the total cost of painting
+   cout << "Total paint cost: $" << Rect.getCost(area) << endl;
+
+   return 0;
+}
+```
+
+
+
+## 4.Overloading
+
+Overloading has no difference with its concept in C#. The elements can be overloaded are:
+
+- function
+- operator
+
+:pushpin:**Function Overloading**
+
+The params vary in the function declaration. See the `print()` function, it can receive `int`, `double`, and `char*`.
+
+```c++
+#include <iostream>
+using namespace std;
+ 
+class printData {
+   public:
+      void print(int i) {
+        cout << "Printing int: " << i << endl;
+      }
+      void print(double  f) {
+        cout << "Printing float: " << f << endl;
+      }
+      void print(char* c) {
+        cout << "Printing character: " << c << endl;
+      }
+};
+
+int main(void) {
+   printData pd;
+ 
+   // Call print to print integer
+   pd.print(5);
+   
+   // Call print to print float
+   pd.print(500.263);
+   
+   // Call print to print character
+   pd.print("Hello C++");
+ 
+   return 0;
+}
+```
+
+
+
+:pushpin:**Operator Overloading**
+
+Operator overloading can be defined like this:
+
+```c++
+// case 1
+Box operator+(const Box&);
+// case 2
+Box operator+(const Box&, const Box&);
+```
+
+:question: What is the difference above?
+
+- The former is defined as a **member** function.
+
+- The latter is defined as **non-member** function of a class.
+
+
+
+:book: Example:
+
+```c++
+#include <iostream>
+using namespace std;
+
+class Box {
+   public:
+      double getVolume(void) {
+         return length * breadth * height;
+      }
+      void setLength( double len ) {
+         length = len;
+      }
+      void setBreadth( double bre ) {
+         breadth = bre;
+      }
+      void setHeight( double hei ) {
+         height = hei;
+      }
+      
+      // Overload + operator to add two Box objects.
+      Box operator+(const Box& b) {
+         Box box;
+         box.length = this->length + b.length;
+         box.breadth = this->breadth + b.breadth;
+         box.height = this->height + b.height;
+         return box;
+      }
+      
+   private:
+      double length;      // Length of a box
+      double breadth;     // Breadth of a box
+      double height;      // Height of a box
+};
+
+// Main function for the program
+int main() {
+   Box Box1;                // Declare Box1 of type Box
+   Box Box2;                // Declare Box2 of type Box
+   Box Box3;                // Declare Box3 of type Box
+   double volume = 0.0;     // Store the volume of a box here
+ 
+   // box 1 specification
+   Box1.setLength(6.0); 
+   Box1.setBreadth(7.0); 
+   Box1.setHeight(5.0);
+ 
+   // box 2 specification
+   Box2.setLength(12.0); 
+   Box2.setBreadth(13.0); 
+   Box2.setHeight(10.0);
+ 
+   // volume of box 1
+   volume = Box1.getVolume();
+   cout << "Volume of Box1 : " << volume <<endl;
+ 
+   // volume of box 2
+   volume = Box2.getVolume();
+   cout << "Volume of Box2 : " << volume <<endl;
+
+   // Add two object as follows:
+   Box3 = Box1 + Box2;
+
+   // volume of box 3
+   volume = Box3.getVolume();
+   cout << "Volume of Box3 : " << volume <<endl;
+
+   return 0;
+}
+```
+
+:mag: Take a deep look on these code
+
+```c++
+Box operator+(const Box& b) {
+         Box box;
+         box.length = this->length + b.length;
+         box.breadth = this->breadth + b.breadth;
+         box.height = this->height + b.height;
+         return box;
+      }
+```
+
+Because `length`, `breadth`, and `height` are defined as `private` members. Therefore, you can use the first operator overloading mode. 
+
+See this line `box.length = this->length + b.length;` 
+
+`this->length`  means the length of this instance! 
+
+`(const Box& b)`  means the **reference** the object `b`. You can see `&` as `ref` in C#. 
+
+`return box` means in the end the operation will return a new Box.
+
+
+
+:pushpin:**Overloadable/Non-overloadable Operators**
+
+Following is the list of operators which can be overloaded −
+
+| +    | -    | *    | /      | %      | ^         |
+| ---- | ---- | ---- | ------ | ------ | --------- |
+| &    | \|   | ~    | !      | ,      | =         |
+| <    | >    | <=   | >=     | ++     | --        |
+| <<   | >>   | ==   | !=     | &&     | \|\|      |
+| +=   | -=   | /=   | %=     | ^=     | &=        |
+| \|=  | *=   | <<=  | >>=    | []     | ()        |
+| ->   | ->*  | new  | new [] | delete | delete [] |
+
+
+
+Following is the list of operators, which can not be overloaded −
+
+| ::   | .*   | .    | ?:   |
+| ---- | ---- | ---- | ---- |
+
+
+
+## 5.Advanced Overloading //TODO
+
+https://www.tutorialspoint.com/cplusplus/cpp_overloading.htm
+
 :pushpin:****
+
+
+
+
+
+## 6.Polymorphism 
+
+In Chinese, polymorphism is 多态。 In short, polymorphism is just a concept playing with `virtual`, `override`, etc. Very similar in C#! Nothing particular to be scared.
+
+
+
+:pushpin:**Example of `virtual` function** 
+
+```c++
+#include <iostream> 
+using namespace std;
+
+class Shape {
+protected:
+    int width, height;
+
+public:
+    Shape(int a = 0, int b = 0) {
+        width = a;
+        height = b;
+    }
+    virtual int area() {
+        cout << "Parent class area :" << endl;
+        return 0;
+    }
+};
+class Rectangle : public Shape {
+public:
+    Rectangle(int a = 0, int b = 0) :Shape(a, b) { }
+
+    int area() {
+        int area = (width * height);
+        cout << "Rectangle class area : " << area << endl;
+        return area;
+    }
+};
+
+class Triangle : public Shape {
+public:
+    Triangle(int a = 0, int b = 0) :Shape(a, b) { }
+
+    int area() {
+        int area = (width * height / 2);
+        cout << "Triangle class area :" << area << endl;
+        return area;
+    }
+};
+
+// Main function for the program
+int main() {
+    Shape* shape;
+    Rectangle rec(10, 7);
+    Triangle  tri(10, 5);
+
+    // store the address of Rectangle
+    shape = &rec;
+
+    // call rectangle area.
+    shape->area();
+
+    // store the address of Triangle
+    shape = &tri;
+
+    // call triangle area.
+    shape->area();
+
+    return 0;
+}
+```
+
+The outputs are:
+
+```
+Rectangle class area : 70
+Triangle class area :25
+```
+
+
+
+:+1: Several interesting things can be mentioned:
+
+1.Function must be declared with`virtual`
+
+```c++
+//in Base Class
+
+//Function can be overrided
+virtual int area() 
+{
+    cout << "Parent class area :" << endl;
+    return 0;
+}
+
+//Function can't be overrided
+int area() 
+{
+    cout << "Parent class area :" << endl;
+    return 0;
+}
+```
+
+2.You can explicitly write `override` or not. FYI, the position of `override` is **different** from C#.
+
+```c++
+//in derived class..
+
+//Override implicitly
+int area() 
+{
+    int area = (width * height / 2);
+    cout << "Triangle class area :" << area << endl;
+    return area;
+}
+//Override explicitly
+int area() override
+{
+    int area = (width * height / 2);
+    cout << "Triangle class area :" << area << endl;
+    return area;
+}
+```
+
+3.Interesting way using pointer as a way of polymorphism
+
+```c++
+Shape* shape;
+Rectangle rec(10, 7);
+Triangle  tri(10, 5);
+
+shape = &rec;
+shape->area();
+
+shape = &tri;
+shape->area();
+```
+
+One pointer variable can call different functions based on the address of derived class. That's polymorphism!!
 
 
 
