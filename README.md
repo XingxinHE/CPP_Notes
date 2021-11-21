@@ -1914,7 +1914,7 @@ pint32 x, y, z;
 
 
 
-# B.C++ Object Oriented
+# B. C++ Object Oriented
 
 ## 1.Classes&Objects
 
@@ -2473,7 +2473,7 @@ Triangle class area :25
 
 :+1: Several interesting things can be mentioned:
 
-1.Function must be declared with`virtual`
+1.Function only with`virtual` can be overwritten in derived class
 
 ```c++
 //in Base Class
@@ -2514,7 +2514,7 @@ int area() override
 }
 ```
 
-3.Interesting way using pointer as a way of polymorphism
+:star:3.Interesting way using pointer as a way of polymorphism
 
 ```c++
 Shape* shape;
@@ -2529,6 +2529,910 @@ shape->area();
 ```
 
 One pointer variable can call different functions based on the address of derived class. That's polymorphism!!
+
+
+
+:pushpin:**early binding & late binding**
+
+These 2 concepts are in together. 
+
+early binding + static linkage VS late binding + dynamic linkage
+
+`BaseClass`+no virtual specifier function -> `DerivedClass` early binding + static linkage
+
+`BaseClass`+`virtual` specifier function -> `DerivedClass` late binding + dynamic linkage
+
+
+
+:pushpin:**What is Pure Virtual Functions?**
+
+Function has no body and following virtual function will be called **pure virtual function**.
+
+```c++
+virtual int area() = 0;
+```
+
+
+
+
+
+## 7.Abstraction
+
+Alright, what is this so-called abstraction? It is a philosophy playing `public` and `private` data. In the meantime, it is art of constructing `api` and `datastructure`.  
+
+
+
+:pushpin:**Data Abstraction Example**
+
+```c++
+#include <iostream>
+using namespace std;
+
+class Adder {
+   public:
+      // constructor
+      Adder(int i = 0) {
+         total = i;
+      }
+      
+      // interface to outside world
+      void addNum(int number) {
+         total += number;
+      }
+      
+      // interface to outside world
+      int getTotal() {
+         return total;
+      };
+      
+   private:
+      // hidden data from outside world
+      int total;
+};
+
+int main() {
+   Adder a;
+   
+   a.addNum(10);
+   a.addNum(20);
+   a.addNum(30);
+
+   cout << "Total " << a.getTotal() <<endl;
+   return 0;
+}
+```
+
+
+
+From above code, we know that `addNum()` and `getTotal()` are exposed to user. :star:They don't need to know the fundamental logic behind. That's the power of **interface**.
+
+|            | Interface          | Body               |
+| ---------- | ------------------ | ------------------ |
+| User       | :heavy_check_mark: | :x:                |
+| Programmer | :heavy_check_mark: | :heavy_check_mark: |
+
+:thinking: You may ask what is so good of this shit? The answer is, user only needs to know the interface for instance:
+
+```c++
+void DogBarking();
+```
+
+The user only needs to use it as it is. But programmer can modify as:
+
+```c++
+//Function before
+void DogBarking()
+{
+    cout << "Wang! Wang! Wang!" << endl;
+}
+//Function after
+void DogBarking()
+{
+    cout << "Waong! Waong! Waong!" << endl;
+}
+```
+
+Programmer will update all the shit, the user only needs to know how to use it. Simple!
+
+
+
+:pushpin:**Designing Strategy**
+
+*Abstraction* **separates** code into **interface** and **implementation**. So while designing your component, you:warning: **must keep interface independent of the implementation**:warning:.
+
+In this case whatever programs are using these interfaces, they would not be impacted and would just need a recompilation with the latest implementation.
+
+
+
+## 8.Data Encapsulation
+
+OK, another "new" concept. What the heck is encapsulation? Don't be afraid man, you have already learned everything in C# although you don't know the definition of *encapsulation*. You are already doing it!
+
+
+
+:pushpin:**Fundamental Elements in C++ Program**
+
+- :one: **Program statements (code)** − This is the part of a program that performs actions and they are called functions.
+- :two: **Program data** − The data is the information of the program which gets affected by the program functions.
+
+
+
+:pushpin:**What is encapsulation?**
+
+[`data`:heavy_plus_sign:`functions` ]
+
+Encapsulation is an Object Oriented Programming concept that **binds together the data and functions that manipulate the data**, and that keeps both safe from outside interference and misuse. 
+
+
+
+:pushpin:**What is `data encapsulation` & `data abstraction`?**
+
+**Data encapsulation** led to the important OOP concept of **data hiding**.
+
+**Data abstraction** is a mechanism of **exposing only the interfaces** and **hiding the implementation** details from the user.
+
+
+
+:pushpin:**What is the tool to tackle encapsulation?**
+
+Nothing mysterious! Just `public`, `protected`, and `private`!
+
+
+
+:pushpin:**Designing Strategy**
+
+Most of us have learnt to make class members `private` by default unless we really need to expose them. That's just good **encapsulation**.
+
+This is applied most frequently to data members, but it applies equally to all members, including virtual functions.
+
+
+
+## 9.Abstract & Interfaces
+
+:pushpin:**Achtung! Disclaimer!!**
+
+The noun *interface* has different meaning regarding different contexts.
+
+:one: *interface* in general and programming:
+
+> ​	The set of operations supported by a data structure is called an **interface**. 
+
+:two: `interface` in C++ and C# class
+
+> ​	C#: An interface contains definitions for a group of related functionalities that a non-abstract [`class`](https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/class) or a [`struct`](https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/struct) :warning:**must**:warning: implement.
+>
+> ​	C++: An interface :warning:describes:warning: the behavior or capabilities of a C++ class without committing to a particular implementation of that class.
+
+So you see the difference! It is super important!!
+
+
+
+:pushpin:**Abstract Class Example in C++**
+
+```c++
+#include <iostream>
+using namespace std;
+
+//base class
+class Shape
+{
+public:
+	virtual int ComputeArea() = 0;
+
+	void setHeight(int h)
+	{
+		this->height = h;
+	}
+	void setWidth(int w)
+	{
+		this->width = w;
+	}
+protected:
+	int height;
+	int width;
+};
+
+//derived class A
+class Rectangle : public Shape
+{
+public:
+	int ComputeArea() override
+	{
+		int area = this->width * this->height;
+		cout << "Rectangle area: " << area << endl;
+		return area;
+	}
+};
+
+//derived class B
+class Triangle : public Shape
+{
+public:
+	int	ComputeArea() override
+	{
+		int area = this->width * this->height * 0.5;
+		cout << "Triangle area: " << area << endl;
+		return area;
+	}
+};
+
+//Main function
+int main()
+{
+	Triangle t;
+	t.setHeight(10);
+	t.setWidth(20);
+
+	Rectangle r;
+	r.setHeight(10);
+	r.setWidth(20);
+
+	cout << "Start computing area...\n" << endl;
+	r.ComputeArea();
+	t.ComputeArea();
+
+	return 0;
+}
+```
+
+
+
+:pushpin:**Difference of Abstract and Interface  in C# & C++**  :star::star::star:
+
+This is super IMPORTANT!
+
+|                                               | C++                                                          | C#                                                           |
+| --------------------------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| Literally exist an `abstract` class           | :x:                                                          | :heavy_check_mark:                                           |
+| Literally exist `interface`                   | :x:                                                          | :heavy_check_mark:                                           |
+| Abstract class can't have instance            | :heavy_check_mark:Correct                                    | :heavy_check_mark:Correct                                    |
+| How to know this is an abstract class         | It has at least **1** pure virtual function                  | Specify with `abstract`                                      |
+| How to prevent abstract class having instance | The pure virtual function prevent instantiate objects with err | the compiler know this is `abstract` class and it prevent it |
+| How to push user implement `interface`        | No `interface` literally, but it takes advantage of pure virtual function as a MUST to implement | Take advantage of `interface`, derived class must implement  |
+
+Since C# is developed after C++, it absorbs lots feature of C++ and make it clear. You can think of 
+
+- C#  :  explicit 
+
+- C++  :  implicit
+
+For instance, the concept of abstract and interface is originated in C++ but C# makes it clear.
+
+
+
+# C.C++ Advanced
+
+## 1.Files and Streams
+
+:pushpin:**What are they?**
+
+They are:
+
+- `ofstream` - (output file stream) for output stream, create files, and write information to files
+- `ifstream` - (input file stream) read information from files
+- `fstream` - (both input and output) create files, write information to files, and read information from files.
+
+
+
+:pushpin:**Opening a File**
+
+Opening is always the first step.
+
+:warning: A file **MUST** be opened before you can read from it or write to it. 
+
+Typical `open` function looks like this:
+
+```c++
+void open(const char *filename, ios::openmode mode);
+```
+
+`filename` specifies the name and location of the file to be opened.
+
+`ios::openmode` defines the mode in which the file should be opened.
+
+
+
+:pushpin:**Model Flag & Operation**
+
+| flag         | function                                                     |
+| ------------ | ------------------------------------------------------------ |
+| `ios::app`   | **Append** mode. All output to that file to be appended to the end. |
+| `ios::ate`   | (*at the end*) Open a file for output and move the read/write control to the **end** of the file. |
+| `ios::in`    | Open a file for **reading**.                                 |
+| `ios::out`   | Open a file for **writing**.                                 |
+| `ios::trunc` | If the file already exists, its contents will be **truncated** before opening the file. |
+
+
+
+:pushpin:**Combine different flag**
+
+```c++
+//Example 1
+ofstream outfile;
+outfile.open("file.dat", ios::out | ios::trunc );
+
+//Example 2
+fstream  afile;
+afile.open("file.dat", ios::out | ios::in );
+```
+
+
+
+:pushpin:**Closing a File**
+
+A programmer should close all the opened files before program termination.
+
+Typical `close` function in C++.
+
+```c++
+void close();
+```
+
+
+
+:pushpin:**Write to and Read from files **
+
+`<<`  ,  this is for writing
+
+`>>`  ,  this is for reading
+
+
+
+:pushpin:**Read and Write Example**
+
+```c++
+#include <fstream>
+#include <iostream>
+using namespace std;
+ 
+int main () {
+   char data[100];
+
+   // open a file in write mode.
+   ofstream outfile;
+   outfile.open("README.md");
+
+   cout << "Writing to the file" << endl;
+   cout << "Enter your name: "; 
+   cin.getline(data, 100);
+
+   // write inputted data into the file.
+   outfile << data << endl;
+
+   cout << "Enter your age: "; 
+   cin >> data;
+   cin.ignore();
+   
+   // again write inputted data into the file.
+   outfile << data << endl;
+
+   // close the opened file.
+   outfile.close();
+
+   // open a file in read mode.
+   ifstream infile; 
+   infile.open("README.md"); 
+ 
+   cout << "Reading from the file" << endl; 
+   infile >> data; 
+
+   // write the data at the screen.
+   cout << data << endl;
+   
+   // again read the data from the file and display it.
+   infile >> data; 
+   cout << data << endl; 
+
+   // close the opened file.
+   infile.close();
+
+   return 0;
+}
+```
+
+
+
+:pushpin:**File Position Pointers**
+
+It is a function to locate the pointer at stream.
+
+> ​	Function: These member functions are `seekg` ("seek get") for `istream` and `seekp` ("seek put") for `ostream`.
+
+> ​	Flag to start: The second flag can be specified to indicate the seek direction.
+
+```c++
+// position to the nth byte of fileObject (assumes ios::beg)
+fileObject.seekg( n );
+
+// position n bytes forward in fileObject
+fileObject.seekg( n, ios::cur );
+
+// position n bytes back from end of fileObject
+fileObject.seekg( n, ios::end );
+
+// position at end of fileObject
+fileObject.seekg( 0, ios::end );
+```
+
+
+
+## 2.Exception Handling
+
+## 3.Dynamic Memory
+
+## 4.Namespaces
+
+## 5.Templates
+
+## 6.Preprocessor
+
+## 7.Signal Handling
+
+## 8.Multithreading
+
+## 9.Web Programming
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
 
 
 
