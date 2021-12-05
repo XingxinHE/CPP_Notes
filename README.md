@@ -1466,9 +1466,599 @@ int main () {
 
 1. read the address of this variable
 
-## 18.Advanced Pointers//TODO
+## 18.Advanced Pointers
 
-https://www.tutorialspoint.com/cplusplus/cpp_pointers.htm
+:pushpin: **`NULL` pointer**
+
+It is a good practice to assign `null` pointer if there is no address.
+
+```c++
+int main()
+{
+	int* p = NULL;
+	
+	if (p)
+	{
+		cout << "Pointer is not NULL." << endl;
+	}
+	else
+	{
+		cout << "Pointer is NULL." << endl;
+        cout << "The value is: " << p << endl;
+	}
+
+	return 0;
+}
+```
+
+The output would be:
+
+```
+Pointer is NULL.
+The value is: 00000000
+```
+
+
+
+:pushpin:**Increment Pointer**
+
+Pointer points to the 1st element in default implicitly!! (even in an array):star:
+
+```c++
+int main()
+{
+	//1. Create an array and a pointer
+	const int MAX = 3;
+	int num_array[MAX] = { 10, 20, 30 };
+	int* p_num = NULL;
+
+	//2. The pointer always point to the 1st value
+	p_num = num_array;
+	cout << "Pointer address: " << p_num << endl;
+	cout << "Pointer value: " << *p_num << endl;
+	cout << "\n" << endl;
+
+	//3. Increment the pointer
+	for (size_t i = 0; i < MAX ; i++)
+	{
+		cout << "Address of num_array[" << i << "]: " << p_num << endl;
+		cout << "Value of num_array[" << i << "]: " << *p_num << endl;
+		cout << "\n" << endl;
+		p_num++;
+	}
+
+	return 0;
+}
+```
+
+The output is:
+
+```
+Pointer address: 006FFB2C
+Pointer value: 10
+
+Address of num_array[0]: 006FFB2C
+Value of num_array[0]: 10
+
+Address of num_array[1]: 006FFB30
+Value of num_array[1]: 20
+
+Address of num_array[2]: 006FFB34
+Value of num_array[2]: 30
+```
+
+
+
+:pushpin:**Array of Pointers**
+
+You may be confused by the preceding code:
+
+```c++
+const int MAX = 3;
+int num_array[MAX] = { 10, 20, 30 };
+int* p_num = NULL;
+p_num = num_array;
+```
+
+Why :heavy_check_mark::
+
+```c++
+p_num = num_array;
+```
+
+but not:x::
+
+```c++
+p_num = &num_array;
+```
+
+`p_num` is a pointer, `num_array` is an array, if I want the pointer to point the array, I should use `&` to get the address right?:thinking:
+
+Actually not, in C++, the name of an array is considered as a pointer!:star::star::star: The pointer points to the 1st element!
+
+
+
+:pushpin:**Out of index**
+
+Since an array is just a pointer points to the 1st element, therefore you can access index out of range without a warning!!:warning: Because they are merely  addresses. This is typically dangerous!
+
+```c++
+double d_array[5] = { 3.1, 2.3, 54.1, 312.21, 754.34 };
+for (int i = 0; i < 8; i++)
+{
+    cout << "Value: " << d_array[i] << endl;
+    cout << "Address: " << &d_array[i] << endl;
+    cout << endl;
+}
+```
+
+The output:
+
+```
+Value: 3.1
+Address: 006FF800
+
+Value: 2.3
+Address: 006FF808
+
+Value: 54.1
+Address: 006FF810
+
+Value: 312.21
+Address: 006FF818
+
+Value: 754.34
+Address: 006FF820
+
+Value: -1.0775e-269
+Address: 006FF828
+
+Value: 1.11007e-305
+Address: 006FF830
+
+Value: 4.17158e-306
+Address: 006FF838
+```
+
+
+
+:pushpin:**Decrement Pointer**
+
+Now it is much more easier to understand decrementing pointer.
+
+```c++
+int main()
+{
+	//1. Create an array and a pointer
+	const int MAX = 3;
+	int num_array[MAX] = { 10, 20, 30 };
+
+	//2. Assign the address of last element to the pointer
+	int* p_num = &num_array[MAX - 1];
+
+	//3. Decrement the pointer
+	for (int i = 2; i > -1 ; i--)
+	{
+		cout << "Address of num_array[" << i << "]: " << p_num << endl;
+		cout << "Value of num_array[" << i << "]: " << *p_num << endl;
+		cout << "\n" << endl;
+		p_num--;
+	}
+
+	return 0;
+}
+```
+
+The output:
+
+```
+Address of num_array[2]: 0075F730
+Value of num_array[2]: 30
+
+
+Address of num_array[1]: 0075F72C
+Value of num_array[1]: 20
+
+
+Address of num_array[0]: 0075F728
+Value of num_array[0]: 10
+```
+
+
+
+:pushpin:**Difference between `Pointer` and `Pointer of Array`**
+
+In short, 
+
+> ​	a pointer can be modified.:heavy_check_mark:
+>
+> ​	a pointer of an array can't be modified:x:
+
+Why? :thinking: Because the pointer of array is a **CONSTANT** pointer which points to the 1st element of that array. :star:
+
+Suppose we have static array and pointer as followed:
+
+```c++
+int* ptr = NULL;
+int num_array[3] = { 1, 2, 3 };
+```
+
+:one:Increment the pointer points to one array, :heavy_check_mark: ok to increment:
+
+```c++
+//1. Assign the address of the array to a pointer variable
+ptr = num_array;
+for (int i = 0; i < 3; i++)
+{
+    cout << ptr << endl;  //print the address
+    cout << *ptr << endl;  //print the value that address point to
+    //2. Increment the pointer
+    ptr++;
+}
+```
+
+Output:
+
+```
+0135FB70
+1
+0135FB74
+2
+0135FB78
+3
+```
+
+:two:Increment the pointer of array itself:x:, NOT ok to increment:
+
+```c++
+for (int i = 0; i < 3; i++)
+{
+    cout << num_array << endl;  //print the address
+    cout << *num_array << endl;  //print the value that address point to (the 1st element)
+    num_array++;  //ERROR!! as num_array is a CONSTANT pointer pointing to the 1st element of that array
+}
+```
+
+:three:But we can access the address directly:heavy_check_mark:
+
+```c++
+for (int i = 0; i < 3; i++)
+{
+    cout << num_array << endl;
+    *(num_array + i) = 100+i;
+    cout << *(num_array+i) << endl;
+}
+```
+
+Output:
+
+```
+0135FB70
+100
+0135FB70
+101
+0135FB70
+102
+```
+
+As you can see, the array(is a **CONSTANT** pointer) never change but we can access the address and modify the value.
+
+
+
+:pushpin:**Array of Pointers**
+
+In short, each element in that array is a pointer.
+
+Therefore, if you really want to have a pointer for each element of that `int` array, you can use array of pointers.
+
+```c++
+//array of int
+int num_array[5] = { 5, 10, 15, 20, 25 };
+//array of pointers (which points to int)
+int* pts_array[5];
+
+//1. Assign the address of that integer to the pointer
+for (int i = 0; i < 5; i++)
+{
+    pts_array[i] = &num_array[i];
+}
+
+//2. Access the pointer and value points to
+for (int i = 0; i < 5; i++)
+{
+    cout << "Pointer: " << pts_array[i] << endl;
+    cout << "Value: " << *pts_array[i] << endl;
+}
+```
+
+Output:
+
+```
+Pointer: 008FF948
+Value: 5
+Pointer: 008FF94C
+Value: 10
+Pointer: 008FF950
+Value: 15
+Pointer: 008FF954
+Value: 20
+Pointer: 008FF958
+Value: 25
+```
+
+
+
+:pushpin:**Pointer to Pointer**(Multiple Indirection)
+
+One `*` stands for one pointer. Therefore, two `*` stands for pointer to pointer which is a form of multiple indirection or a chain of pointers.
+
+```c++
+//0. Declare variables
+float num = 0.3;
+float* p_num;
+float** pp_num;
+
+//1. Assign values
+p_num = &num;
+pp_num = &p_num;
+
+//2. Print
+cout << "num: " << num << endl;
+cout << "p_num: " << p_num << endl;
+cout << "pp_num: " << pp_num << endl;
+cout << "[value] p_num: " << *p_num << endl;
+cout << "[value] pp_num: " << *pp_num << endl;
+```
+
+Output:
+
+```
+num: 0.3
+p_num: 008FF820
+pp_num: 008FF814
+[value] p_num: 0.3
+[value] pp_num: 008FF820
+```
+
+
+
+:pushpin:**A pointer in a function declaration**
+
+In short, a pointer as a parameter in a function declaration.
+
+```c++
+#include <iostream>
+using namespace std;
+
+void set_zero(int* num);
+
+int main()
+{
+    //1. Init value is 100
+	int number = 100;
+	//2. Set as zero
+	set_zero(&number);
+    //3. Print
+	cout << number << endl;
+
+	return 0;
+}
+
+//the parameter is a pointer
+void set_zero(int* num)
+{
+    //the pointer points to
+	*num = 0;
+}
+```
+
+I really appreciate Visual IDE's formatting which illustrates the idea properly.:smile:
+
+The following are the same, which declare an `int` pointer and its name is `ptr`.
+
+```c++
+int* ptr;
+int *ptr;
+```
+
+But! The former one is clearer. `int* ptr`, the `*` right after `int` indicates it is a pointer!
+
+Therefore, inside the function, `*num = 0` means assign `0` to what `num` points to.
+
+
+
+:pushpin:**Array as parameter in a function**
+
+In C++,
+
+```c++
+#include <iostream>
+using namespace std;
+
+double cal_average(int*, int);
+
+int main()
+{
+	int array[5] = { 2, 6, 8, 19, 26 };
+	double val = cal_average(array, 5);
+	cout << val << endl;
+
+	return 0;
+}
+
+double cal_average(int* num_array, int size)
+{
+	int sum = 0;
+	for (int i = 0; i < size; i++)
+	{
+		sum += num_array[i];
+	}
+	return double(sum) / size;  //increase the precision of sum, otherwise will return int
+}
+```
+
+In C#,
+
+```c#
+static double calAverage(int[] array)
+{
+    double average = (double)array.Sum() / array.Length;
+    return average;
+}
+static void Main(string[] args)
+{
+
+    int[] numArray = { 2, 6, 8, 19, 26 };
+    double avg = calAverage(numArray);
+    Console.WriteLine(avg);
+}
+```
+
+In comparison! 
+
+| C++                                         | C#                                |
+| ------------------------------------------- | --------------------------------- |
+| use pointer                                 | does not use pointer in general   |
+| set the array(also a pointer) as parameter  | set the array itself as parameter |
+| no function to get the length of that array | has length property of that array |
+
+
+
+:pushpin:**`static` shxt in a function**
+
+Considering you want to design a function which:
+
+1. initialize an array with random value
+2. print out the random value
+
+```c++
+#include <iostream>
+#include <ctime>
+#include <cstdlib>
+using namespace std;
+
+int* get_random();
+
+int main()
+{
+	int* ptr;
+	ptr = get_random();
+
+	for (int i = 0; i < 5; i++)
+	{
+		cout << "Access Value -> *(ptr + " << i << ") :";
+		cout << *(ptr + i) << endl;
+	}
+
+	return 0;
+}
+
+int* get_random()
+{
+	int num_array[5];
+
+	srand((unsigned)time(NULL));
+
+	for (int i = 0; i < 5; i++)
+	{
+		num_array[i] = rand();
+		cout << "Assign Value -> num_array[" << i << "]=";
+		cout << num_array[i] << endl;
+	}
+
+	return num_array;
+}
+
+```
+
+You may find out the output is not what you desired:thinking::
+
+```
+Assign Value -> num_array[0]=7915
+Assign Value -> num_array[1]=27867
+Assign Value -> num_array[2]=693
+Assign Value -> num_array[3]=20502
+Assign Value -> num_array[4]=20821
+Access Value -> *(ptr + 0) :1002325240
+Access Value -> *(ptr + 1) :15988012
+Access Value -> *(ptr + 2) :15988736
+Access Value -> *(ptr + 3) :8483917
+Access Value -> *(ptr + 4) :8463838
+```
+
+Do the following check:
+
+```c++
+int* get_random()
+{
+    //..
+}
+//add the following
+int* get_random()
+{
+    //..
+    
+    //insert the following
+    for (int i = 0; i < 5; i++)
+	{
+		cout << "**Double Check** Value -> num_array[" << i << "]=";
+		cout << num_array[i] << endl;
+	}
+    return num_array;
+}
+```
+
+The output:
+
+```
+Assign Value -> num_array[0]=7827
+Assign Value -> num_array[1]=32572
+Assign Value -> num_array[2]=9881
+Assign Value -> num_array[3]=26152
+Assign Value -> num_array[4]=4472
+**Double Check** Value -> num_array[0]=7827
+**Double Check** Value -> num_array[1]=32572
+**Double Check** Value -> num_array[2]=9881
+**Double Check** Value -> num_array[3]=26152
+**Double Check** Value -> num_array[4]=4472
+Access Value -> *(ptr + 0) :-74576046
+Access Value -> *(ptr + 1) :18414008
+Access Value -> *(ptr + 2) :18414732
+Access Value -> *(ptr + 3) :1012813
+Access Value -> *(ptr + 4) :992734
+```
+
+:mag: The value does not change before jumping out of the function!! See double check. But they are changed outside of the scope.
+
+:warning:Because the array you create inside `get_random()` is not static!! Do the following changes:
+
+```c++
+int num_array[5];
+//change to
+static int num_array[5];
+```
+
+Please remember: **Static** elements are allocated storage **only once in a program lifetime** in static storage area.
+
+Now the output is fine:
+
+```
+Assign Value -> num_array[0]=7977
+Assign Value -> num_array[1]=2711
+Assign Value -> num_array[2]=12433
+Assign Value -> num_array[3]=18953
+Assign Value -> num_array[4]=20190
+**Double Check** Value -> num_array[0]=7977
+**Double Check** Value -> num_array[1]=2711
+**Double Check** Value -> num_array[2]=12433
+**Double Check** Value -> num_array[3]=18953
+**Double Check** Value -> num_array[4]=20190
+Access Value -> *(ptr + 0) :7977
+Access Value -> *(ptr + 1) :2711
+Access Value -> *(ptr + 2) :12433
+Access Value -> *(ptr + 3) :18953
+Access Value -> *(ptr + 4) :20190
+```
 
 
 
@@ -2958,11 +3548,696 @@ fileObject.seekg( 0, ios::end );
 
 ## 2.Exception Handling
 
+:pushpin:**The difference with C#**
+
+C++ does not support `finally`, only supports the following:
+
+- `throw, try, catch`
+
+C# supports the following:
+
+- `throw, try, catch, finally`
+
+
+
+:pushpin:**`throw` example**
+
+It is no big difference with C#.
+
+```c++
+double division(int a, int b)
+{
+   if( b == 0 )
+   {
+      throw "Division by zero condition!";
+   }
+   return (a/b);
+}
+```
+
+
+
+:pushpin:**`try-catch` solution**
+
+- explicitly catch the exception
+
+```c++
+try
+{
+   // protected code
+}catch( ExceptionName e )
+{
+  // code to handle ExceptionName exception
+}
+```
+
+- implicitly catch the exception
+
+```c++
+try
+{
+   // protected code
+}catch(...)
+{
+  // code to handle any exception
+}
+```
+
+
+
+:pushpin: **Example**
+
+```c++
+#include <iostream>
+using namespace std;
+
+double division(int a, int b) {
+   if( b == 0 ) {
+      throw "Division by zero condition!";
+   }
+   return (a/b);
+}
+
+int main () {
+   int x = 50;
+   int y = 0;
+   double z = 0;
+ 
+   try {
+      z = division(x, y);
+      cout << z << endl;
+   } catch (const char* msg) {
+     cerr << msg << endl;
+   }
+
+   return 0;
+}
+```
+
+
+
+:pushpin:**Define New Exceptions**
+
+```c++
+#include <iostream>
+#include <exception>  //the library with exception
+using namespace std;
+
+struct MyException : public exception {
+   const char * what () const throw () {
+      return "C++ Exception";
+   }
+};
+ 
+int main() {
+   try 
+   {
+      throw MyException();
+   } 
+   catch(MyException& e) 
+   {
+      std::cout << "MyException caught" << std::endl;
+      std::cout << e.what() << std::endl;
+   } 
+   catch(std::exception& e) 
+   {
+      //Other errors
+   }
+}
+```
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
 ## 3.Dynamic Memory
+
+:pushpin:**stack & heap**
+
+- **The stack** − All variables declared inside the function will take up memory from the stack.
+- **The heap** − This is unused memory of the program and can be used to allocate the memory dynamically when program runs.
+
+
+
+:pushpin:**`new` & `delete`**
+
+`new`: **allocate** memory at run time within the heap for the variable and return the address of the space allocated
+
+`delete`:  **de-allocates** memory that was previously allocated
+
+
+
+The syntax using `new` could be:
+
+```c++
+new data-type;
+```
+
+The **data-type** could be **any built-in data type** including an array or any user defined data types include class or structure.
+
+
+
+:pushpin:**`new` and `delete` example**
+
+```c++
+#include <iostream>
+using namespace std;
+
+int main () {
+   double* pvalue  = NULL; // Pointer initialized with null
+   pvalue  = new double;   // Request memory for the variable
+ 
+   *pvalue = 29494.99;     // Store value at allocated address
+   cout << "Value of pvalue : " << *pvalue << endl;
+
+   delete pvalue;         // free up the memory.
+
+   return 0;
+}
+```
+
+
+
+:pushpin:**Good practice of checking if `NULL`**
+
+It is always a good practice to check the variable if it is `null`.
+
+```c++
+double* pvalue  = NULL;
+if( !(pvalue  = new double )) {
+   cout << "Error: out of memory." <<endl;
+   exit(1);
+}
+```
+
+
+
+:pushpin:**Dynamic Memory Allocation for Arrays**
+
+In short, the `*` stands for $k$-dimensional array.
+
+> ​	1-D Array
+
+```c++
+//dynamically allocated, the length is m
+int *array=new int [m];
+ 
+//release memory
+delete [] array;
+```
+
+> ​	2-D Array
+
+```c++
+#include <iostream>
+using namespace std;
+ 
+int main()
+{
+    int **p;   
+    int i,j;   //p[4][8] 
+    //start allocating..
+    //row=4, col=8
+    p = new int *[4];
+    for(i=0;i<4;i++){
+        p[i]=new int [8];
+    }
+ 
+    for(i=0; i<4; i++){
+        for(j=0; j<8; j++){
+            p[i][j] = j*i;
+        }
+    }   
+    
+    //cout data...   
+    for(i=0; i<4; i++){
+        for(j=0; j<8; j++)     
+        {   
+            if(j==0) cout<<endl;   
+            cout<<p[i][j]<<"\t";   
+        }
+    }   
+    //release the heap   
+    for(i=0; i<4; i++){
+        delete [] p[i];   
+    }
+    delete [] p;   
+    return 0;
+}
+```
+
+> ​	3-D Array
+
+```c++
+#include <iostream>
+using namespace std;
+ 
+int main()
+{   
+    int i,j,k;   // p[2][3][4]
+    
+    int ***p;
+    p = new int **[2]; 
+    for(i=0; i<2; i++) 
+    { 
+        p[i]=new int *[3]; 
+        for(j=0; j<3; j++) 
+            p[i][j]=new int[4]; 
+    }
+    
+    //cout p[i][j][k] 3D Array data
+    for(i=0; i<2; i++)   
+    {
+        for(j=0; j<3; j++)   
+        { 
+            for(k=0;k<4;k++)
+            { 
+                p[i][j][k]=i+j+k;
+                cout<<p[i][j][k]<<" ";
+            }
+            cout<<endl;
+        }
+        cout<<endl;
+    }
+    
+    // release memory
+    for(i=0; i<2; i++) 
+    {
+        for(j=0; j<3; j++) 
+        {   
+            delete [] p[i][j];   
+        }   
+    }       
+    for(i=0; i<2; i++)   
+    {       
+        delete [] p[i];   
+    }   
+    delete [] p;  
+    return 0;
+}
+```
+
+
+
+:pushpin:**Dynamic Memory Allocation for Objects**
+
+```c++
+#include <iostream>
+using namespace std;
+
+class Box {
+   public:
+    //constructor
+      Box() { 
+         cout << "Constructor called!" <<endl; 
+      }
+    //deconstructor
+      ~Box() { 
+         cout << "Destructor called!" <<endl; 
+      }
+};
+int main() {
+   Box* myBoxArray = new Box[4];
+   delete [] myBoxArray; // Delete array
+
+   return 0;
+}
+```
+
+The output would be:
+
+create 4 times, delete 4 times as well.
+
+```
+Constructor called!
+Constructor called!
+Constructor called!
+Constructor called!
+Destructor called!
+Destructor called!
+Destructor called!
+Destructor called!
+```
+
+
 
 ## 4.Namespaces
 
+The methodology behind is self-evident like in C#.
+
+:pushpin:**Define Namespace**
+
+Define like following:
+
+```c++
+namespace namespace_name 
+{
+   // code declarations
+}
+```
+
+Call the function or variable like following:
+
+```c++
+namespace_name::code;  // code could be variable or function.
+SimplicialComplexOperators::boundary(const MeshSubset& subset);  // an example from ddg-exercise
+```
+
+
+
+:pushpin:**Example**
+
+```c++
+#include <iostream>
+
+using namespace std;
+//Define 1st namespace
+namespace first_namespace
+{
+	void func()
+	{
+		cout << "Func in first_namespace!" << endl;
+	}
+}
+//Define 2nd namespace
+namespace second_namespace
+{
+	void func()
+	{
+		cout << "Func in second_namespace!" << endl;
+	}
+}
+
+int main()
+{
+
+	first_namespace::func();  //call func from 1st namespace
+	second_namespace::func();  //call func from 2nd namespace
+
+	return 0;
+}
+```
+
+
+
+:pushpin:**`using` directive**
+
+This directive tells the compiler that the subsequent code is making use of names in the specified namespace.
+
+Suppose you have 2 functions:
+
+```c++
+namespace first_namespace
+{
+	void func();
+}
+namespace second_namespace
+{
+	void func();
+}
+```
+
+You can explicitly use one of them:
+
+```c++
+#include <iostream>
+
+using namespace first_namespace;
+
+int main()
+{
+	func();  //this will call func from 1st namespace
+
+	return 0;
+}
+```
+
+
+
+You can also use to explicitly call one of the function, just like in python
+
+> ​	C++:
+
+```c++
+using std::cout;
+```
+
+> ​	python:
+
+```python
+from Rhino.Geometry import Point3d
+```
+
+In both case, you don't have to explicitly use the function with namespace.
+
+```c++
+#include <iostream>
+using std::cout;
+
+int main () {
+   cout << "std::endl is used with std!" << std::endl;
+   
+   return 0;
+}
+```
+
+
+
+:pushpin:**Discontiguous Namespaces**
+
+In short, it allows you to define functions in **different files** but in the **same namespace**.
+
+> ​	File A.cpp:
+
+```c++
+namespace namespace_name
+{
+    void FuncA();
+}
+```
+
+> ​	File B.cpp:
+
+```c++
+namespace namespace_name
+{
+    void FuncB();
+}
+```
+
+> ​	File C.cpp:
+
+```c++
+using namespace namespace_name;
+int main()
+{
+    FuncA();
+    FuncB();
+    return 0;
+}
+```
+
+
+
+:pushpin:**Nested Namespaces**
+
+```c++
+#include <iostream>
+using namespace std;
+
+namespace out_space
+{
+	namespace in_space
+	{
+		void func()
+		{
+			cout << "Nested namespace." << endl;
+		}
+	}
+}
+
+int main()
+{
+	out_space::in_space::func();
+	return 0;
+}
+```
+
+
+
 ## 5.Templates
+
+It is with same idea in C#.
+
+Template(C++) = Generic(C#)
+
+C++:
+
+```c++
+vector <int>;
+vector <string>;
+```
+
+C#:
+
+```c#
+List<int>();
+List<string>();
+```
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
 
 ## 6.Preprocessor
 
