@@ -2602,7 +2602,7 @@ https://www.tutorialspoint.com/cplusplus/cpp_classes_objects.htm
 Similar to C#, you can also have inheritance in C++.
 
 ```c++
-class derived-class: access-specifier base-class
+class derived_class: access-specifier base_class
 ```
 
 Example:
@@ -4241,69 +4241,106 @@ List<string>();
 
 ## 6.Preprocessor
 
+:pushpin:**What is it?**
+
+- It is NOT C++ programming language. 
+
+- It begins with `#`.
+
+
+
+:pushpin:**Regular preprocessor**
+
+`#include`, `#define`, `#if`, `#else`, `#line`
+
+
+
+:pushpin:**`#define` preprocessor**
+
+It simply does the following which replaces `macro_name` to `replacement_text`.
+
+```c++
+#define macro_name replacement_text 
+```
+
+Example:
+
+```c++
+#include <iostream>
+using namespace std;
+
+#define PI 3.14156
+
+int main()
+{
+	cout << PI << endl;
+	return 0;
+}
+```
+
+The output:
+
+```
+3.14156
+```
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+:pushpin:****
+
+
+
+
+
 ## 7.Signal Handling
 
 ## 8.Multithreading
 
 ## 9.Web Programming
-
-:pushpin:****
-
-
-
-:pushpin:****
-
-
-
-:pushpin:****
-
-
-
-:pushpin:****
-
-
-
-:pushpin:****
-
-
-
-:pushpin:****
-
-
-
-:pushpin:****
-
-
-
-:pushpin:****
-
-
-
-:pushpin:****
-
-
-
-:pushpin:****
-
-
-
-:pushpin:****
-
-
-
-:pushpin:****
-
-
-
-:pushpin:****
-
-
-
-:pushpin:****
-
-
-
-:pushpin:****
 
 
 
