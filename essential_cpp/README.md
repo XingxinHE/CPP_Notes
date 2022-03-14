@@ -702,19 +702,190 @@ Use `< >`, if the header file is anywhere else.
 
 
 
+# Chapter 3. Generic Programming
+
+In this chapter, the word "generic" refers to be independent of both the type of element they are operating on and the type of container within which the elements are held.
+
+## 3.1. The Arithmetic of Pointers
+
+**📌Find specific value in a vector**
+
+```c++
+int* find(const vector<int> &vec, int value)
+{
+    for (int ix = 0; ix < vec.size(); ++ix)
+    {
+        if(vec[ix]==value)
+        {
+            return &vec[ix];
+        }
+    }
+    return 0;
+}
+```
 
 
 
+**📌(Generic Version)Find specific value in a vector**
+
+```c++
+template <typename T>
+T* find(const vector<T> &vec, const T &value)
+{
+    for (int ix = 0; ix < vec.size(); ++ix)
+    {
+        if(vec[ix] == value)
+        {
+            return &vec[ix];
+        }
+    }
+    return 0;
+}
+```
 
 
 
+**📌The magic and fun fact of pointer**
+
+Do you know in C++, an array is also a pointer? This is so much fun. The followings are the same!
+
+```c++
+array[2]
+*(array + 2)
+```
+
+If you are a C# programmer, you would say what the heck?? 😨😨
+
+That's because an <u>array is a pointer which records the 1st address of that array</u>. Therefore, they are the same.
 
 
 
+**📌Find specific value in an array(Normal Version)**
+
+```c++
+template <typename T>
+T* find(const T *array, int size, const T &value)
+{
+    // the difference between vector and array is that
+    // array(pointer) could not be empty
+    // therefore you should check it first
+    if(!array || size < 1)
+    {
+        return 0;
+    }
+    for (int ix = 0; ix < size; ix++)
+    {
+        if(array[ix]==value)
+        {
+            return &array[ix];
+        }
+    }
+    return 0;
+}
+```
 
 
 
+**📌Find specific value in an array(Pointer Version)**
 
+```c++
+template <typename T>
+T* find(const T *array, int size, const T &value)
+{
+    if(!array || size < 1)
+    {
+        return 0;
+    }
+    // Please take a look here!! The pointer arithmetic!
+    // rather shifting the index, here increment the address
+    for(int ix = 0; ix < size; ix++, array++)
+    {
+        // dereference the pointer, so can be compared with value
+        if(*array == value)
+        {
+            return array;
+        }
+    }
+    return 0;
+}
+```
+
+//TODO , here 🤔, in Qt, the function declaration should remove `const` from `const T *array`. Is it because the new standard of C++?
+
+
+
+**📌Find specific value in an array(Pointer Version with sentinel)**
+
+In this version, we use the address of last element of the array as sentinel[^2] address.
+
+```c++
+template <typename T>
+T* find( T *first, const T *last, const T &value)
+{
+    if(!first || !last)
+    {
+        return 0;
+    }
+    // here the last address served as sentinel address
+    for(; first!=last; first++)
+    {
+        if(*first == value)
+        {
+            return first;
+        }
+    }
+    return 0;
+}
+```
+
+You can use it as the following:
+
+```c++
+int main()
+{
+    int arr_int[5] = {1,2,3,4,5};
+    int* ptr = find(arr_int,arr_int+5, 3);
+    cout << "Integer value: " << endl;
+    cout << "ptr: " << ptr 
+         << "*ptr: "<< *ptr<< endl;
+    
+    double arr_double[] = {1.1,2.3,1.6};
+    double* ptr_double = find(arr_double, arr_double+3, 1.1);
+    cout << "ptr_double: " << ptr_double 
+         << "*ptr_double: "<< *ptr_double<< endl;
+    
+    return 0;
+}
+```
+
+
+
+**📌Behind the `vec.begin()`**
+
+Since a `vector` could be empty, therefore, it may cause error if we directly query like `vec[0]`. A safer way would be like this:
+
+```c++
+template <typename T>
+inline T* begin(vector<T> &vec)
+{
+    // check if it is empty
+    return vec.empty()? 0 : &vec[0];
+}
+```
+
+
+
+## 3.2. Iterators
+
+The iterators here are very similar to the `IEnumerable` in C#. In short, iterator is a set of classes that are programmed using the same syntax as that of a pointer to collection in STL. For example, the `++` for vector is to query the next element, so as `++` for linked list. But the next address of a linked list cannot be just incremented. Therefore, we can override their operator.
+
+```
+// a pseudo code could be like this
+for(iter = numbers.begin(); iter!=numbers.end(); iter++)
+{
+
+}
+```
 
 
 
@@ -724,7 +895,7 @@ Use `< >`, if the header file is anywhere else.
 
 [^1]: 假设一个大方法里面有很多小方法，这些小方法实际上非常小。<u>数据转换过程所占用的时间</u>大于<u>方法运行本身所占用的时间</u>要多，因此才要用`inline` 函数。
 
-
+[^2]: A **sentinel value** (also referred to as a **flag value**, **trip value**, **rogue value**, **signal value**, or **dummy data**)[[1\]](https://en.wikipedia.org/wiki/Sentinel_value#cite_note-1) is a special [value](https://en.wikipedia.org/wiki/Value_(computer_science)) in the context of an [algorithm](https://en.wikipedia.org/wiki/Algorithm) which uses its presence as a condition of termination, typically in a [loop](https://en.wikipedia.org/wiki/Control_flow) or recursive algorithm.
 
 
 
