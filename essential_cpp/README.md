@@ -889,6 +889,105 @@ for(iter = numbers.begin(); iter!=numbers.end(); iter++)
 
 
 
+**📌What is an iterator?**
+
+`iter` is defined to be an iterator for vectors of `T` elements. It is initialized to address the first element of a `vector`.
+
+```c++
+vector<int> ivec;
+// normal iterator
+vector<int>::iterator iter = ivec.begin();
+// const iterator(you can loop them but not modify them)
+vector<int>::const_iterator cst_iter = ivec.begin();
+```
+
+The double colon `::` indicates that iterator is a type nested within the `T` vector definition.
+
+
+
+**📌Example Function using iterator**
+
+//TODO currently this is compiled with error
+
+The display function can be implemented like so:
+
+`T` could be saw as the element type of that container.
+
+```c++
+template <typename T>
+void display(const vector<T> &vec, ostream &os)
+{
+    vector<T>::const_iterator iter = vec.begin();
+    vector<T>::const_iterator end_it = vec.end();
+
+    for(; iter!=end_it; iter++)
+    {
+        os << *iter << ' ';
+    }
+    os << endl;
+}
+```
+
+
+
+//TODO why in the end return `last` but not `0`?
+
+The find function can be implemented like so:
+
+`T` could be saw as the iterator type, while `S` could be saw as the element type.
+
+```c++
+template <typename T, typename S>
+S find(T first, T last, const S &value)
+{
+    for(; first!=last; first++)
+    {
+        if(*first==value)
+        {
+            return first;
+        }
+    }
+    return last;
+}
+```
+
+
+
+You can use **1** 
+
+```c++
+// arrange data
+const int asize = 8;
+
+// array, vector, and linked list
+int ia[asize] {1,1,2,3,5,8,13,21};
+vector<int> i_vec (ia, ia+asize);
+list<int> i_list(ia, ia+asize);
+
+// find in array
+int* pia = find(ia, ia+asize, 1024);
+if(pia != ia+asize)
+{
+    cout << "1024 found in ia..." << endl;
+}
+
+// find in vector
+vector<int>::iterator it;
+it = find(i_vec.begin(), ivec.end(), 1024);
+if(it != ivec.end())
+{
+    cout << "1024 found in ivec..." << endl;
+}
+
+// find in linked list
+list<int>::iterator it_list;
+it_list = find(i_list.begin(), i_list.end(), 1024);
+if(it_list!=i_list.end())
+{
+    cout << "1024 found in ilist..." << endl;
+}
+```
+
 
 
 
