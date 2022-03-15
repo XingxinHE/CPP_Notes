@@ -990,6 +990,218 @@ if(it_list!=i_list.end())
 
 
 
+**📌Frequently Used Method**
+
+- **search algorithms**: `find()`, `count()`, `adjacent_find()`, `find_if()`, `count_if()`, `binary_search()`, and `find_first_of()`
+- **sorting and general ordering algorithms**: `merge()`, `partial_sort()`, `partition()`, `random_shuffle()`, `reverse()`, `rotate()`, and `sort()`
+- **copy, deletion, and substitution and algorithms**: `copy()`, `remove()`, `remove_if()`, `replace()`, `replace_if()`, `swap()`, and `unique()`
+- **relational algorithms:** `equal()`, `includes()`, and `mismatch()`
+- **generation and mutation algorithms:** `fill()`, `for_each()`, `generate()`, and `transform()`
+- **numeric algorithms**: `accumulate()`, `adjacent_difference()`, `partial_sum()`, and `inner_product()`
+- **set algorithms**: `set_union()` and `set_difference()`
+
+
+
+
+
+## 3.3. Operations Common to All Containers
+
+**📌A Function Definition Cover All Common Functions of Containers**
+
+```c++
+void compare(vector<int> &vec1, vector<int> &vec2)
+{
+    // equality
+    if(vec1 == vec2) return;
+
+    // isEmpty?
+    if(vec1.empty() || vec2.empty()) return;
+
+    // the size
+    if(vec1.size() != vec2.size()) return;
+
+    // clear all the data
+    vec1.clear();
+
+    // begin and end
+    for(auto iter = vec1.begin(); iter!= vec2.end(); iter++)
+    {
+        cout << "+";
+    }
+
+    // insert and erase
+    vec1.insert(vec1.begin()+1, 2);
+    vec2.erase(vec2.end()-3);
+}
+```
+
+
+
+## 3.4. Using the Sequential Containers
+
+**📌Initialization of Container**
+
+The following are the common ways of initialized the containers.
+
+```c++
+// 1.Create an empty container
+list<string> slist;
+deque<int> ideque;
+
+// 2.Create a container of some size
+list<int> ilist(1024);
+vector<double> dvec(32);
+
+// 3.Create a container of a given size specified with initial value
+vector<char> chvec(10, 'X');
+list<string> slist1(16, "unassigned");
+deque<double> dd(10, 3.2);
+
+// 4.Create a container with iterator
+bool barr[3] = {true, false, true};
+vector<bool> bvec(barr, barr+3);
+
+// 5.Create a container by full copy another
+list<string> slist2(slist);
+```
+
+
+
+
+
+**📌Operations supported per container**
+
+|                                               | `vector` | `list` | `deque` |
+| --------------------------------------------- | -------- | ------ | ------- |
+| `front()`                                     | ✔        | ✔      | ✔       |
+| `push_front()`➕                               | ❌        | ✔      | ✔       |
+| `pop_front()`➖                                | ❌        | ✔      | ✔       |
+| `[0]`<br>`[1]`<br>`...`<br>`[n-2]`<br>`[n-1]` |          |        |         |
+| `pop_back()`➖                                 | ✔        | ✔      | ✔       |
+| `push_back()`➕                                | ✔        | ✔      | ✔       |
+| `back()`                                      | ✔        | ✔      | ✔       |
+
+
+
+**📌Different Ways Using `insert()`**
+
+1️⃣the `insert()` is like: `iterator insert(iterator position, elemType value)`
+
+```c++
+// arrange
+int ival = 6;
+int ia[3] = {1, 2, 9};  // make a linked list with contiguous order
+list<int> ilist(ia, ia+3);
+list<int>::iterator it = ilist.begin();
+
+// loop over the linked list
+while(it != ilist.end())
+{
+    // if a specific value is > such value
+    if(*it >= ival)
+    {
+        // insert
+        ilist.insert(it, ival);
+        break;
+    }
+    it++;
+}
+// if iterator is at the end(a.k.a. no value in the linked list > such value)
+// the value should be at the end of linked list
+if(it == ilist.end())
+{
+    ilist.push_back(ival);
+}
+// display it
+for(int ix:ilist )
+{
+    cout << ix;
+}
+```
+
+
+
+2️⃣`void insert(iterator position, int count, elemType value)` inserts <u>"count" elements</u> of `value` before `position`.
+
+The following
+
+```c++
+// arrage
+list<string> slist(3, string("Hello"));
+list<string>::iterator it = slist.begin();
+
+// iterator as the 2nd position
+it++;
+
+// insert after that position
+slist.insert(it, 5, string("dummy"));
+
+// display
+for(auto val : slist)
+{
+    cout << val << "  ";
+}
+```
+
+
+
+There are many other overloaded version. Please refer to docs.
+
+
+
+**📌`erase` in STL**
+
+```c++
+// arrage
+list<string> slist(6, string("Hello"));
+list<string>::iterator it = slist.begin();
+// iterator as the 2nd position
+it++;
+list<string>::iterator first = slist.begin();
+list<string>::iterator last = slist.end();
+last--;
+
+// before erase
+for(auto v : slist)
+{
+    cout << v << "  ";
+}
+cout << endl;
+
+// since I decrement last once
+// then erase will be 0 to n-2
+slist.erase(first, last);
+// after erase
+for(auto v : slist)
+{
+    cout << v << "  ";
+}
+```
+
+
+
+**📌Linked list does not support offset arithmetic**
+
+```c++
+list<string> slist(6, string("Hello"));
+list<string>::iterator it = slist.begin();
+
+// ERROR
+it = it + 2; //failed to offset 2 position
+// OK
+it++;        //succeed because the ++ has overloaded version
+```
+
+Because the addresses of Linked List are not contiguous! Please refer to [my Algorithm Repo](https://github.com/XingxinHE/Algorithms/blob/main/README.md#232-linked-list-sequence).
+
+
+
+
+
+## 3.5. Using the Generic Algorithm
+
+
+
 
 
 [^1]: 假设一个大方法里面有很多小方法，这些小方法实际上非常小。<u>数据转换过程所占用的时间</u>大于<u>方法运行本身所占用的时间</u>要多，因此才要用`inline` 函数。
