@@ -1275,6 +1275,77 @@ bool is_found = binary_search(
 
 
 
+## 3.6. Design a Generic Algorithm
+
+**📌A filer function**
+
+Suppose we have a function to filter out numbers less than 10:
+
+```c++
+vector<int> less_than_10(const vector<int> &vec)
+{
+    vector<int> nvec;
+    for(int ix = 0; ix < vec.size(); ix++)
+    {
+        if(vec[ix] < 10)
+        {
+            nvec.push_back(vec[ix]);
+        }
+    }
+    return nvec;
+}
+```
+
+It is just a very simple `for` loop to filter out the `vector`. But the constraints❌ are:
+
+- cannot specify the value for filtering
+- cannot specify $>$ or $<$
+
+Therefore, we could implement something like this:
+
+```c++
+//  a function compared is bigger
+bool is_bigger(int lhs, int rhs)
+{
+    return lhs > rhs? true : false;
+}
+//  a function compared is smaller
+bool is_smaller(int lhs, int rhs)
+{
+    return lhs < rhs? true : false;
+}
+
+//  filter with some value
+//  the last argument is a pointer to function
+vector<int> filter_with_value(vector<int> &vec, int value, bool (*flag)(int, int))
+{
+    vector<int> nvec;
+    for(int ix = 0; ix < vec.size(); ix++)
+    {
+        if(flag(vec[ix], value))
+        {
+            nvec.push_back(vec[ix]);
+        }
+    }
+    return nvec;
+}
+
+// how to use it
+void prog_6()
+{
+    int arr[5] = {12,13,20,100, 5};
+    vector<int> ivec(arr, arr+5);
+    vector<int> vec_bigger_10 = filter_with_value(ivec, 13, is_bigger);
+
+    for(auto v : vec_bigger_10)
+    {
+        cout << v << "  ";
+    }
+}
+```
+
+ 
+
 
 
 

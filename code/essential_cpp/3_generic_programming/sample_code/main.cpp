@@ -202,20 +202,20 @@ void prog_4()
 #include <algorithm>
 extern bool grow_vec(vector<int> &vec, int elem);
 
-bool is_elem(vector<int> &vec, int elem)
-{
-    int max_value = max_element(vec.begin(), vec.end());
-    if(max_value < elem)
-    {
-        return grow_vec(vec, elem);
-    }
-    if(max_value == elem)
-    {
-        return true;
-    }
+//bool is_elem(vector<int> &vec, int elem)
+//{
+//    int max_value = max_element(vec.begin(), vec.end());
+//    if(max_value < elem)
+//    {
+//        return grow_vec(vec, elem);
+//    }
+//    if(max_value == elem)
+//    {
+//        return true;
+//    }
 
-    return binary_search(vec.begin(), vec.end(), elem);
-}
+//    return binary_search(vec.begin(), vec.end(), elem);
+//}
 
 void prog_5()
 {
@@ -236,10 +236,60 @@ void prog_5()
                 query_num);
 }
 
+vector<int> less_than_10(const vector<int> &vec)
+{
+    vector<int> nvec;
+    for(int ix = 0; ix < vec.size(); ix++)
+    {
+        if(vec[ix] < 10)
+        {
+            nvec.push_back(vec[ix]);
+        }
+    }
+    return nvec;
+}
+
+bool is_bigger(int lhs, int rhs)
+{
+    return lhs > rhs? true : false;
+}
+
+bool is_smaller(int lhs, int rhs)
+{
+    return lhs < rhs? true : false;
+}
+
+vector<int> filter_with_value(vector<int> &vec, int value, bool (*flag)(int, int))
+{
+    vector<int> nvec;
+    for(int ix = 0; ix < vec.size(); ix++)
+    {
+        if(flag(vec[ix], value))
+        {
+            nvec.push_back(vec[ix]);
+        }
+    }
+    return nvec;
+}
+
+void prog_6()
+{
+    int arr[5] = {12,13,20,100, 5};
+    vector<int> ivec(arr, arr+5);
+    vector<int> vec_bigger_10 = filter_with_value(ivec, 13, is_bigger);
+
+    for(auto v : vec_bigger_10)
+    {
+        cout << v << "  ";
+    }
+}
+
+
+
 int main()
 {
 
-    prog_4();
+    prog_6();
 
 
 }
