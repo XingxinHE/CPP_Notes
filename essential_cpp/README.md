@@ -1200,6 +1200,81 @@ Because the addresses of Linked List are not contiguous! Please refer to [my Alg
 
 ## 3.5. Using the Generic Algorithm
 
+**📌Prerequisite**
+
+```c++
+#include <algorithm>
+```
+
+
+
+**📌Generic Search Algorithm**
+
+| Function          | Description                                                  | Return                                                       |
+| ----------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| `find()`          | searches **unordered** collection                            | `true` found, `false` not found                              |
+| `binary_search()` | searches **ordered** collection, more efficient than `find()` | `true` found, `false` not found                              |
+| `count()`         | count the number of that container                           | `int` represents the number                                  |
+| `search()`        | matches a subsequence, e.g. find `{5,7}` in `{1,3,5,7,2,9}`  | the iterator of at the beginning of subsequence if found, the end if not found |
+
+
+
+**📌Implement search element in Fibonacci sequence using generic algorithm**
+
+```c++
+#include <algorithm>
+// function to grow the vector if element is bigger than current array
+extern bool grow_vec(vector<int> &vec, int elem);
+
+// query if an element inside the vector
+bool is_elem(vector<int> &vec, int elem)
+{
+    // find the max value first
+    int max_value = max_element(vec.begin(), vec.end());
+    // if the query element is outside of max
+    if(max_value < elem)
+    {
+        //grow it
+        return grow_vec(vec, elem);
+    }
+    if(max_value == elem)
+    {
+        return true;
+    }
+
+    // search it 
+    return binary_search(vec.begin(), vec.end(), elem);
+}
+```
+
+
+
+**📌`binary_seach()` only works for sorted container**
+
+It is left to the programmer to guarantee the preceding requirement! What if we are not sure?
+
+```c++
+// unsure vector
+vector<int> vec;
+// duplicate vector with same size
+vector<int> vec_copy(vec.size());
+// copy from start to end
+copy(vec.begin(), vec.end(), vec_copy.begin());
+// sort that copy vector
+sort(vec_copy.begin(), vec_copy.end());
+
+// query...
+int query_num = 13;
+bool is_found = binary_search(
+    vec_copy.begin(),
+    vec_copy.end(),
+    query_num);
+```
+
+
+
+
+
 
 
 

@@ -199,6 +199,43 @@ void prog_4()
     }
 }
 
+#include <algorithm>
+extern bool grow_vec(vector<int> &vec, int elem);
+
+bool is_elem(vector<int> &vec, int elem)
+{
+    int max_value = max_element(vec.begin(), vec.end());
+    if(max_value < elem)
+    {
+        return grow_vec(vec, elem);
+    }
+    if(max_value == elem)
+    {
+        return true;
+    }
+
+    return binary_search(vec.begin(), vec.end(), elem);
+}
+
+void prog_5()
+{
+    // unsure vector
+    vector<int> vec;
+    // duplicate vector with same size
+    vector<int> vec_copy(vec.size());
+    // copy from start to end
+    copy(vec.begin(), vec.end(), vec_copy.begin());
+    // sort that copy vector
+    sort(vec_copy.begin(), vec_copy.end());
+
+    // query...
+    int query_num = 13;
+    bool is_found = binary_search(
+                vec_copy.begin(),
+                vec_copy.end(),
+                query_num);
+}
+
 int main()
 {
 
