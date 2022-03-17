@@ -1346,6 +1346,78 @@ void prog_6()
 
  
 
+**📌Function Objects**
+
+Definition: A ***function object*** is an instance of a class that provides an overloaded instance of the function call operator.
+
+Analogy: Delegate in C#, Pointer to Function in C++
+
+Example:
+
+Suppose we have a sequence of numbers:
+$$
+S_1 = \{s_1,s_2,\cdots,s_n\}
+$$
+Do the element wise addition:
+$$
+S_1 = \{s_1+s_1,s_2+s_2,\cdots,s_n+s_n\}
+$$
+Do the element wise multiplication:
+$$
+S_1 = \{s_1*s_1,s_2*s_2,\cdots,s_n*s_n\}
+$$
+Then add to another sequence:
+$$
+S_1 = \{s_1,s_2,\cdots,s_n\}\\
+S_2 = \{s^1,s^2,\cdots,s^n\}\\
+S_F = \{s^1+s_1,s^2+s_2,\cdots,s^n+s_n\}\\
+$$
+
+
+We can use `transform()` function to do element-wise operation. It takes 5 arguments:
+
+1️⃣  start of elements range to transform
+
+2️⃣  end of elements range to transform
+
+3️⃣  start position fetching data  (iterator points to the beginning of container which fetch data)
+
+4️⃣  start position apply those data  (iterator points to the beginning of the container where apply those transformation)
+
+5️⃣  function object (delegate / pointer to function) to apply those changes
+
+```c++
+#include <functional>
+void func_obj_example()
+{
+    int s1[5] = {1, 2, 3, 6, 9};
+    int s2[5] = {2, 3, 5, 6, 9};
+    vector<int> vec_s1(s1, s1+5);
+    vector<int> vec_s2(s2, s2+5);
+    vector<int> vec_sf(5);
+
+    transform(vec_s1.begin(),       // 1.
+              vec_s1.end(),         // 2.
+              vec_s1.begin(),       // 3.
+              vec_s1.begin(),       // 4.
+              plus<int>());         // 5.
+
+    transform(vec_s1.begin(),       // 1.
+              vec_s1.end(),         // 2.
+              vec_s1.begin(),       // 3.
+              vec_s1.begin(),       // 4.
+              multiplies<int>());   // 5.
+
+    transform(vec_s1.begin(),       // 1.
+              vec_s1.end(),         // 2.
+              vec_s2.begin(),       // 3.
+              vec_s1.begin(),       // 4.
+              plus<int>());         // 5.
+}
+```
+
+
+
 
 
 

@@ -284,6 +284,35 @@ void prog_6()
     }
 }
 
+#include <functional>
+void prog_7()
+{
+    int s1[5] = {1, 2, 3, 6, 9};
+    int s2[5] = {2, 3, 5, 6, 9};
+    vector<int> vec_s1(s1, s1+5);
+    vector<int> vec_s2(s2, s2+5);
+    vector<int> vec_sf(5);
+
+    transform(vec_s1.begin(),
+              vec_s1.end(),
+              vec_s1.begin(),
+              vec_s1.begin(),
+              plus<int>());
+
+    transform(vec_s1.begin(),
+              vec_s1.end(),
+              vec_s1.begin(),
+              vec_s1.begin(),
+              multiplies<int>());
+
+    transform(vec_s1.begin(),
+              vec_s1.end(),
+              vec_s2.begin(),
+              vec_s1.begin(),
+              plus<int>());
+
+}
+
 
 
 int main()
