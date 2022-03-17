@@ -1418,6 +1418,101 @@ void func_obj_example()
 
 
 
+**📌Function Object Adapter**
+
+In short, the <u>function object adapter</u> **modifies** a <u>function object</u> by specifying lhs/rhs as input. For example, 
+
+`bind1st` binds the 1st operand. `bind2nd` binds the 2nd operand.
+
+```c++
+vector<int> filter(const vector<int> &vec, int val, less<int> &lt)
+{
+    vector<int> nvec;
+    vector<int>::const_iterator iter = vec.begin();
+
+    // bind2nd(less<int>, val) binds val to the second value of less<int>
+    // less<int> now compares each value against val
+    while( (iter =
+            find_if(iter,
+                    vec.end(),
+                    bind2nd(lt, val))
+            ) != vec.end())
+    {
+        // each time iter != vec.end(),
+        // iter addresses an element less than val
+        nvec.push_back(*iter);
+        iter++;
+    }
+    return nvec;
+}
+```
+
+
+
+**📌More General Version**
+
+The following is a really excellent example. Please digest!
+
+```c++
+template <typename InputIterator,
+          typename OutputIterator,
+          typename ElemType,
+          typename Comp>
+OutputIterator filter (InputIterator first,
+                       InputIterator last,
+                       OutputIterator at,
+                       const ElemType &val,
+                       Comp pred)
+{
+    while( (first = find_if(first, last, bind2nd(pred, val)))
+           != last)
+    {
+        // just to see what is going on ...
+        cout << "found value: " << *first << endl;
+        // assign value, then advance both iterators
+        *at++ = *first++;
+    }
+    return at;
+}
+```
+
+The `*at++ = *first++;` is just the following:
+
+```c++
+*at = *first;
+at++;
+first++;
+```
+
+
+
+**📌A Subdivision method on `vector`**
+
+The following function is kind of similar to C# (`where x => x< ???`)
+
+```c++
+vector<int> sub_vec(vector<int> &vec, int val)
+{
+    // clone a vector
+    vector<int> nvec(vec);
+    // sort it first
+    sort(nvec.begin(), nvec.end());
+
+    vector<int>::iterator iter;
+    // find the pos marked > val
+    iter =  find_if(nvec.begin(), nvec.end(), bind2nd(greater<int>(), val));
+
+    // delete the part
+    nvec.erase(iter, nvec.end());
+
+    return nvec;
+}
+```
+
+
+
+
+
 
 
 
