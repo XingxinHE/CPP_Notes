@@ -396,11 +396,169 @@ cout << *x << endl;
 }
 
 
+#include <map>
+#include <fstream>
+void prog_9()
+{
+    map<string, int> words;
+
+    // Add a key-value pair:
+    words["Torso"] = 1;
+
+    ifstream infile("./material/serenity_prayer.txt");
+    if(infile)
+    {
+        // Suppose we want to analyze the word occurence:
+        string tword;
+        while(infile >> tword)
+        {
+            words[tword]++;
+        }
+    }
+    // check the occurence
+    map<string, int>::iterator iter = words.begin();
+    for(; iter!=words.end(); iter++)
+    {
+        cout << "key: " << iter->first
+             << "value: " << iter->second << endl;
+    }
+
+}
+
+void prog_10()
+{
+    map<string, int> words;
+
+    if(words["vermeer"])
+    {
+        cout << "Exist." << endl;
+    }
+    else
+    {
+        cout << "Not exist." << endl;
+    }
+}
+
+void prog_11()
+{
+    map<string, int> words;
+    map<string, int>::const_iterator iterator;
+    // Find such word,
+    // if found=> that iterator
+    // if not found => the end() iterator
+    iterator = words.find("vermeer");
+    if(iterator!=words.end())
+    {
+        cout << "Found. ";
+        cout << "Value: " << iterator->second << endl;
+    }
+    else
+    {
+        cout << "Not found." << endl;
+    }
+}
+
+void prog_12()
+{
+    map<string, int> words;
+    string query_word("vermeer");
+
+    if(words.count(query_word))
+    {
+        cout << "Found. ";
+        cout << "Value: " << words[query_word] << endl;
+    }
+    else
+    {
+        cout << "Not found.";
+    }
+}
+
+#include <set>
+void prog_13()
+{
+    string words_array[5] = {"Daniel", "Haley", "Daniel", "Bob", "Maria"};
+    vector<string> words(words_array, words_array+5);
+    set<string> words_set(words.begin(), words.end());
+    for(auto w : words)
+    {
+        cout << w << " ";
+    }
+    cout << endl;
+    for(auto w: words_set)
+    {
+        cout << w << " ";
+    }
+
+    string some_words[3] = {"Roma", "Milano", "Torino"};
+    words_set.insert(some_words, some_words+3);
+
+}
+
+void prog_14()
+{
+    string words_array[5] = {"Daniel", "Haley", "Daniel", "Bob", "Maria"};
+    vector<string> words(words_array, words_array+5);
+    string some_words[3] = {"Roma", "Milano", "Torino"};
+
+    set<string> words_set;
+
+    words_set.insert(some_words, some_words+3);
+    words_set.insert(words.begin(), words.end());
+    words_set.insert("Fendi");
+    for(auto w : words_set)
+    {
+        cout << w << " ";
+    }
+
+}
+
+void prog_15()
+{
+    string words_array[7] = {"Daniel", "Haley", "Daniel", "Bob", "Maria", "Fendi", "Armani"};
+    set<string> words_set(words_array, words_array+7);
+    set<string>::const_iterator iter = words_set.begin();
+    for(; iter!=words_set.end(); iter++)
+    {
+        cout << *iter << " ";
+    }
+}
+
+void prog_16()
+{
+    set<string> words;
+
+    ifstream infile("./material/serenity_prayer.txt");
+    if(infile)
+    {
+        // Suppose we want to analyze the word occurence:
+        string tword;
+        while(infile >> tword)
+        {
+            if(words.count(tword))
+            {
+                continue;
+            }
+            else
+            {
+                cout << "Found new word: " << tword << endl;
+                words.insert(tword);
+            }
+        }
+    }
+    // check the occurence
+    map<string, int>::iterator iter = words.begin();
+    for(; iter!=words.end(); iter++)
+    {
+        cout << "key: " << iter->first
+             << "value: " << iter->second << endl;
+    }
+}
 
 int main()
 {
 
-    prog_8();
+    prog_15();
 
 
 }

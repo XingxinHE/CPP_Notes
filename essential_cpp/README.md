@@ -1511,7 +1511,185 @@ vector<int> sub_vec(vector<int> &vec, int val)
 
 
 
+## 3.7. Using a Map
 
+**📌Regular Operation with `map`**
+
+The analogy of `map` in C++ in C# is `Dict< , >`.
+
+```c++
+#include <map>
+#include <fstream>
+
+// Declare a map with key:string, value:int
+map<string, int> words;
+
+// Add a key-value pair:
+words["Torso"] = 1;
+
+ifstream infile("./material/serenity_prayer.txt");
+if(infile)
+{
+    // Suppose we want to analyze the word occurence:
+    string tword;
+    while(infile >> tword)
+    {
+        words[tword]++;
+    }
+}
+
+// check the occurence
+map<string, int>::iterator iter = words.begin();
+for(; iter!=words.end(); iter++)
+{
+    cout << "key: " << iter->first
+        << "value: " << iter->second << endl;
+}
+```
+
+Taking into account that the syntax query a `key-value` pair, `first` refers to `key`, `second` refers to `value`.
+
+
+
+**📌Appropriate Way Finding a Value**
+
+Suppose you want to find out if a value is in that `map`, you may do something like this:
+
+```c++
+// NOT APPROPRIATE
+
+map<string, int> words;
+
+if(words["vermeer"])
+{
+    cout << "Exist." << endl;
+}
+else
+{
+    cout << "Not exist." << endl;
+}
+```
+
+It can work but it is not appropriate❌. First, `words["vermeer"]` return some value, if it is `0`, then it is `false` as well. Therefore it could work. But the point is if there is no such key before, using statement like this will add the `key-value` pair to the `map`! 
+
+
+
+```c++
+// APPROPRIATE
+
+map<string, int> words;
+string query_word("vermeer");
+
+if(words.count(query_word))
+{
+    cout << "Found. ";
+    cout << "Value: " << words[query_word] << endl;
+}
+else
+{
+    cout << "Not found.";
+}
+```
+
+The preceding method using `map.count()` will return the occurrence but it will not add an empty key.✔
+
+
+
+```c++
+// APPROPRIATE
+
+map<string, int> words;
+map<string, int>::const_iterator iterator;
+// Find such word,
+// if found=> that iterator
+// if not found => the end() iterator
+iterator = words.find("vermeer");
+if(iterator!=words.end())
+{
+    cout << "Found.";
+    cout << "Value: " << iterator->second << endl;
+}
+else
+{
+    cout << "Not found." << endl;
+}
+```
+
+The preceding method using `map.find()` will return the iterator at such position.✔
+
+
+
+## 3.8. Using a Set
+
+You know what set is...
+
+**📌Turn a vector to set**
+
+```c++
+// init words vector
+string words_array[5] = {"Daniel", "Haley", "Daniel", "Bob", "Maria"};
+vector<string> words(words_array, words_array+5);
+// turn vector to set
+set<string> words_set(words.begin(), words.end());
+
+for(auto w : words)
+{
+    cout << w << " ";
+}
+cout << endl;
+for(auto w: words_set)
+{
+    cout << w << " ";
+}
+
+// OUTPUT
+// Daniel Haley Daniel Bob Maria 
+// Bob Daniel Haley Maria
+```
+
+
+
+**📌Insert value to set**
+
+```c++
+// arrange
+string words_array[5] = {"Daniel", "Haley", "Daniel", "Bob", "Maria"};
+vector<string> words(words_array, words_array+5);
+string some_words[3] = {"Roma", "Milano", "Torino"};
+// init set
+set<string> words_set;
+
+// insert range of array
+words_set.insert(some_words, some_words+3);
+// insert vector
+words_set.insert(words.begin(), words.end());
+// insert single element
+words_set.insert("Fendi");
+
+for(auto w : words_set)
+{
+    cout << w << " ";
+}
+
+// OUTPUT
+// Bob Daniel Fendi Haley Maria Milano Roma Torino
+```
+
+
+
+**📌Iteration over a set**
+
+```c++
+// arrange
+string words_array[7] = {"Daniel", "Haley", "Daniel", "Bob", "Maria", "Fendi", "Armani"};
+set<string> words_set(words_array, words_array+7);
+// loop over a set
+set<string>::const_iterator iter = words_set.begin();
+for(; iter!=words_set.end(); iter++)
+{
+    cout << *iter << " ";
+}
+```
 
 
 
