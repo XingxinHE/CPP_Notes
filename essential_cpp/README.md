@@ -1756,6 +1756,40 @@ for(auto v : ivec)
 
 
 
+```
+textline: lippman danny anna
+family name: lippman children: 2
+textline: smith john henry frieda
+family name: smith children: 3
+textline: mailer tommy june
+family name: mailer children: 2
+textline: franz
+family name:  children: 1
+textline: orlen orley
+family name: orlen children: 1
+textline: ranier alphonse lou robert brodie
+family name: ranier children: 4
+Please enter a family name or q to quit lippman
+The lippman family  has 2 children: danny anna 
+Please enter a family name or q to quit xingxin
+Sorry. The xingxin family is not currently entered.
+Please enter a family name or q to quit q
+The  family has 1 children: franz 
+The lippman family has 2 children: danny anna 
+The mailer family has 2 children: tommy june 
+The orlen family has 1 children: orley 
+The ranier family has 4 children: alphonse lou robert brodie 
+The smith family has 3 children: john henry frieda 
+```
+
+
+
+
+
+
+
+
+
 [^1]: 假设一个大方法里面有很多小方法，这些小方法实际上非常小。<u>数据转换过程所占用的时间</u>大于<u>方法运行本身所占用的时间</u>要多，因此才要用`inline` 函数。
 
 [^2]: A **sentinel value** (also referred to as a **flag value**, **trip value**, **rogue value**, **signal value**, or **dummy data**)[[1\]](https://en.wikipedia.org/wiki/Sentinel_value#cite_note-1) is a special [value](https://en.wikipedia.org/wiki/Value_(computer_science)) in the context of an [algorithm](https://en.wikipedia.org/wiki/Algorithm) which uses its presence as a condition of termination, typically in a [loop](https://en.wikipedia.org/wiki/Control_flow) or recursive algorithm.
