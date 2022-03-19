@@ -546,19 +546,58 @@ void prog_16()
             }
         }
     }
-    // check the occurence
-    map<string, int>::iterator iter = words.begin();
-    for(; iter!=words.end(); iter++)
+}
+
+void prog_17()
+{
+    vector<int> ivec;
+    ivec.push_back(1);
+    ivec.push_back(2);
+    for(auto i : ivec)
     {
-        cout << "key: " << iter->first
-             << "value: " << iter->second << endl;
+        cout << i << " " << endl;
+    }
+}
+
+#include <iterator>
+void prog_18()
+{
+    const int elem_size = 8;
+    int ia[elem_size] = {12, 8, 43, 0, 6, 21, 3, 7};
+    vector<int> ivec(ia, ia+elem_size);
+
+    int ia2[elem_size];
+    vector<int> ivec2(elem_size);
+
+    cout << "filtering integer array for values less than 8" << endl;
+    filter(ia, ia+elem_size, ia2, elem_size, less<int>());
+
+    cout << "filtering integer vector for values greater than 8" << endl;
+    filter(ivec.begin(), ivec.end(), ivec2.begin(), elem_size, greater<int>());
+
+
+    cout << "filtering integer vector for values greater than 8" << endl;
+    filter(ivec.begin(), ivec.end(), back_inserter(ivec2), elem_size, greater<int>());
+
+
+}
+
+void prog_19()
+{
+    vector<int> ivec{1, 2, 3};
+    vector<int> ivec2{4, 5, 6};
+    back_inserter(ivec);
+    copy(ivec2.begin(), ivec2.end(), back_inserter(ivec));
+    for(auto v : ivec)
+    {
+        cout << v << " ";
     }
 }
 
 int main()
 {
 
-    prog_15();
+    prog_19();
 
 
 }

@@ -76,7 +76,13 @@ vector<int> elem_seq(elem_val, elem_val + seq_size);
 
 `elem_val` is actually the address passed in the vector. The `+ seq_size` indicates how long the array should be.
 
+3️⃣:
 
+```c++
+vector<int> elem_seq{1, 2, 3};
+```
+
+The preceding is very much similar to C# `List<>` initialization.
 
 
 
@@ -1690,6 +1696,61 @@ for(; iter!=words_set.end(); iter++)
     cout << *iter << " ";
 }
 ```
+
+
+
+
+
+
+
+## 3.9. Iterator Inserters
+
+**📌Why should we use iterator inserter?**
+
+In short, for saving memory! Preceding methods are good but they must be required with sufficient size of such container(iterator pos). Therefore, here comes "inserter" which <u>does not require specific size of container</u>.
+
+
+
+**📌Common Iterator Inserters**
+
+Parallel to container operation, the inserter works as the following:
+
+| Container Operation | Iterator Operation |
+| ------------------- | ------------------ |
+| `push_back()`       | `back_inserter()`  |
+| `insert()`          | `inserter()`       |
+| `push_front()`      | `front_inserter()` |
+
+
+
+**📌add a range of elements into vector using inserter** 
+
+I think this is the primary advantage of inserters.
+
+```c++
+// ERROR, you can't push back a range❌
+vector<int> ivec{1, 2, 3};
+vector<int> ivec2{4, 5, 6};
+ivec.push_back(ivec2);
+```
+
+Instead, you can insert range like this:
+
+```c++
+vector<int> ivec{1, 2, 3};
+vector<int> ivec2{4, 5, 6};
+
+// OK✔
+copy(ivec2.begin(), ivec2.end(), back_inserter(ivec));
+for(auto v : ivec)
+{
+    cout << v << " ";
+}
+```
+
+
+
+## 3.10. iostream Iterators
 
 
 
