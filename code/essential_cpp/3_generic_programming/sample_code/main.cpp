@@ -594,10 +594,46 @@ void prog_19()
     }
 }
 
+void prog_20()
+{
+    // NEW SCHOOL 👍
+    ifstream infile;
+    ofstream outfile;
+
+    infile.open("./moo_cat.txt");
+    outfile.open("./moo_cat_sorted.txt");
+
+    if(!infile || !outfile)
+    {
+        cerr << "Cannot open moo_cat.txt OR moo_cat_sorted.txt" << endl;
+        return;
+    }
+
+    istream_iterator<string> start(infile);
+    istream_iterator<string> end;
+
+    vector<string> texts;
+
+    ostream_iterator<string> os(outfile, " ");  // the 2nd argument is the seperator
+
+    // 1. read in
+    copy(start, end, back_inserter(texts));
+    // 2. sort
+    transform(texts.begin(), texts.end(), texts.begin(), ::tolower);
+    sort(texts.begin(), texts.end());
+    // 3. output it
+    copy(texts.begin(), texts.end(), os);
+
+    infile.close();
+    outfile.close();
+}
+
 int main()
 {
 
-    prog_19();
+    prog_20();
+
+    return 0;
 
 
 }

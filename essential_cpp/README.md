@@ -1752,37 +1752,96 @@ for(auto v : ivec)
 
 ## 3.10. iostream Iterators
 
+**📌Fancy Read something and Output something**
 
+We are often required to 
 
+1️⃣read something in, 
 
+2️⃣sort it,
 
+3️⃣output it.
+
+```c++
+// OLD SCHOOL
+
+string word;
+vector<string> texts;
+
+// 1. read in
+while(cin >> word)
+{
+    texts.push_back(word);
+}
+// 2. sort it
+sort(texts.begin(), texts.end());
+// 3. output it
+for(int ix = 0; ix < texts.size(); ++ix)
+{
+    cout << texts[ix] << " ";
+}
 ```
-textline: lippman danny anna
-family name: lippman children: 2
-textline: smith john henry frieda
-family name: smith children: 3
-textline: mailer tommy june
-family name: mailer children: 2
-textline: franz
-family name:  children: 1
-textline: orlen orley
-family name: orlen children: 1
-textline: ranier alphonse lou robert brodie
-family name: ranier children: 4
-Please enter a family name or q to quit lippman
-The lippman family  has 2 children: danny anna 
-Please enter a family name or q to quit xingxin
-Sorry. The xingxin family is not currently entered.
-Please enter a family name or q to quit q
-The  family has 1 children: franz 
-The lippman family has 2 children: danny anna 
-The mailer family has 2 children: tommy june 
-The orlen family has 1 children: orley 
-The ranier family has 4 children: alphonse lou robert brodie 
-The smith family has 3 children: john henry frieda 
+
+The preceding codes are not quite elegant. Please refer to the following:
+
+```c++
+// NEW SCHOOL cout👍
+
+istream_iterator<string> start(cin);
+istream_iterator<string> end;
+
+vector<string> texts;
+
+ostream_iterator<string> os(cout, " ");  // the 2nd argument is the seperator
+
+// 1. read in
+copy(start, end, back_inserter(texts));
+// 2. sort
+sort(texts.begin(), texts.end());
+// 3. output it
+copy(texts.begin(), texts.end(), os);
+```
+
+The following is to output to a file
+
+```c++
+// NEW SCHOOL ofstream👍
+ifstream infile;
+ofstream outfile;
+
+infile.open("./moo_cat.txt");
+outfile.open("./moo_cat_sorted.txt");
+
+if(!infile || !outfile)
+{
+    cerr << "Cannot open moo_cat.txt OR moo_cat_sorted.txt" << endl;
+    return;
+}
+
+istream_iterator<string> start(infile);
+istream_iterator<string> end;
+
+vector<string> texts;
+
+ostream_iterator<string> os(outfile, " ");  // the 2nd argument is the seperator
+
+// 1. read in
+copy(start, end, back_inserter(texts));
+// 2. sort
+transform(texts.begin(), texts.end(), texts.begin(), ::tolower);
+sort(texts.begin(), texts.end());
+// 3. output it
+copy(texts.begin(), texts.end(), os);
+
+infile.close();
+outfile.close();
 ```
 
 
+
+
+
+# Chapter 4. Object-Based Programming
 
 
 
