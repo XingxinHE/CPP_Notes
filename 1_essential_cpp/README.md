@@ -1843,6 +1843,138 @@ outfile.close();
 
 # Chapter 4. Object-Based Programming
 
+**📌What should a class consist of?**
+
+A class consists of **2** parts:
+
+- `public` set of operations and operators (also called *member functions* which represents the *public interface* of the class)
+- `private` implementation
+
+
+
+**📌Why Class is important to C++?**
+
+Designing and implementing classes are the primary activities of C++ programmers.
+
+
+
+## 4.1. Implement a Class
+
+The following section will include some codes which mimic the behavior of stack(computer).
+
+**📌Class definition in C++**
+
+```c++
+/********************************/
+/************Stack.h*************/
+/********************************/
+
+#include <vector>
+#include <string>
+
+using namespace std;
+
+class Stack
+{
+private:
+        vector<string> _stack;
+public:
+        bool push(const string& );
+        bool pop(string &elem);
+        bool peek(string &elem);
+
+        bool empty();
+        bool full();
+
+        int size() {return _stack.size()};
+};
+
+```
+
+Things to noticed:
+
+1️⃣ all functions must be declared inside `public` if you want to use with an instance.  e.g. `bool push/pop/peek/empty/full`
+
+2️⃣ functions declared+defined inside the class definition is **`inline`** function.  e.g. `int size()`
+
+
+
+**📌Implement Class Definition**
+
+For those non-inline member functions, they are defined within a program text file. Normally suffix with `.cpp, .c, .cc` 
+
+```c++
+#include "Stack.h"
+
+inline bool
+Stack::empty()
+{
+        return _stack.empty();
+}
+
+bool
+Stack::pop(string &elem)
+{
+        if(empty())
+        {
+                return false;
+        }
+        elem = _stack.back();
+        _stack.pop_back();
+        return true;
+}
+
+inline bool
+Stack::full()
+{
+        return _stack.size() == _stack.max_size();
+}
+
+bool
+Stack::peek(string &elem)
+{
+        if(empty())
+        {
+                return false;
+        }
+        elem = _stack.back();
+        return true;
+}
+
+bool
+Stack::push(const string &elem)
+{
+        if(full())
+        {
+                return false;
+        }
+        
+        _stack.push_back(elem);
+        return true;
+}
+```
+
+The preceding syntax `::` is called the ***class scope operator***.
+
+
+
+**📌Conclusion of `.h` and `.cpp`**
+
+Header file `.h` contains:
+
+- the definition of the class
+- the declaration of `public` and `private` functions
+- if the function is also defined here, it is `inline` function
+
+Program text file `.cpp` contains:
+
+- implement the function declare in `.h`
+- use `inline` keyword the specify the function to be an `inline` function
+
+
+
+## 4.2. Constructor and Destructor
+
 
 
 
