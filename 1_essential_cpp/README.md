@@ -1975,6 +1975,227 @@ Program text file `.cpp` contains:
 
 ## 4.2. Constructor and Destructor
 
+**📌Regular Constructor in C++**
+
+Suppose we have a `Person` class. (eheww... Again it is `Person` class🙂)
+
+```c++
+class Person
+{
+private:
+    
+public:
+    int id;
+    string name;
+    Person();                       //default constructor
+    Person(string _name);           //constructor with 1 variable
+    Person(string _name, int _id);  //constructor with 2 variables
+};
+```
+
+
+
+**📌Difference of class between C++ and C#⭐**
+
+Everything works fine here. But!⚠⚡ The class is so heck different from class in C#.
+
+```c++
+// class in C++ 🔵
+Person person1("Tim", 3);
+Person person2 = person1;  // here pass by value
+person1.id = 13;
+
+cout << "Person 2 ID: " << person2.id << endl;
+
+// OUTPUT would be 3!!
+```
+
+The preceding code demonstrates that the `class` in C++ is **<u>not</u>** "*reference type*" in C#. The following is C#.
+
+```c#
+// Class in C# 🟣
+Person person = new Person() { Name = "Tim", Id = 3 };
+Person person1 = person;  // here pass by reference
+person1.Id = 13;
+
+Console.WriteLine(person.Id);
+
+// OUTPUT would be 13!!
+```
+
+
+
+**📌Default Constructor**
+
+From my perspective, I think there are **2** ways of default constructors.
+
+1️⃣No arguments, pure pure pure default constructor.
+
+2️⃣Constructor with arguments with default values
+
+```c++
+1️⃣
+/*******Person.h*******/
+Person();
+/******Person.cpp******/
+Person::Person()
+{
+    name = "Eric";
+    id = 4;
+}
+
+2️⃣
+/*******Person.h*******/
+Person(string _name = "Ada", int _id = 0);
+/******Person.cpp******/
+Person::Person(string _name, int _id)
+{
+    id = _id;
+    name = _name;
+}
+```
+
+
+
+**📌Unusual Initialization**
+
+For a C# programmer, the following initialization is kind of...🤣
+
+```c++
+/*******Person.h*******/
+Person(int _id);
+/******Person.cpp******/
+Person::Person(int _id)
+{
+    id = _id;
+}
+/*******main.cpp******/
+Person person5 = 9;                   //WTF!! 😲
+cout << "Person 5 Id: " << person5.id << endl;
+
+// OUTPUT: "Person 5 Id: 9"
+```
+
+
+
+**📌Member Initialization List**
+
+Suppose you have the following:
+
+```c++
+class Triangle
+{
+private:
+    string _name;
+    int _id, _length;
+public:
+    Triangle(int len, int id);      // Here!✋
+    Triangle(const Triangle &rhs);  // Here!✋
+    ~Triangle();
+};
+```
+
+You can use member initialization list to construct as followed:
+
+```c++
+//  version of assigning variable
+Triangle::Triangle(int len, int id)
+: _name("new"), _id(id), _length(len)
+{
+}
+
+//  version of pass by reference
+Triangle::Triangle(const Triangle &rhs)
+: _name(rhs._name), _id(rhs._id), _length(rhs._length)
+{
+}
+```
+
+
+
+**📌Why do we need Member Initialization List?**
+
+OK, now you can smell a bit about member initialization list. But **<u>why</u>** should we use it?🤔
+
+```c++
+// ver1
+Triangle::Triangle(int len, int id)
+: _name("new"), _id(id), _length(len)
+{
+}
+// ver2
+Triangle::Triangle(int len, int id)
+{
+    _name = "new";
+    _length = len;
+    _id = id;
+}
+```
+
+What is the difference in the preceding codes??🤔😵
+
+The difference is that `ver1` <u>**only initialize once**</u>!!! Therefore, you <u>**should use member initialization list**</u> for **performance** **benefits** sake!
+
+```c++
+/******License.cpp******/
+License::License()
+{
+    cout << "Init a license..." << endl;
+}
+License::License(int _order)
+{
+    order = _order;
+    cout << "Init a license with Id: " << order << endl;
+}
+```
+
+The preceding code I make 2 constructors. And suppose `License` instance is a member of `Person`.
+
+1️⃣Not using member initialization list❌
+
+```c++
+Person::Person(string _name, int _id)
+{
+    id = _id;
+    name = _name;
+    license = License(23);
+}
+```
+
+The output:
+
+```c++
+Person person1("Tim", 3);
+
+// OUTPUT 
+// Init a license...
+// Init a license with Id: 23
+```
+
+You see the `License` instance is init once in the member list and init second times in the `Person` constructor.
+
+2️⃣Using member initialization list✔
+
+```c++
+Person::Person(string _name, int _id)
+: license(License(23))
+{
+    id = _id;
+    name = _name;
+}
+```
+
+The output:
+
+```c++
+Person person1("Tim", 3);
+
+// OUTPUT
+// Init a license with Id: 23
+```
+
+
+
 
 
 
