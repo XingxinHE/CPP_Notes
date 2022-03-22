@@ -1,5 +1,6 @@
 #include <iostream>
 #include "Person.h"
+#include "Matrix.h"
 using namespace std;
 
 void note_4_2()
@@ -25,6 +26,20 @@ void note_4_2()
     // initialization that C# programmer never seen before...😂
     Person person5 = 9;
     cout << "Person 5 Id: " << person5.id << endl;
+
+    Matrix mat1(4, 4);
+    {
+        // default constructor, member-wise copy here
+        Matrix mat2 = mat1;
+
+        // suppose you use mat2 here..
+
+        // mat2 destructor applied here before leaving the bracket
+        // destruct the pointer as well!!
+    }
+    // use mat1 here...
+
+    // mat1 destructor applied here...
 }
 
 int main()

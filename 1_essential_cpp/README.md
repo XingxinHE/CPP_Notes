@@ -1995,36 +1995,6 @@ public:
 
 
 
-**📌Difference of class between C++ and C#⭐**
-
-Everything works fine here. But!⚠⚡ The class is so heck different from class in C#.
-
-```c++
-// class in C++ 🔵
-Person person1("Tim", 3);
-Person person2 = person1;  // here pass by value
-person1.id = 13;
-
-cout << "Person 2 ID: " << person2.id << endl;
-
-// OUTPUT would be 3!!
-```
-
-The preceding code demonstrates that the `class` in C++ is **<u>not</u>** "*reference type*" in C#. The following is C#.
-
-```c#
-// Class in C# 🟣
-Person person = new Person() { Name = "Tim", Id = 3 };
-Person person1 = person;  // here pass by reference
-person1.Id = 13;
-
-Console.WriteLine(person.Id);
-
-// OUTPUT would be 13!!
-```
-
-
-
 **📌Default Constructor**
 
 From my perspective, I think there are **2** ways of default constructors.
@@ -2193,6 +2163,140 @@ Person person1("Tim", 3);
 // OUTPUT
 // Init a license with Id: 23
 ```
+
+
+
+**📌Use of Destructor**
+
+The primary use of a destructor is to free resources. The destructor cannot be reloaded!
+
+```c++
+class Matrix
+{
+private:
+    int _row, _col;
+    double *_pmat;
+public:
+    Matrix(int row, int col);
+    ~Matrix();
+};
+
+Matrix::Matrix(int row, int col)
+    : _row(row), _col(col)
+{
+    // constructor allocates a resource
+    _pmat = new double[row * col];
+}
+
+Matrix::~Matrix()
+{
+    // destructor frees the resource
+    delete [] _pmat;
+}
+```
+
+
+
+**📌When should we use destructor?**
+
+When the data members are store by value, there is no need to use destructor.
+
+
+
+**📌Difference of class between C++ and C#⭐**
+
+Everything works fine here. But!⚠⚡ The class is so heck different from class in C#.
+
+```c++
+// class in C++ 🔵
+Person person1("Tim", 3);
+Person person2 = person1;  // here pass by value
+person1.id = 13;
+
+cout << "Person 2 ID: " << person2.id << endl;
+
+// OUTPUT would be 3!!
+```
+
+The preceding code demonstrates that the `class` in C++ is **<u>not</u>** "*reference type*" in C#. The following is C#.
+
+```c#
+// Class in C# 🟣
+Person person = new Person() { Name = "Tim", Id = 3 };
+Person person1 = person;  // here pass by reference
+person1.Id = 13;
+
+Console.WriteLine(person.Id);
+
+// OUTPUT would be 13!!
+```
+
+
+
+**📌The Mechanism Behind the Difference between C++ and C#**
+
+In the preceding code, we are realized that the class is copy by value. (Yes and No...) The truth is that only the "value type" are pass by value!
+
+```c++
+// Taking the preceding Matrix class as example...
+
+Matrix mat1(4, 4);
+{
+    // default constructor, member-wise copy here
+    Matrix mat2 = mat1;
+
+    // suppose you use mat2 here..
+
+    // mat2 destructor applied here before leaving the bracket
+    // destruct the pointer as well!!
+}
+// use mat1 here...
+
+// mat1 destructor applied here...
+```
+
+The line `Matrix mat2 = mat2;` indicates that:
+
+```c++
+mat2._pmat = mat._pmat;  // 2 instance of _pmat address the same array in the heap memory
+```
+
+⚠⚠⚠!!! Serious shit happens here!!! When the destructor applied to `mat2`, the `_pmat` is deallocated and `mat1` can't use it!!
+
+
+
+**📌Define a Full Copy Constructor**
+
+```c++
+Matrix::Matrix(const Matrix &rhs)
+    : _row(rhs._row), _col(rhs._col)
+{
+    // create a "deep copy" of the array addressed by rhs._pmat
+    int elem_cnt = _row * _col;
+    _pmat = new double[elem_cnt];
+
+    for (int ix = 0; ix < elem_cnt; ix++)
+    {
+        _pmat[ix] = rhs._pmat[ix];
+    }
+    
+}
+```
+
+
+
+**📌No Absolute Correct Way Designing a C++ Class**
+
+In the preceding, you see that C++ class are with more freedom to do so. While in C#, the instance is only reference type. When we design a class, we must ask ourselves <u>whether the default member-wise behavior is adequate for the class</u>?
+
+- If yes🙂, we need not provide an explicit copy constructor.
+- If not🙁, we MUST define an explicit instance and within it implement the correct initialization semantics.
+
+
+
+## 4.3. `mutable` and `const`
+
+
 
 
 
