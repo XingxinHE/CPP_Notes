@@ -2418,13 +2418,189 @@ int Triangular::elem(int pos) const
 
 
 
+**📌A Complicated Example**
+
+The following code will be compiled with errors.
+
+```c++
+class val_class
+{
+private:
+    BigClass _val;
+public:
+    val_class(const BigClass &v)
+        : _val(v){}
+    BigClass& val() const {return _val;}    // ERROR!!
+};
+
+class BigClass
+{
+};
+```
+
+TODO - Understand why.
+
+The correct one should be this:
+
+```c++
+const BigClass& val() const {return _val;}
+```
+
+
+
+**📌What is `mutable`?**
+
+In English, `mutable` is defined as:
+
+> ​	mutable:  able or likely to change
+
+In C++, we decorate member acted as iterator to `mutable`. For example, the `_next` variable. Therefore, the `Triangular` class can be modified as followed:
+
+```c++
+// OLD
+int _next;
+
+// NEW
+mutable int _next;
+```
+
+With decorated `mutable`, the `const` function now can be compiled with no error!✔ (even though the `_next` is modified...)
+
+
+
+## 4.4. `this` Pointer
+
+**📌What is `this` keyword?**
+
+In C#, `this` refer to the current instance of such class. There is no difference in C++. It also points to the current instance. Suppose we have a deep copy function to `copy` the `Triangular` object.
+
+```c++
+Triangular& Triangular::copy(const Triangular &rhs)
+{
+    	// ⭐ when you copy a class object with another, it is a good practice to
+    	// first check that 2 objects are not the same
+        if (this != &rhs)
+        {
+                this->_length = rhs._length;
+                this->_begin_pos = rhs._length;
+                this->_next = rhs._next;
+        }       
+    return *this;
+}
+```
+
+Few things need to be noticed: **<u>different meanings of `&`</u>**
+
+- 1️⃣`Triangular&` in the return type means the function is to return who else called this function.⭐⭐⭐ The `&` here means pass the object invoked by reference.[^3]
+
+- 2️⃣`&rhs` in the function declaration means the `rhs` is pass by reference (speed up)
+- 3️⃣`&rhs` in the control flow means taking the address of `rhs` and compared with `this`.
+
+
+
+**📌Other Examples**
+
+<u>1️⃣`this` cannot be assigned🙅‍♂️</u>
+
+The following method is designed to change current object to point to `d` object. It is with ERROR.❌
+
+```c++
+void Dog::change(Dog &d)
+{
+    if (this != &d)
+    {
+        this = &d;      // ERROR!
+    }
+}
+```
+
+<u>2️⃣`this` cannot be used in `static` function</u>🙅‍♂️
+
+The `this` can only exist in an instance.(class object)
+
+```c++
+static void fun2()
+{
+    cout << "Inside fun2()";
+    this->fun1();            // ERROR!!
+}
+```
+
+<u>3️⃣cannot use after `delete`🙅‍♂️</u>
+
+You can release manually by calling a function.  (like `GC` in C#)
+
+```c++
+class Point
+{
+private:
+public:
+  void destroy()  { delete this; }
+  void print() { cout << "Hello World!" << endl; }
+};
+  
+int main()
+{
+  Point obj;
+  obj.destroy();
+  obj.print();    // ERROR!!
+  return 0;
+}
+```
+
+<u>4️⃣Don't forget to `&` return type if you want to modify itself</u>
+
+The following is a bad example.
+
+```c++
+class Point
+{
+private:
+  int x, y;
+public:
+  Point (int x = 0, int y = 0) { this->x = x; this->y = y; }
+  Point setX(int a) { x = a; return *this; }
+  Point setY(int b) { y = b; return *this; }
+  void print() { cout << "x = " << x << " y = " << y << endl; }
+};
+  
+int main()
+{
+  Point obj1;
+  obj1.setX(10).setY(20);
+  obj1.print();
+  return 0;
+}
+```
+
+The result is:
+
+```
+x = 10 y = 0
+```
+
+But if we modify the function to:
+
+```c++
+Point& setX(int a) { x = a; return *this; }
+Point& setY(int b) { y = b; return *this; }
+```
+
+The output is correct:
+
+```
+x = 10 y = 20
+```
+
+
+
 
 
 [^1]: 假设一个大方法里面有很多小方法，这些小方法实际上非常小。<u>数据转换过程所占用的时间</u>大于<u>方法运行本身所占用的时间</u>要多，因此才要用`inline` 函数。
 
 [^2]: A **sentinel value** (also referred to as a **flag value**, **trip value**, **rogue value**, **signal value**, or **dummy data**)[[1\]](https://en.wikipedia.org/wiki/Sentinel_value#cite_note-1) is a special [value](https://en.wikipedia.org/wiki/Value_(computer_science)) in the context of an [algorithm](https://en.wikipedia.org/wiki/Algorithm) which uses its presence as a condition of termination, typically in a [loop](https://en.wikipedia.org/wiki/Control_flow) or recursive algorithm.
 
-
+[^3]: 因此，谁唤起的这个函数，就改变谁。`Triangular&`代表两件事，1.返回类型是`Triangular`， 2.`&`是改变自身。因此`tri.Copy()`正是改变自身(`tri`)
 
 
 
