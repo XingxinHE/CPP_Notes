@@ -2296,11 +2296,125 @@ In the preceding, you see that C++ class are with more freedom to do so. While i
 
 ## 4.3. `mutable` and `const`
 
+**📌`const` in Function Declaration**
+
+In short, a `const` function ensures the body code would NOT CHANGE the data member of the class.
 
 
 
+**📌Example of `const` and non-`const` Function**
+
+Suppose you have a class, the class is sort of storing data members. And you can maintain and read the data inside of it by `next`. (You know what it is..)
+
+```c++
+/**************Triangular.h**************/
+
+#include <vector>
+#include <string>
+
+using namespace std;
+
+class Triangular
+{
+private:
+        int _length;                // number of elements
+        int _begin_pos;             // beginning position of range
+        int _next;                  // next element to iterate over
+        static vector<int> _elems;  // static vector to store the elments
+public:
+        //✋ const member functions
+        int length() const {return _length;}        // return the length of _elems
+        int begin_pos() const {return _begin_pos;}  // return the _begin_pos
+        int elem(int pos) const;                    // query the pos(th) element in _elems
+
+        //✋ non-const member functions
+        bool next(int &val);
+        void next_reset() {_next = _begin_pos - 1};
+
+        Triangular();
+        ~Triangular();
+};
+```
+
+OK, let's take a look here.
 
 
+
+**📌How does the Compiler check if it ACTUALLY is `const`?**
+
+In short, the <u>**compiler**</u> will look at the function which is <u>decorated with</u> `const`. And check every functions inside that function if it is decorated with `const`....
+
+
+
+> ​	This is a `const` function and it can be compiled.✔ Because every member function here is `const`.
+
+```c++
+int sum(const Triangular &trian)
+{
+        int beg_pos = trian.begin_pos();
+        int length = trian.length();
+        int sum = 0;
+        for (int ix = 0; ix < length; ix++)
+        {
+                sum += trian.elem(beg_pos + ix);
+        }
+        return sum;
+}
+```
+
+
+
+> ​	This is NOT a `const` function and it cannot be compiled.❌Because it modifies the member.
+
+```c++
+bool Triangular::next(int &value) const
+{
+        if (_next < _begin_pos + _length - 1)
+        {
+                //ERROR: modifying _next
+                value = _elems[next++];
+                return true;
+        }
+        return false;
+}
+```
+
+
+
+**📌Class Designer MUST consider the "constness"**
+
+The class designer must tell the compiler by labeling as `const` each member function that does not modify the class object.
+
+
+
+**📌`const` keyword should be both in <u>declaration</u> and <u>definition</u>**
+
+Please notice that the `const` is appear in both `.h` and `.cpp` files.
+
+```c++
+/**************Triangular.h**************/
+class Triangular
+{
+private:
+		// data member
+    	// .....
+public:
+        // const member functions
+    	// ...
+
+        int elem(int pos) const;
+		
+    	// non-const member functions
+    	// ......
+};
+
+
+/*************Triangular.cpp*************/
+int Triangular::elem(int pos) const
+{
+        return _elems[pos - 1];
+}
+```
 
 
 
