@@ -2596,6 +2596,122 @@ x = 10 y = 20
 
 
 
+## 4.5. `static` Class Member
+
+**📌`static` in C++**
+
+The <u>declaration</u> and <u>definition</u> of `static` functions and members(fields) are both **explicitly** and **separately**.
+
+Suppose you have a member `static vector<int>` and a function `static bool is_elem(int)`: 
+
+```c++
+/******Triangular.h******/
+class Triangular
+{
+private:
+		// data member
+    	static vector<int> _elems;
+public:
+    	// ...
+    	static bool is_elem(int);
+};
+```
+
+The preceding is just the declaration. You have to define it:
+
+​              
+
+1️⃣Either in `Triangular.h` like so:
+
+```c++
+// field
+vector<int> Triangular::_elems;
+// function
+bool Triangular::is_elem(int ival)
+{
+    //.. here is the function body
+}
+```
+
+2️⃣Or in `Triangular.cpp` like so:
+
+```c++
+// field
+vector<int> Triangular::_elems;
+// function
+bool Triangular::is_elem(int ival)
+{
+    //.. here is the function body
+}
+```
+
+
+
+**📌`static` stuffs example**
+
+It's very much the same as with C#.
+
+```c++
+/******Triangular.h*****/
+class Triangular
+{
+private:
+        // ...other members
+        static vector<int> _elems;
+    	static int _start_pos;
+public:
+        // ...other functions
+        
+        static bool is_elem(int);
+
+        // ...
+    	Triangular();
+        ~Triangular();
+};
+
+/*****Triangular.cpp*****/
+vector<int> Triangular::_elems;
+bool Triangular::is_elem(int pos)
+{
+    // definition
+    // ...
+}
+```
+
+You can use it as the following:
+
+```c++
+int ival;
+cout << "Please enter a number: " << endl;
+cin >> ival;
+
+// example using static member
+ival = ival > Triangular::start_pos ? ival : Triangular::start_pos;
+
+// example using static function
+bool is_elem = Triangular::is_elem(ival);
+```
+
+
+
+**📌`static` in C++ and C#**
+
+It is interesting to see the common and difference between these 2 languages.
+
+|                 | C++                                                          | C#                            |
+| --------------- | ------------------------------------------------------------ | ----------------------------- |
+| Declaration     | in class                                                     | in class                      |
+| Definition      | must outside of class declaration(outside of the class `{}`) | can also in class declaration |
+| Access Modifier | `::`                                                         | `.`                           |
+
+
+
+## 4.6. Iterator Class
+
+
+
+
+
 [^1]: 假设一个大方法里面有很多小方法，这些小方法实际上非常小。<u>数据转换过程所占用的时间</u>大于<u>方法运行本身所占用的时间</u>要多，因此才要用`inline` 函数。
 
 [^2]: A **sentinel value** (also referred to as a **flag value**, **trip value**, **rogue value**, **signal value**, or **dummy data**)[[1\]](https://en.wikipedia.org/wiki/Sentinel_value#cite_note-1) is a special [value](https://en.wikipedia.org/wiki/Value_(computer_science)) in the context of an [algorithm](https://en.wikipedia.org/wiki/Algorithm) which uses its presence as a condition of termination, typically in a [loop](https://en.wikipedia.org/wiki/Control_flow) or recursive algorithm.

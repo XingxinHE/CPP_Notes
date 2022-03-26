@@ -1,6 +1,7 @@
 #include <iostream>
 #include "Person.h"
 #include "Matrix.h"
+#include "Triangular.h"
 using namespace std;
 
 // void note_4_2()
@@ -41,6 +42,20 @@ using namespace std;
 
 //     // mat1 destructor applied here...
 // }
+
+void prog_4_5()
+{
+  int ival;
+  cout << "Please enter a number: " << endl;
+  cin >> ival;
+  
+  // example using static member
+  ival = ival > Triangular::start_pos ? ival : Triangular::start_pos;
+
+  // example using static function
+  bool is_elem = Triangular::is_elem(ival);
+  
+}
 
 class Test
 {
