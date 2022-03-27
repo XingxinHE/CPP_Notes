@@ -2708,6 +2708,288 @@ It is interesting to see the common and difference between these 2 languages.
 
 ## 4.6. Iterator Class
 
+Finally! We are going to implement our own iterator class!
+
+
+
+**📌User Story on Iterator**
+
+Iterate the `Triangular` sequence using iterator.
+
+```c++
+Triangular trian(1, 8);
+Triangular::iterator
+    		it = trian.begin(),
+			end_it = trian.end();
+
+while( it != end_it)
+{
+    cout << *it << ' ';
+    ++it;
+}
+```
+
+
+
+**📌First Look on Iterator**
+
+```c++
+class Triangular_iterator
+{
+private:
+        void check_integrity() const;
+        int _index;
+public:
+        Triangular_iterator(int index)
+                : _index(index - 1) {};  // set index - 1, therefore no need to -1 everytime using it
+        
+    	// operator overloading
+        bool operator==(const Triangular_iterator&) const;
+        bool operator!=(const Triangular_iterator&) const;
+
+        int operator*() const;
+        int& operator++();            // prefix version
+        int operator++(int);          // postfix version
+
+        ~Triangular_iterator();
+};
+```
+
+//TODO What is `operator*` exactly?
+
+**📌Equality and Inequality as an Example**
+
+1️⃣ Let's implement the `==` operator first:
+
+The `_index` is exactly for checking equality. Therefore, the code could be something like the following:
+
+```c++
+inline bool Triangular_iterator::operator==(const Triangular_iterator& rhs) const
+{
+        bool flag = this->_index == rhs._index;
+        return flag;
+}
+```
+
+For a better format and indentation:
+
+```c++
+inline bool Triangular_iterator::
+operator==(const Triangular_iterator& rhs) const
+{
+        bool flag = this->_index == rhs._index;
+        return flag;
+}
+```
+
+The `this` pointer *implicitly* represents the left operand.
+
+2️⃣ The following is the example of how to use it
+
+```c++
+// for class object
+if (trian1_it == trian2_it) ...
+    
+// for pointer
+if (*ptr1_it == *ptr2_it) ...
+```
+
+Why the pointers require dereference?🤔 Please take a <u>look at</u> the function <u>**declaration**</u>! It's because the type is `Triangular_iterator`!
+
+```c++
+inline bool Triangular_iterator::operator==(const Triangular_iterator& rhs) const;
+```
+
+3️⃣ Implement "inequality"
+
+The complement of an operator is typically implemented with its associated operator[^4].
+
+```c++
+inline bool Triangular_iterator::
+operator!=(const Triangular_iterator&rhs) const
+{
+        return !(*this == rhs);  // smart move
+}
+```
+
+You see? It's so simple! 😍 Because in `*this == rhs` means:
+
+- dereference current object pointer
+- since lhs and rhs are both object
+- apply `==` operator
+- use `!` to take its complement
+
+
+
+**📌Things to Notice when Overloading Operators**🙅‍♂️
+
+1️⃣There are **4** operators that can't be overloaded:
+
+- `.`
+- `.*`
+- `::`
+- `?:.`
+
+2️⃣The *arity* of existing operator can't be overloaded
+
+For example, if you overloaded `==` operator, then you must put **2** operands.
+
+3️⃣ At least *1* class type as argument
+
+We cannot refine operators for nonclass types, e.g. pointers. 
+
+4️⃣ The precedence can't be overwritten
+
+e.g. `/` always takes precedence over `+`
+
+
+
+**📌Difference between member operator and non-member operator**
+
+Member operator function:
+
+```c++
+inline int Triangular_iterator::
+operator*()const
+{
+        check_integrity();
+        return Triangular::_elems[_index];
+}
+```
+
+Nonmember operator function:
+
+```c++
+inline int
+operator* (const Triangular_iterator &rhs)
+{
+        rhs.check_integrity();
+        return Triangular::_elems[rhs._index];
+}
+```
+
+//TODO - figure this out
+
+
+
+**📌Overload prefix and postfix**
+
+It means implementing:
+
+- prefix - `++it`
+- postfix - `it++`
+
+**prefix**:
+
+```c++
+inline int& Triangular_iterator::
+operator++()
+{
+        // prefix instance
+        ++_index;
+        check_integrity();
+        return Triangular::_elem[_index];
+}
+```
+
+**postfix**:
+
+```c++
+inline int Triangular_iterator::
+operator++(int)
+{
+        // post instance
+        check_integrity();
+        return Triangular::_elems[_index++];
+}
+```
+
+How does it work?
+
+- For prefix, the `_index` is implemented <u>before</u> accessing the `_elem`
+- For postfix, the `_index` is implemented <u>after</u> accessing the `_elem`
+
+
+
+Please take a look the operator declaration:
+
+```c++
+operator++()     // prefix
+operator++(int)  // postfix
+```
+
+The prefix has no parameter, postfix has parameter. Why?🤔 Because each overloaded operator <u>MUST have a unique parameter list</u>. The single `int` in postfix will be handled by the compiler. So no worries.
+
+//TODO figure out why there should be a `int&` in prefix.
+
+
+
+**📌Nested Types**
+
+It uses `typedef`:
+
+```c++
+typedef existing_type new_name;
+```
+
+The `existing_type` can be built-in, compound, or class type. We can take advantage of this to implement the last piece of our `iterator`.
+
+```c++
+#include "Triangular_iterator.h"
+
+using namespace std;
+
+class Triangular
+{
+private:
+        int _length;
+        int _begin_pos;     
+    	// ...
+        
+public:
+    	// this shields users from having to know
+    	// the actual name of the iterator class
+		typedef Triangular_iterator iterator;
+    	
+        Triangular_iterator begin() const
+        {
+                return Triangular_iterator(_begin_pos);
+        }
+
+        Triangular_iterator end() const
+        {
+                return Triangular_iterator(_begin_pos + _length);
+        }
+		
+    	// ...
+};
+```
+
+With the preceding implementation, we could access `Triangular_iterator` of `Triangular` object simply by `iterator`.
+
+✔
+
+```c++
+Triangular::iterator it = trian.begin();
+```
+
+❌
+
+```c++
+iterator it = trian.begin();  // ERROR!!
+```
+
+Because we `typedef` in `Triangular` class, therefore you have to use the class scope operator `::` to access it. And that's the reason and mechanism behind the container class.
+
+```c++
+Fibonacci::iterator fit = fib.begin();
+vector<int>::iterator vit = _elem.begin();
+```
+
+
+
+
+
 
 
 
@@ -2718,9 +3000,8 @@ It is interesting to see the common and difference between these 2 languages.
 
 [^3]: 因此，谁唤起的这个函数，就改变谁。`Triangular&`代表两件事，1.返回类型是`Triangular`， 2.`&`是改变自身。因此`tri.Copy()`正是改变自身(`tri`)
 
-
-
-
+[^4]: complement是数学的概念，如vector的complement就是covector。同理，`==`的complement就是`!=`。 一般这种成对出现的对象，都可以用其另一半完成~
+[^5]: Arity is **the number of operand(s) an operator can take**. 例如 `+ - * /` 各需要两个操作数，`++  --`是一个操作，`? :`三元操作符需要三个操作数
 
 
 

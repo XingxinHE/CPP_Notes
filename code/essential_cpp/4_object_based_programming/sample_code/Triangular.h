@@ -1,5 +1,10 @@
+#ifndef TRIANGULAR_H
+#define TRIANGULAR_H
+
+
 #include <vector>
 #include <string>
+#include "Triangular_iterator.h"
 
 using namespace std;
 
@@ -11,7 +16,21 @@ private:
         mutable int _next;                  // next element to iterate over
         static vector<int> _elems;  // static vector to store the elments
         
+        typedef Triangular_iterator iterator;
+
+        
 public:
+
+        Triangular_iterator begin() const
+        {
+                return Triangular_iterator(_begin_pos);
+        }
+
+        Triangular_iterator end() const
+        {
+                return Triangular_iterator(_begin_pos + _length);
+        }
+
         // const member functions
         int length() const {return _length;}
         int begin_pos() const {return _begin_pos;}
@@ -24,7 +43,10 @@ public:
         // non-const member functions
         void next_reset() {_next = _begin_pos - 1;}
 
+        static Triangular_iterator iterator;
+
         Triangular();
+        Triangular(int, int);
         ~Triangular();
 };
 
@@ -76,3 +98,5 @@ Triangular& Triangular::copy(const Triangular &rhs)
         }
         
 }
+
+#endif

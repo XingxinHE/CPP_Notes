@@ -57,6 +57,13 @@ void prog_4_5()
   
 }
 
+void prog_4_6()
+{
+  Triangular trian(1, 8);
+  Triangular::iterator;
+
+}
+
 class Test
 {
 private:
