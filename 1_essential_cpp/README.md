@@ -2988,6 +2988,132 @@ vector<int>::iterator vit = _elem.begin();
 
 
 
+## 4.7. `friend` in C++
+
+**📌What is `friend`?**
+
+In short, it makes the <u>collaboration between classes</u> available! Friendship is generally **required for performance reasons**, such as the multiplication of a Point and Matrix in a nonmember operator function.
+
+
+
+**📌Friendship in Functions**
+
+```c++
+/******Triangular.h******/
+class Triangular
+{
+    friend int operator*(const Triangular_iterator &rhs);
+    // ...
+};
+/******Triangular_iterator.h******/
+class Triangular_iterator
+{
+    friend int operator*(const Triangular_iterator &rhs);
+    // ...
+};
+```
+
+With the preceding declaration, you can have the following:
+
+```c++
+inline int operator*(const Triangular_iterator &rhs)
+{
+    rhs.check_integrity();
+    return Triangular::_elems[rhs.index()];
+}
+```
+
+
+
+**📌Friendship in Class**
+
+Define `Triangular_iterator` as a friend in `Triangular` is more efficient.
+
+```c++
+class Triangular
+{
+    friend class Triangular_iterator;
+    
+    // ...
+}
+```
+
+
+
+## 4.8. Copy Assignment Operator
+
+**📌Use `=` to assign objectA to objectB**
+
+In 4.2. we mentioned that the following class cannot be copied easily.
+
+```c++
+class Matrix
+{
+private:
+    int _row, _col;
+    double *_pmat;
+public:
+    Matrix(int row, int col);
+    ~Matrix();
+};
+
+Matrix::Matrix(int row, int col)
+    : _row(row), _col(col)
+{
+    // constructor allocates a resource
+    _pmat = new double[row * col];
+}
+
+Matrix::~Matrix()
+{
+    // destructor frees the resource
+    delete [] _pmat;
+}
+```
+
+The problem may occur in the following block of code:
+
+```c++
+Matrix mat1(4, 4);
+{
+    Matrix mat2 = mat1;
+}
+// ERROR!! if we manipulate mat1, because _pmat was destroyed by mat2
+```
+
+While we can overload `=` operator to solve this problem.
+
+```c++
+Matrix& Matrix::
+operator=(const Matrix &rhs)
+{
+    if (this != &rhs)
+    {
+        this->_col = rhs._col;
+        this->_row = rhs._row;
+        int elem_cnt = this->_col * this->_row;
+        delete [] _pmat;
+        _pmat = new double[elem_cnt];
+        for (int ix = 0; ix < elem_cnt; ix++)
+        {
+            _pmat[ix] = rhs._pmat[ix];
+        }
+    }
+    return *this;    
+}
+```
+
+Few things to notice:
+
+- 1️⃣ `this != &rhs` is to check the address are different
+- 2️⃣ //TODO I don't quite understand why should we `delete [] _pmat`
+- 3️⃣ In the end, return `*this` as itself to `Matrix&`
+- 4️⃣ Warning! The preceding implementation is not exception-safe.
+
+
+
+## 4.9. Implementing a Function Object
+
 
 
 

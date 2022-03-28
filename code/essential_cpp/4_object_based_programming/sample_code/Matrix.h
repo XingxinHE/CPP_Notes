@@ -7,6 +7,7 @@ public:
     Matrix(const Matrix &rhs);
     Matrix(int row, int col);
     ~Matrix();
+    Matrix& operator= (const Matrix &rhs);
 };
 
 Matrix::Matrix(int row, int col)
@@ -33,5 +34,23 @@ Matrix::Matrix(const Matrix &rhs)
     {
         _pmat[ix] = rhs._pmat[ix];
     }
-    
+}
+
+Matrix& Matrix::
+operator=(const Matrix &rhs)
+{
+    if (this != &rhs)
+    {
+        this->_col = rhs._col;
+        this->_row = rhs._row;
+        int elem_cnt = this->_col * this->_row;
+        delete [] _pmat;
+        _pmat = new double[elem_cnt];
+        for (int ix = 0; ix < elem_cnt; ix++)
+        {
+            _pmat[ix] = rhs._pmat[ix];
+        }
+    }
+
+    return *this;    
 }
