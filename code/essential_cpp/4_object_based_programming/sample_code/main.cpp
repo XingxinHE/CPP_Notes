@@ -1,7 +1,9 @@
 #include <iostream>
+#include <algorithm>
 #include "Person.h"
 #include "Matrix.h"
 #include "Triangular.h"
+#include "LessThan.h"
 using namespace std;
 
 // void note_4_2()
@@ -43,25 +45,55 @@ using namespace std;
 //     // mat1 destructor applied here...
 // }
 
-void prog_4_5()
-{
-  int ival;
-  cout << "Please enter a number: " << endl;
-  cin >> ival;
-  
-  // example using static member
-  ival = ival > Triangular::start_pos ? ival : Triangular::start_pos;
+// void prog_4_6()
+// {
+//   Triangular trian(1, 8);
+//   Triangular::iterator;
 
-  // example using static function
-  bool is_elem = Triangular::is_elem(ival);
-  
+// }
+
+int count_less_than(const vector<int> &vec, int comp)
+{
+  LessThan less_than(comp);
+
+  int count = 0;
+  for (int ix = 0; ix < vec.size(); ix++)
+  {
+    if (less_than(vec[ix]))
+    {
+      ++count;
+    }
+  }
+  return count;  
 }
 
-void prog_4_6()
+void print_less_than(const vector<int> &vec, int comp, ostream &os = cout)
 {
-  Triangular trian(1, 8);
-  Triangular::iterator;
+  LessThan less_than(comp);
+  vector<int>::const_iterator iter = vec.begin();
+  vector<int>::const_iterator it_end = vec.end();
 
+  os << "elements less than " << less_than.comp_val() << endl;
+  while ( (iter = find_if(iter, it_end, less_than)) != it_end)
+  {
+    os << *iter << ' ';
+    ++iter;
+  }
+}
+
+
+void prog_4_7()
+{
+  int ia[16] = { 17, 12, 44, 9, 18, 45, 6, 
+                14, 23, 67, 9, 0, 27, 55, 8, 16};
+  vector<int> vec(ia, ia+16);
+  int comp_val = 20;
+
+  cout << "Number of elements less than "
+       << comp_val << " are "
+       << count_less_than(vec, comp_val) << endl;
+  
+  print_less_than(vec, comp_val);
 }
 
 class Test
@@ -77,8 +109,6 @@ public:
   
 int main()
 {
-  Test obj1;
-  obj1.setX(10).setY(20);
-  obj1.print();
+  prog_4_7();
   return 0;
 }

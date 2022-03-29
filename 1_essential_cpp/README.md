@@ -3114,6 +3114,96 @@ Few things to notice:
 
 ## 4.9. Implementing a Function Object
 
+**📌What is Function Object?**
+
+It is a class that provides an overloaded instance of the function call operator.
+
+
+
+**📌Parameter List of Function Object**
+
+The function call operator can take any number of parameters: none, one, two, and so on.
+
+
+
+**📌Example: LessThan Function Class**
+
+You can define as the following:
+
+```c++
+class LessThan
+{
+private:
+        int _val;
+public:
+        LessThan(int val)
+                : _val(val) {}
+        
+        int comp_val() const {return _val;}
+
+        void comp_val(int nval) {_val = nval;}
+
+        bool operator() (int value) const;
+};
+// Key Function!
+inline bool LessThan::
+operator() (int value) const 
+{
+        return value < _val;
+}
+
+```
+
+You can use it like:
+
+```c++
+// Function to count the amount of elements less than `comp`
+int count_less_than(const vector<int> &vec, int comp)
+{
+  LessThan less_than(comp);
+
+  int count = 0;
+  for (int ix = 0; ix < vec.size(); ix++)
+  {
+    if (less_than(vec[ix]))                // here invoke bool operator() (int value) const;
+    {
+      ++count;
+    }
+  }
+  return count;  
+}
+
+// Function to print the element less than `comp`
+void print_less_than(const vector<int> &vec, int comp, ostream &os = cout)
+{
+  LessThan less_than(comp);
+  vector<int>::const_iterator iter = vec.begin();
+  vector<int>::const_iterator it_end = vec.end();
+
+  os << "elements less than " << less_than.comp_val() << endl;
+  while ( (iter = find_if(iter, it_end, less_than)) != it_end)    // here invoke bool operator() (int value) const;
+  {
+    os << *iter << ' ';
+    ++iter;
+  }
+}
+```
+
+The example code would be like:
+
+```c++
+int ia[16] = { 17, 12, 44, 9, 18, 45, 6, 
+              14, 23, 67, 9, 0, 27, 55, 8, 16};
+vector<int> vec(ia, ia+16);
+int comp_val = 20;
+
+cout << "Number of elements less than "
+    << comp_val << " are "
+    << count_less_than(vec, comp_val) << endl;
+
+print_less_than(vec, comp_val);
+```
+
 
 
 
