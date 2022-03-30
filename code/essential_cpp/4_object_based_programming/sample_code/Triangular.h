@@ -48,4 +48,29 @@ private:
     static vector<int> _elems;
 };
 
+
+ostream& operator<<(ostream &os, const Triangular &rhs)
+{
+    os << "(" << rhs.beg_pos() << ", "
+       << rhs.length() << ") ";
+    rhs.display(rhs.length(), rhs.beg_pos(), os);
+    return os;
+}
+
+istream& operator>>(istream &is, Triangular &rhs)
+{
+    char ch1, ch2;
+    int b_pos, len;
+
+    // suppose the user write the input: "(3, 6) 6 10 15 121 28 36"
+    // ch1=='(' , b_pos==3, ch2==',' , len==6
+    is >> ch1 >> b_pos >> ch2 >> len;
+
+    rhs.beg_pos(b_pos);
+    rhs.length(len);
+    rhs.next_reset();
+
+    return is;
+}
+
 #endif

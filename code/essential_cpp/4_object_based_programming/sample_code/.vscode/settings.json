@@ -10,6 +10,7 @@
                 "xlocnum": "cpp",
                 "xtr1common": "cpp",
                 "tuple": "cpp",
-                "vector": "cpp"
+                "vector": "cpp",
+                "iosfwd": "cpp"
         }
 }
