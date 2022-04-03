@@ -10,6 +10,7 @@ int main()
     UserProfile anon;
 	cout << anon;
 
+
 	UserProfile anon_too;
 	cout << anon_too;
 
@@ -27,8 +28,6 @@ int main()
 	cout << anon;
 
     return 0;
-
-	
 }
 
 // Exptected output is the following
