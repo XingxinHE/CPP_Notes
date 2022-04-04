@@ -12,6 +12,7 @@ private:
     elemType _matrix[4][4];
     
 public:
+    // default ctor
     Matrix
     (
             elemType=0.,elemType=0.,elemType=0.,elemType=0.,
@@ -19,15 +20,18 @@ public:
             elemType=0.,elemType=0.,elemType=0.,elemType=0.,
             elemType=0.,elemType=0.,elemType=0.,elemType=0. 
     );
+    // ctor with an array
     Matrix(elemType*);    
     ~Matrix();
 
+    // operator
     friend Matrix operator+( const Matrix&, const Matrix& );
     friend Matrix operator*( const Matrix&, const Matrix& );
     void operator+=(const Matrix&);
     elemType& operator()(int row, int col) {return _matrix[row][col];}
     elemType operator()(int row, int col) const {return _matrix[row][col];}
 
+    // help function
     int row() const {return 4;}
     int col() const {return 4;}
     elemType get_elem(int n_row, int n_col) const;
@@ -66,20 +70,6 @@ Matrix::~Matrix()
 
 }
 
-ostream&
-Matrix::print(ostream &os) const
-{
-    for (int ix = 0; ix < 4; ix++)
-    {
-        for (int iy = 0; iy < 4; iy++)
-        {
-            os << _matrix[ix][iy] << " ";
-        }
-        os << endl;
-    }
-    return os;
-}
-
 inline void
 Matrix::operator+=(const Matrix& m)
 {
@@ -92,6 +82,7 @@ Matrix::operator+=(const Matrix& m)
     }
 }
 
+// matrix multiplication (not element-wise operation)
 inline
 Matrix operator*(Matrix& m1, Matrix& m2)
 {
@@ -110,6 +101,7 @@ Matrix operator*(Matrix& m1, Matrix& m2)
     return m;
 }
 
+// matrix addition
 Matrix operator+(Matrix& m1, Matrix& m2)
 {
     Matrix result(m1);
@@ -117,6 +109,25 @@ Matrix operator+(Matrix& m1, Matrix& m2)
     return result;
 }
 
+// since << need to access private _matrix
+// a good practice is to define a member function
+// which can access _matrix
+ostream&
+Matrix::print(ostream &os) const
+{
+    for (int ix = 0; ix < 4; ix++)
+    {
+        for (int iy = 0; iy < 4; iy++)
+        {
+            os << _matrix[ix][iy] << " ";
+        }
+        os << endl;
+    }
+    return os;
+}
+
+// (continue preceding function)
+// and then wrapped into this operator<<
 inline
 ostream& operator<< (ostream &os, const Matrix &rhs)
 {
