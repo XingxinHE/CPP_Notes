@@ -278,6 +278,47 @@ Apparently, the `IncrementA` does increment the number, because it modifies the 
 
 
 
+**📌⚠Warning on `&` Pass By Reference of a parameter in a function**
+
+The `&` in the declaration only declares THE parameter.
+
+```c++
+// ❌ Although the values is passed by reference.
+// The `values` does not change since it takes out the
+// elem as value, and increment the elem
+void func1(vector<int> &values)
+{
+        for(int elem : values)
+        {
+                elem++;
+        }
+}
+
+// ✅ It does change! Since it is sliced with `int &elem`
+// to indicate we slice the reference out of `values`
+void func2(vector<int> &values)
+{
+        for(int &elem : values)
+        {
+                elem++;
+        }
+}
+
+// ✅ It does change! Since `values` is passed by reference,
+// and we are modifying the `values` itself
+void func3(vector<int> &values)
+{
+        for(int i = 0; i < values.size(); i++)
+        {
+                values[i]++;
+        }
+}
+```
+
+
+
+
+
 📌**`&` in C++ and `ref` in C#**
 
 `&` in a function declaration is very much the same as `ref` in a function declaration.
@@ -3266,7 +3307,7 @@ Input operators are more <u>complicated</u> to implement because of the possibil
 
 ## 4.11. Pointers to Class Member Functions
 
-
+//TODO HARD ⭐⭐⭐
 
 
 
