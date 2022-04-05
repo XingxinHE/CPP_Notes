@@ -11,6 +11,8 @@
  */
 
 #include <iostream>
+#include <vector>
+#include <algorithm>
 #include "string.h"
 #include "vector.h"
 #include "testing/SimpleTest.h"
@@ -36,13 +38,67 @@ using namespace std;
  * pigLatinReference() expects the parameter INPUT to be modified by the function call.
  */
 
+// my function to detect a character if it is vowel
+bool isVowel(const char c)
+{
+    static vector<char> vowel = {'a', 'e', 'i', 'o', 'u', 'y'};
+    vector<char>::const_iterator it = find(vowel.begin(), vowel.end(), c);
+    if(it != vowel.end())
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+// cleaner version
+bool isVowel1(char c)
+{
+    static const string VOWELS = "aeiouy";
+    bool flag = VOWELS.find(c) != string::npos ? true : false;
+    return flag;
+}
+
 string pigLatinReturn(string input){
-    (void) input;
-    return "";
+
+    int i = 0;
+    int length = input.length();
+    for(; i<length; i++)
+    {
+        if( isVowel( input[i]))
+        {
+            break;
+        }
+    }
+
+    string begin = input.substr(0, i);
+    string end = input.substr(i, length - i);
+    end += begin;
+    end += "ay";
+
+    return end;
 }
 
 void pigLatinReference(string &input){
-    (void) input;
+    int i = 0;
+    int length = input.length();
+    for(; i<length; i++)
+    {
+        if( isVowel( input[i]))
+        {
+            break;
+        }
+    }
+
+
+    string begin = input.substr(0, i);
+    input.erase(0, i);
+    input += begin;
+    input += "ay";
+
+    return;
 }
 
 

@@ -26,7 +26,15 @@ using namespace std;
  */
 
 void mirror(Grid<int> &nums){
-    // TODO: Your code here
+    Grid<int> copy(nums.numCols(), nums.numRows());
+    for(int i = 0; i < nums.numRows(); i++)
+    {
+        for(int j = 0; j < nums.numCols(); j++)
+        {
+            copy[j][i] = nums[i][j];
+        }
+    }
+    nums = copy;
 }
 
 

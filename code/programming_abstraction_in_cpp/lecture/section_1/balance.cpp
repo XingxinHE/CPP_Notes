@@ -26,9 +26,81 @@ using namespace std;
  */
 
 int checkBalance(string code) {
-    //Queue<int> q;
+    Stack<char> stack;
+    for(int i = 0; i < code.length(); i++)
+    {
+        char c = code[i];
+        if(c == '(' || c == '{')
+        {
+            stack.push(c);
+        }
+        else if(c == ')')
+        {
+            if( !stack.isEmpty() && stack.peek() == '(')
+            {
+                stack.pop();
+            }
+            else
+            {
+                return i;
+            }
+        }
+        else if(c == '}')
+        {
+            if( !stack.isEmpty() && stack.peek() == '{')
+            {
+                stack.pop();
+            }
+            else
+            {
+                return i;
+            }
+        }
+    }
 
-    return 0;
+    if(stack.isEmpty())
+    {
+        return -1;
+    }
+    else
+    {
+        return code.length();
+    }
+}
+
+// another sharp version
+int checkBalance1(string code) {
+    Stack<char> stack;
+    for(int i = 0; i < code.length(); i++)
+    {
+        char c = code[i];
+        if(c == '(' || c == '{')
+        {
+            stack.push(c);
+        }
+        else if(c == ')' || c == '}')
+        {
+            if(stack.isEmpty())
+            {
+                return i;
+            }
+
+            char top = stack.pop();
+            if( (top == '{' && c!= '}') || (top == '(' && c != ')') )
+            {
+                return i;
+            }
+        }
+    }
+
+    if(stack.isEmpty())
+    {
+        return -1;
+    }
+    else
+    {
+        return code.length();
+    }
 }
 
 

@@ -26,7 +26,49 @@ using namespace std;
  */
 
 Set<int> twice(Vector<int> nums){
-    return {};
+    Set<int> screenSet;
+    Set<int> twiceSet;
+    Set<int> overTwice;
+    for(int num : nums)
+    {
+        if(!screenSet.contains(num) && !overTwice.contains(num))
+        {
+            screenSet.add(num);
+        }
+        else
+        {
+            if(!twiceSet.contains(num))
+            {
+                twiceSet.add(num);
+            }
+            else
+            {
+                twiceSet.remove(num);
+                overTwice.add(num);
+            }
+        }
+
+    }
+    return twiceSet;
+}
+
+// sharp version
+Set<int> twice1(Vector<int>& v) {
+    Set<int> once;
+    Set<int> twice;
+    Set<int> more;
+    for (int i : v) {
+        if (once.contains(i)) {
+            once.remove(i);
+            twice.add(i);
+        } else if (twice.contains(i)) {
+            twice.remove(i);
+            more.add(i);
+        } else if (!more.contains(i)) {
+            once.add(i);
+        }
+    }
+    return twice;
 }
 
 

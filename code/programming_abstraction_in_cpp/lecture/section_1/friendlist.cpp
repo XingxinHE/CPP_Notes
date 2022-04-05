@@ -11,6 +11,8 @@
  */
 
 #include <iostream>
+#include <fstream>
+#include <algorithm>
 #include "map.h"
 #include "vector.h"
 #include "filelib.h"
@@ -29,8 +31,35 @@ using namespace std;
  * by a single space. You do not have to worry about malformed entries.
  */
 
-Map<string, Vector<string>> friendList(string filename){
-    return {};
+Map<string, Vector<string> > friendList(string filename){
+    // data
+    Map<string, Vector<string> > list;
+    ifstream inFile(filename);
+    if(!inFile)
+    {
+        return list;
+    }
+    Vector<string> lines;
+    readEntireFile(inFile, lines);
+
+    // loop each line
+    for(string line : lines)
+    {
+        // per line to names
+        Vector<string> names = stringSplit(line, " ");
+
+        // make sure no duplicate
+        if(find(list[names[0]].begin(), list[names[0]].end(), names[1]) == list[names[0]].end())
+        {
+            list[names[0]] += names[1];
+        }
+        if(find(list[names[1]].begin(), list[names[1]].end(), names[0]) == list[names[1]].end())
+        {
+            list[names[1]] += names[0];
+        }
+    }
+
+    return list;
 }
 
 
