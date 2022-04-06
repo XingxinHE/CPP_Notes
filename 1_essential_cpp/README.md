@@ -3375,6 +3375,182 @@ Polymorphism and Dynamic Binding are supported <u>**ONLY**</u> when we are using
 
 ## 5.2. A Tour of Object-Oriented Programming
 
+**📌Example of `LibraryMaterial`**
+
+Base class:
+
+```c++
+#ifndef LIBRARY_MATERIAL_H
+#define LIBRARY_MATERIAL_H
+
+#include <iostream>
+
+using namespace std;
+
+class LibraryMaterial
+{
+private:
+
+public:
+        LibraryMaterial();
+        ~LibraryMaterial();
+    	// 🤚 virual function
+        virtual void print() const;
+};
+
+LibraryMaterial::LibraryMaterial()
+{
+        cout << "LibraryMaterial::LibraryMaterial() default constructor!" << endl;
+}
+
+LibraryMaterial::~LibraryMaterial()
+{
+        cout << "LibraryMaterial::~LibraryMaterial() default destructor!" << endl;
+}
+
+// 🤚 when implement virual function, 
+// you don't need to address the `virtual` again
+void LibraryMaterial::print() const
+{
+        cout << "LibraryMaterial::print() -- I am a LibraryMaterial Object." << endl;
+}
+
+#endif
+```
+
+Derived class:
+
+```c++
+#ifndef BOOK_H
+#define BOOK_H
+
+#include <iostream>
+#include <string>
+#include "LibraryMaterial.h"
+
+using namespace std;
+
+class Book : public LibraryMaterial
+{
+protected:
+        string _author;
+        string _title;        
+public:
+        Book(const string& title, const string& author);
+        ~Book();
+    	// 🤚virtual function here!
+        virtual void print() const;
+        const string& author() const {return _author;}
+        const string& title() const {return _title;}
+};
+
+Book::Book(const string& title, const string& author)
+        :_title(title), _author(author)
+{
+        cout << "Book::Book(" 
+             << _title << ", " 
+             << _author << ") constructor." << endl;
+}
+
+Book::~Book()
+{
+        cout << "Book::~Book() default destructor!" << endl;
+}
+
+// 🤚 when implement virual function, 
+// you don't need to address the `virtual` again
+void Book::print() const
+{
+        cout << "Book::print() -- I am a Book Object." << endl;
+        cout << "My title is: " << _title << endl;
+        cout << "My author is: " << _author << endl;
+}
+
+#endif
+```
+
+Derived class of derived class:
+
+```c++
+#ifndef AUDIO_BOOK_H
+#define AUDIO_BOOK_H
+
+#include <iostream>
+#include <string>
+#include "Book.h"
+
+class AudioBook : public Book
+{
+private:
+        string _narrator;
+public:
+        AudioBook(const string& title, const string& author, const string& narrator);
+        ~AudioBook();
+    
+    	// 🤚virtual function here
+        virtual void print() const;
+        const string& narrator() const {return _narrator;}
+};
+
+// 🤚Take a look at the parameter list!!
+// It can combine base class constructor and other member variables
+AudioBook::AudioBook(const string& title, const string& author, const string& narrator)
+        : Book(title, author), _narrator(narrator)
+{
+        cout << "AudioBook::AudioBook(" 
+             << _title << ", " 
+             << _author << ", "
+             << _narrator << ") constructor." << endl;
+}
+
+AudioBook::~AudioBook()
+{
+        cout << "AudioBook::~AudioBook() default destructor!" << endl;
+}
+
+// 🤚 when implement virual function, 
+// you don't need to address the `virtual` again
+void AudioBook::print() const
+{
+        cout << "AudioBook::print() -- I am an AudioBook object!\n"
+             << "My title is: " << _title << "\n"
+             << "My author is: " << _author << "\n"
+             << "My narrator is: " << _narrator << endl;
+}
+
+#endif
+```
+
+//TODO - for `const string& narrator() const {return _narrator;}`
+
+why the return type is `const string&`, what is the 2nd `const`?
+
+
+
+## 5.3. Polymorphism without Inheritance
+
+**📌`static_cast<T>` to cast `A` to `B`**
+
+```c++
+enum Format
+{
+    TEXT = 0,
+    PDF = 1000,
+    OTHER = 2000
+};
+
+Format f = Format::PDF;
+
+int a = f;                    // ❌ERROR! Cannot cast directly in C++
+int b = static_cast<int>(f);  // ✅OK. Can cast to 1000.
+```
+
+
+
+
+
+
+
 
 
 
