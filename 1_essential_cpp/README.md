@@ -3311,6 +3311,70 @@ Input operators are more <u>complicated</u> to implement because of the possibil
 
 
 
+# Chapter 5. Object-Oriented Programming
+
+The object-based programming model proves cumbersome when our application begins to be filled with class types that represent an *is-a-kind-of* instance of a type.
+
+
+
+## 5.1. Object-Oriented Programming Concepts
+
+**📌Primary Characteristics of Object-Oriented Programming**⭐
+
+- <u>**Inheritance**</u>
+- <u>**Polymorphism**</u>
+
+*<u>Inheritance</u>* allows us to **group classes into families** of related types, allowing for the <u>sharing of common operations and data</u>.
+
+*<u>Polymorphism</u>* allows us to **program these families as a unit** rather than as individual classes, giving us greater flexibility in adding or removing any particular class.
+
+
+
+**📌Calling Convention**
+
+The <u>parent</u> is called the **base** class.
+
+The <u>child</u> is called the **derived** class.
+
+
+
+**📌Abstract Base Class**
+
+The root of the class hierarchy is an abstract base class.
+
+<img src="img/image-20220406102109496.png" alt="image-20220406102109496" style="zoom: 67%;" />
+
+[<u>**IMPORTANT!!!**</u>]⭐⭐⭐In an object-oriented program,  we indirectly manipulate the class objects of our application through a *pointer* or *reference* of an abstract base class rather than directly manipulate the actual derived class objects of our application.
+
+```c++
+void loan_check_in(LibraryMaterial &mat)
+{
+    // mat here actually refers to a derived class object
+    // such as Book, RentalBook, Magazines, and so on...
+    mat.check_in();
+    
+    if(mat.is_late())
+    {
+        mat.assess_fine();
+    }
+    
+    if(mat.waiting_list())
+    {
+        mat.notify_available();
+    }
+}
+```
+
+
+
+**📌Key to Polymorphism and Dynamic Binding**
+
+Polymorphism and Dynamic Binding are supported <u>**ONLY**</u> when we are using a **pointer** or **reference**.
+
+
+
+## 5.2. A Tour of Object-Oriented Programming
+
 
 
 

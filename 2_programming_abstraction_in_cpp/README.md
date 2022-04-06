@@ -272,4 +272,7 @@ void deduplicate2(Vector<string> &vec)
 }
 ```
 
-The preceding algorithm is kind of smart. It loops from the back and delete from the back. Therefore, you don't need to check at all! This is also the common delete algorithm of linear collection.
+The preceding algorithm is kind of smart. It loops from the back and delete from the back. Therefore, you don't need to check at all! This is also the c<u>ommon delete algorithm of linear collection</u>.
+
+
+
