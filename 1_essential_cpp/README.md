@@ -3547,9 +3547,146 @@ int b = static_cast<int>(f);  // ✅OK. Can cast to 1000.
 
 
 
+## 5.4. Defining an Abstract Base Class
+
+**📌Standard Procedure Design an Abstract Base Class**
+
+> ​	1️⃣ The first step is to **<u>identify</u>** the set of <u>operations common to its children</u>.
+
+Therefore, we can make the following:
+
+```c++
+class num_sequence
+{
+private:
+
+public:
+        // elem(pos): return element at pos
+        // gen_elems(pos): generate the elements up to pos
+        // what_am_i(): identify the actual sequence
+        // print(os): write the element to os
+        // check_integrity(pos): is pos a valid value?
+        // mmax_elems(): returns maximum position supported
+        int elem(int pos);
+        void gen_elems(int pos);
+        const char* what_am_i() const;
+        ostream& print(ostream &os = cout) const;
+        bool check_integrity(int pos);
+        static int max_elems();
+    
+        // ...
+        num_sequence();
+        ~num_sequence();
+
+};
+```
 
 
 
+> ​	2️⃣ The next step is to <u>**identify**</u> which <u>operations are type-dependent</u>[^6] -  that is, which operations require separate implementations based on the derived class type.
+
+```c++
+class num_sequence
+{
+private:
+
+public:
+
+        virtual int elem(int pos) const = 0;
+        virtual void gen_elems(int pos) = 0;
+        virtual const char* what_am_i() const = 0;
+        virtual ostream& print(ostream &os = cout) const = 0;
+        bool check_integrity(int pos) const;
+
+        const static int _max_elems = 1024;
+        static int max_elems() { return _max_elems; }
+
+        // ...
+        num_sequence();
+        ~num_sequence();
+};
+```
+
+Those operations required <u>separate implementation</u> must declare with `virtual`. What's more, if there is no meaningful implementation of that function at current base class, must be declared as a pure virtual function[^7]. e.g.
+
+```c++
+virtual void gen_elems(int pos) = 0;
+```
+
+For function that are common to all derived classes, no need to specify with `virtual`. e.g. The function which returns the maximum length of sequence.
+
+```c++
+static int max_elems() { return _max_elems; }
+```
+
+Also, please take into account that: "<u>A `static` member function cannot be declared as `virtual`</u>".
+
+
+
+> ​	3️⃣ The third step is to **<u>identify</u>** the <u>access level of each operation</u>.
+
+This is very similar to C# which has `private`, `protected`, and `public`.
+
+```c++
+class num_sequence
+{
+protected:
+        virtual void gen_elems(int pos) = 0;
+        bool check_integrity(int pos) const;
+        const static int _max_elems = 1024;
+
+public:
+        virtual ~num_sequence() {};
+
+        virtual int elem(int pos) const = 0;
+        virtual const char* what_am_i() const = 0;
+        virtual ostream& print(ostream &os = cout) const = 0;
+
+        static int max_elems() { return _max_elems; }
+
+        // ...
+};
+```
+
+The derived class of `num_sequence` can access members declared with `protected`. While you cannot access them outside of this class.
+
+
+
+**📌Why `class` with pure virtual function is called "abstract" class?**
+
+Because its interface is incomplete, a class that declares one or more pure virtual functions cannot have independent class objects defined in the program. It can only serve as the subobject of its derived classes.[^8]
+
+
+
+**📌Design of constructor and destructor in Abstract Base Class**⭐
+
+> ​	For Constructor
+
+Why there is no constructor in `num_sequence`?🤔 There are no nonstatic data members within the class to initialize, therefore there is no real benefit to providing a constructor.
+
+> ​	For Destructor
+
+As a general rule, a base class that defines one or more `virtual` functions should <u>always define a `virtual` destructor</u>.
+
+```c++
+num_sequence *ps = new Fibonacci(21);
+// ... use the sequence
+delete ps;
+```
+
+<u>**Mechanism Behind[IMPORTANT!!!]⭐**</u>: `ps` is a `num_sequence` base class pointer, but <u>it addresses a Fibonacci-derived class object</u>. When the `delete` expression is applied to a pointer to a class object, the destructor is first applied to the object addressed by the pointer. Then the memory associated with the class object is returned to the program's free store. In this case, the destructor invoked through `ps` must be the Fibonacci class destructor and not the destructor of the `num_sequence` class. That is, which destructor to invoke must be resolved at run-time based on the object actually addressed by the base class pointer. Therefore, we must declare the destructor `virtual`.[^9]
+
+
+
+**📌Recommended Way to Define a `virtual` Destructor**👍
+
+```c++
+inline num_sequence::~num_sequence() {}
+```
+
+
+
+## 5.5. Defining a Derived Class
 
 
 
@@ -3564,13 +3701,11 @@ int b = static_cast<int>(f);  // ✅OK. Can cast to 1000.
 [^4]: complement是数学的概念，如vector的complement就是covector。同理，`==`的complement就是`!=`。 一般这种成对出现的对象，都可以用其另一半完成~
 [^5]: Arity is **the number of operand(s) an operator can take**. 例如 `+ - * /` 各需要两个操作数，`++  --`是一个操作，`? :`三元操作符需要三个操作数
 
+[^6]: The type here refers to the "type" of derived class, rather than `int` or `double`.
+[^7]: 如果某方法如`gen_elems()`在每个派生类的写法都是不一样的，没有共性可言。那么可以声明为纯虚函数。pure virtual function.
 
-
-
-
-
-
-
+[^8]: 设计者用"abstract"这个单词非常巧妙，因为abstract的东西是没有实体的，因此abstract class是没有实例的，因为它是abstract的。在C#里面，abstract被定义为keyword，相当于将在C++里面言语所描述的abstract显式地定义为`abstract`.
+[^9]: `ps` 是基类 `num_sequence`的指针，但它实际上指向派生类`Fibonacci`对象。当`delete`表达式被施行于该指针身上时，destructor会先施行于指针所指的对象身上，于是将此对象占用的内存空间归还给程序的自由区域。在本例中，通过`ps`调用destructor一定是Fibonacci destructor，不是`num_sequence` destructor。正确的情况应该是“根据实际对象的型别选择调用哪一个destructor”，这一行为发生在run-time.
 
 
 
