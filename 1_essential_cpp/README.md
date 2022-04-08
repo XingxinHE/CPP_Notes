@@ -3688,6 +3688,53 @@ inline num_sequence::~num_sequence() {}
 
 ## 5.5. Defining a Derived Class
 
+**📌The Composite of a Derived Class**
+
+The derived class consists of 2 parts:
+
+- the subobject of its base class (e.g. the nonstatic base class data members)
+- the derived class portion (e.g. the nonstatic derived class data members)
+
+```c++
+#include "num_sequence.h"
+
+class Fibonacci : public num_sequence
+{
+public:
+		// ...
+};
+```
+
+
+
+**📌Implement a Derived Class**
+
+```c++
+class Fibonacci : public num_sequence
+{
+public:
+        Fibonacci(int length = 1, int beg_pos = 1)
+                :_length(length), _beg_pos(beg_pos) {}
+        virtual int         elem(int pos) const;
+        virtual const char* what_am_i() const {return "Fibonacci";}
+        virtual ostream&    print(ostream &os = cout) const;
+        int                 length() const {return _length;}
+        int                 beg_pos() const {return _beg_pos;}
+        ~Fibonacci();
+protected:
+        virtual void        gen_elems(int pos) const;
+        int                 _length;
+        int                 _beg_pos;
+        static vector<int>  _elems;
+};
+```
+
+A derived class MUST provide an implementation of each of the pure virtual functions inherited from its base class.
+
+
+
+
+
 
 
 
