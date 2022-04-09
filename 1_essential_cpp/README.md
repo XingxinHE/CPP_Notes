@@ -3631,7 +3631,7 @@ This is very similar to C# which has `private`, `protected`, and `public`.
 class num_sequence
 {
 protected:
-        virtual void gen_elems(int pos) = 0;
+        virtual void gen_elems(int pos) const = 0;
         bool check_integrity(int pos) const;
         const static int _max_elems = 1024;
 
@@ -3729,7 +3729,383 @@ protected:
 };
 ```
 
-A derived class MUST provide an implementation of each of the pure virtual functions inherited from its base class.
+<u>A derived class MUST provide an implementation of each of the pure virtual functions inherited from its base class</u>.⭐
+
+See the following user code:
+
+```c++
+// ✅OK
+num_sequence *ns_ptr = new Fibonacci(12, 8);
+// ✅OK
+ns_ptr->what_am_i();
+// ✅OK
+ns_ptr->max_elems();
+// ❌ERROR! Because the `length()` is not an interface defined in `num_sequence`
+ns_ptr.length();
+
+delete ns_ptr;
+```
+
+Later then, we have 2 options to retrofit our class:
+
+- define `length()` as `virtual` function in base class
+- define `length()` as member function in base class
+
+Either way, we have to declare `length()` interface in base class. In real world design, this is an <u>**iterative process that evolves through experience and feedback from users**</u>.
+
+
+
+**📌`virtual` keyword needn't show up again in `.cpp`**
+
+```c++
+/***************Fibonacci.h***************/
+class Fibonacci : public num_sequence
+{
+public:
+        // ...
+protected:
+        virtual void        gen_elems(int pos) const;
+		// ...
+};
+```
+
+Suppose you have the preceding member function, you can define in `.cpp` without `virtual` keyword again. This is a kind of different from C#.
+
+```c++
+/***************Fibonacci.cpp***************/
+void Fibonacci::gen_elems(int pos) const
+{
+        // implement here
+}
+```
+
+
+
+**📌Explicit definition can speed up compile-time**
+
+Suppose you want to implement the `elem(int pos)` function in `Fibonacci` class.
+
+```c++
+int Fibonacci::elem(int pos) const
+{
+        if (!check_integrity(pos))
+        {
+                return 0;
+        }
+
+        if(pos > _elems.size())
+        {
+                Fibonacci::gen_elems(pos);
+        }
+
+        return _elems[pos - 1];
+}
+```
+
+You may ask,🤔 `gen_elems()` has been declared in the base class, why do you explicitly add `Fibonacci::` as prefix? Because you are implementing the `Fibonacci::elem`, so you do know you will use `Fibonacci::gen_elems` rather than asking compiler to figure out. Hence, it can <u>**speed up**</u> the whole process!!
+
+
+
+**📌Duplicate Function Name without `virtual`**
+
+Suppose we have following 2 functions with same name but without specifying `virtual`.
+
+```c++
+/***************num_sequence.h***************/
+class num_sequence
+{
+protected:
+        bool check_integrity(int pos) const;
+public:
+        // ...
+};
+
+
+/***************Fibonacci.h***************/
+class Fibonacci : public num_sequence
+{
+protected:
+        bool check_integrity(int pos) const;
+public:
+        // ...
+};
+```
+
+When you type the following:
+
+```c++
+ps -> check_integrity(pos);
+```
+
+Whenever a member of the derived class reuses the name of an inherited base class member, <u>the base class member becomes lexically hidden within the derived class</u>. Therefore, if you want to use the base class member function, you have to explicitly declare it.
+
+```c++
+inline bool Fibonacci::
+check_integrity(int pos) const
+{
+    	// 🤚 Explicitly invoke the `check_integrity()` from the base class
+        if(! num_sequence::check_integrity(pos))
+        {
+                return false;
+        }
+
+        if(pos > _elems.size())
+        {
+                Fibonacci::gen_elems(pos);
+        }
+
+        return true;
+}
+```
+
+You can invoke the `check_integrity()` of base class by `num_sequence::check_integrity(pos)`. In C#, you can use the `base` keyword, like so:
+
+```c#
+base.check_integrity();
+```
+
+
+
+**📌Function Design Rule**
+
+With preceding code, we conclude that: "It is <u>not a good practice</u>, in general, to provide nonvirtual member functions with the same name in both the base and derived class."
+
+
+
+## 5.6. Inheritance Hierarchy
+
+There is nothing special in this section, few things I learned from the following code:
+
+```c++
+class num_sequence
+{
+protected:
+		// ...
+
+public:
+        friend ostream& operator<<(ostream &os, const num_sequence &ns)
+        {
+                return ns.print(os);
+        }
+        // ...
+};
+```
+
+**📌The Use of `friend`**
+
+I understand better what a `friend` means. Since `operator<<` requires a parameter which is an instance of `num_sequence`, but this block of code is also inside of the class `num_sequence`. Therefore, the `num_sequence` is a fresh element has not been declared yet. The `friend` keyword is to solve this problem.
+
+
+
+**📌Put the `virtual` function in a nonvirtual function**
+
+To prevent the derived class override both `operator<<` and `print()`, the designer put the `virtual` `print()` inside the nonvirtual `operator<<`. Smart.
+
+
+
+## 5.7. How Abstract Should a Base Class Be?
+
+**📌What is the answer to this question?**
+
+In short, there is no absolute correct answer. This refers to Software Development.
+
+
+
+**📌Benefit of a Reference Member in a Base Class**
+
+A reference data member must be initialized within the constructor's member initialization list and, once initialized, can never be changed to refer to a different object.
+
+
+
+**📌Retrofit the `num_sequence` class**
+
+With preceding theory, we can have the following:
+
+```c++
+/********num_sequence.h********/
+class num_sequence
+{
+protected:
+        int                  _length;
+        int                  _beg_pos;
+        vector<int> &        _relems;      // 🤚Take a look here!
+        virtual void         gen_elems(int pos) const = 0;
+        bool                 check_integrity(int pos, int size) const;
+
+public:
+        virtual              ~num_sequence() {};
+        virtual const char*  what_am_i() const = 0;
+
+        int                  elem(int pos) const;
+        ostream&             print(ostream &os = cout) const;
+
+        int                  length() const {return _length;}
+        int                  beg_pos() const {return _beg_pos;}
+        static int           max_elems() { return 64; }
+};
+
+/********Fibonacci.h********/
+class Fibonacci : public num_sequence
+{
+protected:
+        static vector<int>   _elems;   // Take a look here!🤚
+        virtual void         gen_elems(int pos) const;
+
+public:
+        Fibonacci(int len = 1, int beg_pos = 1);
+        virtual              ~Fibonacci() {};
+        virtual const char*  what_am_i() const {return "Fibonacci";}
+};
+```
+
+
+
+## 5.8. Initialization, Destruction and Copy
+
+**📌Good Practice of Initialization**
+
+A good practice will be a base class constructor initialize the members belong to base class. Then in the derived class, just use it in member initialization list.
+
+
+
+## 5.9. Defining a Derived Class Virtual Function
+
+**📌The Declaration must match**
+
+Not match example❌
+
+```c++
+class num_sequence
+{
+    public:
+    		virtual const char* what_am_i() const { return "num_sequence\n"; }
+};
+
+class Fibonacci
+{
+    public:
+    		virtual const char* what_am_i() { return "Fibonacci\n"; }
+}
+```
+
+Not match but also error example❌
+
+```c++
+class num_sequence
+{
+    public:
+    		virtual const char* what_am_i() const { return "num_sequence\n"; }
+};
+
+class Fibonacci
+{
+    public:
+    		virtual char* what_am_i() { return "Fibonacci\n"; }
+}
+```
+
+match example✔
+
+```c++
+class num_sequence
+{
+    public:
+    		virtual const char* what_am_i() const { return "num_sequence\n"; }
+};
+
+class Fibonacci
+{
+    public:
+    		virtual const char* what_am_i() const { return "Fibonacci\n"; }
+}
+```
+
+match example but with different declaration✔
+
+```c++
+class num_sequence
+{
+    public:
+    		virtual const num_sequence* clone() = 0;
+};
+
+class Fibonacci
+{
+    public:
+    		virtual const Fibonacci* clone() { return new Fibonacci(*this); }
+}
+```
+
+
+
+**📌`virtual` function of derived class never invoked in base constructor**
+
+It is very easy to understand since the derived class hat not yet been initialized how can it offers help in its base class constructor.
+
+
+
+**📌Polymorphism only via reference and pointer**
+
+In C++, only pointers and references of the base class support object-oriented programming.
+
+
+
+## 5.10. Run-Time Type Identification
+
+The run-time type identification is very much the same as the `System.Reflection` in C#.
+
+
+
+**📌Return the name of such class**
+
+```c++
+#include <typeinfo>
+inline const char* num_sequence::
+what_am_i() const
+{
+    return typeid(*this).name();
+}
+```
+
+
+
+**📌Check if the type is correct**
+
+```c++
+num_sequence *ps = &fib;
+// ...
+if (typeid(*ps) == typeid(Fibonacci))
+{
+    // ...
+}
+```
+
+The preceding syntax is exactly the same as in C#.
+
+
+
+**📌`static_cast` in C++**
+
+```c++
+if (typeid(*ps) == typeid(Fibonacci))
+{
+    // the compiler does not confirm the conversion is correct
+    Fibonacci *pf = static_cast<Fibonacci*>(ps);
+    pf->gen_elems(64);
+}
+```
+
+
+
+**📌`dynamic_cast` in C++**
+
+```c++
+// this is much safer which verifies the conversion
+if(Fibonacci *pf = dynamic_cast<Fibonacci*>(ps))
+{
+    pf->gen_elems(64);
+}
+```
 
 
 
@@ -3754,7 +4130,7 @@ A derived class MUST provide an implementation of each of the pure virtual funct
 [^8]: 设计者用"abstract"这个单词非常巧妙，因为abstract的东西是没有实体的，因此abstract class是没有实例的，因为它是abstract的。在C#里面，abstract被定义为keyword，相当于将在C++里面言语所描述的abstract显式地定义为`abstract`.
 [^9]: `ps` 是基类 `num_sequence`的指针，但它实际上指向派生类`Fibonacci`对象。当`delete`表达式被施行于该指针身上时，destructor会先施行于指针所指的对象身上，于是将此对象占用的内存空间归还给程序的自由区域。在本例中，通过`ps`调用destructor一定是Fibonacci destructor，不是`num_sequence` destructor。正确的情况应该是“根据实际对象的型别选择调用哪一个destructor”，这一行为发生在run-time.
 
-
+[^10]: 当base class和derived class都有`funcA()`的时候，如果`funcA()`没被`virtual`修饰的话，实现多态唤起的`funA()`是base class的，如果修饰了`virtual`，那么唤起的是派生类的`funcA()`
 
 
 
