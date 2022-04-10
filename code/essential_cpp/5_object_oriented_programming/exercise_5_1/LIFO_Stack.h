@@ -11,7 +11,7 @@ class LIFO_Stack : public Stack
 {
 private:
         vector<int> _stack;
-        const static int _max_size;
+        const static int _max_size = 64;
 public:
         virtual void     pop() override;
         virtual void     push(int num) override;
@@ -19,9 +19,14 @@ public:
         bool            empty() const override;
         bool            full() const;
         virtual int     peek() const;
-        LIFO_Stack(/* args */) {}
-        ~LIFO_Stack() {}
+        virtual ostream& print(ostream &os = cout) const;
+        LIFO_Stack(int size) 
+        {
+                _stack.reserve(size);
+        }
 };
+
+
 
 void LIFO_Stack::pop()
 {
@@ -61,6 +66,17 @@ bool LIFO_Stack::full() const
 int LIFO_Stack::peek() const
 {
         return this->_stack.back();
+}
+
+ostream& LIFO_Stack::print(ostream &os) const
+{
+        os << "print: " << endl;
+        for(int i : _stack)
+        {
+                os << i << " ";
+        }
+        os << endl;
+        return os;
 }
 
 

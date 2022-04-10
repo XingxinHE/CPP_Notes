@@ -11,7 +11,7 @@ using namespace std;
 
 int main()
 {
-        LIFO_Stack ls;
+        LIFO_Stack ls(10);
 
         ls.push(10);
         ls.push(20);
@@ -23,6 +23,8 @@ int main()
         cout << ls.size() << endl;
         ls.pop();
         cout << ls.size() << endl;
+        ls.print(cout);
+        cout << ls << endl;
 
 
         return 0;

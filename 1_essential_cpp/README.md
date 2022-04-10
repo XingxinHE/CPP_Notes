@@ -250,6 +250,46 @@ int fibon_elem(int pos)
 
 
 
+## 2.3. Providing Default Parameter Values
+
+**📌No Duplicate Default Parameter in Function Definition**
+
+We are all familiar with default parameter values in either C# or C++. But in C++, there is something interesting:
+
+```c++
+/********LIFO_Stack.h********/
+class LIFO_Stack : public Stack
+{
+private:
+        // ...
+public:
+        virtual ostream& print(ostream &os = cout) const;
+        // ...
+};
+
+
+
+/********LIFO_Stack.cpp********/
+
+// ❌following is WRONG, no need to specify the default value again in .cpp
+ostream& LIFO_Stack::print(ostream &os = cout) const
+{
+        // ...
+}
+
+// ✅following is CORRECT
+ostream& LIFO_Stack::print(ostream &os) const
+{
+        // ...
+}
+```
+
+
+
+
+
+
+
 **📌The `&` in front of a parameter in a function**
 
 The `&` in front of a variable is to take its address.
@@ -4108,6 +4148,81 @@ if(Fibonacci *pf = dynamic_cast<Fibonacci*>(ps))
 ```
 
 
+
+
+
+
+
+
+
+# Question
+
+**📌Why the following code compiled with error?**
+
+```c++
+class Stack
+{
+private:
+        /* data */
+public:
+        virtual         ~Stack() {};
+        virtual void     pop() = 0;
+        virtual void     push(int num) = 0;
+        virtual int     size() const;
+        virtual bool    empty() const;
+        virtual bool    full() const;
+        virtual int     peek() const = 0;
+        
+};
+
+class LIFO_Stack : public Stack
+{
+private:
+        vector<int> _stack;
+        const static int _max_size = 64;
+public:
+        virtual void     pop() override;
+        virtual void     push(int num) override;
+        int             size() const override;
+        bool            empty() const override;
+        bool            full() const;
+        virtual int     peek() const;
+        LIFO_Stack(int size) 
+        {
+                _stack.reserve(size);
+        }
+};
+```
+
+The error message is:
+
+```
+/usr/bin/ld: /tmp/cccuN1MT.o: in function `Stack::~Stack()':
+main.cpp:(.text._ZN5StackD2Ev[_ZN5StackD5Ev]+0xf): undefined reference to `vtable for Stack'
+/usr/bin/ld: /tmp/cccuN1MT.o: in function `Stack::Stack()':
+main.cpp:(.text._ZN5StackC2Ev[_ZN5StackC5Ev]+0xf): undefined reference to `vtable for Stack'
+/usr/bin/ld: /tmp/cccuN1MT.o:(.data.rel.ro._ZTI10LIFO_Stack[_ZTI10LIFO_Stack]+0x10): undefined reference to `typeinfo for Stack'
+collect2: error: ld returned 1 exit status
+```
+
+But when I retrofit all the functions in `Stack` to pure virtual function, it works.
+
+```c++
+class Stack
+{
+private:
+        /* data */
+public:
+        virtual         ~Stack() {};
+        virtual void     pop() = 0;
+        virtual void     push(int num) = 0;
+        virtual int     size() const = 0;
+        virtual bool    empty() const = 0;
+        virtual bool    full() const = 0;
+        virtual int     peek() const = 0;
+        
+};
+```
 
 
 
