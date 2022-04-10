@@ -70,7 +70,7 @@ int LIFO_Stack::peek() const
 
 ostream& LIFO_Stack::print(ostream &os) const
 {
-        os << "print: " << endl;
+        os << "LIFO_Stack print: " << endl;
         for(int i : _stack)
         {
                 os << i << " ";
