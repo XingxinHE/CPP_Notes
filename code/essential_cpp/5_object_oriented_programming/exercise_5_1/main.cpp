@@ -11,71 +11,71 @@ using namespace std;
 
 int main()
 {
-        /*
-         *  LIFO_Stack Test Case
-         */
+        cout << "======================================================================" << endl;
+        cout << "==========================Test on LIFO_Stack==========================" << endl;
+        cout << "======================================================================" << endl;
+        cout << "======================================================================" << endl;
 
-        /************Init************/
-        LIFO_Stack ls(10);
+        Stack *s_ptr = new LIFO_Stack(10);
 
-        /************Fill************/
-        ls.push(10);
-        ls.push(20);
-        ls.push(30);
+        s_ptr->push(10);
+        s_ptr->push(20);
+        s_ptr->push(30);
 
-        /******Check if it is empty******/
-        cout << ls.empty() << endl;
+        cout << "LIFO_Stack size: " << s_ptr->size() << endl;
 
-        /******Check if it is full******/
-        cout << ls.full() << endl;
+        int peek1;
+        if(s_ptr->peek(1, peek1))
+        {
+                cout << "LIFO_Stack peeks success!" << endl;
+        }
+        else
+        {
+                cout << "LIFO_Stack peeks failed!" << endl;
+        }
 
-        /************Peek************/
-        cout << ls.peek() << endl;
+        int pop1;
+        if(s_ptr->pop(pop1))
+        {
+                cout << "LIFO_Stack pops success!" << endl;
+                cout << "Value: " << pop1 << endl;
+        }
+        else
+        {
+                cout << "LIFO_Stack pops failed!" << endl;
+        }
 
-        /************Size************/
-        cout << ls.size() << endl;
+        cout << "Printing LIFO_Stack:  " << *s_ptr << endl;
+        cout << "Is LIFO_Stack empty?:  " << s_ptr->empty() << endl;
+        cout << "Is LIFO_Stack full?:  " << s_ptr->full() << endl;
 
-        /************Size after pop************/
-        ls.pop();
-        cout << ls.size() << endl;
 
-        /************Print************/
-        ls.print(cout);
-        cout << ls << endl;
+        cout << "======================================================================" << endl;
+        cout << "========================Test on Peekback_Stack========================" << endl;
+        cout << "======================================================================" << endl;
+        cout << "======================================================================" << endl;
 
-        /*
-         *  Peekback_Stack Test Case
-         */
-        /************Init************/
-        Peekback_Stack ps(10);
 
-        /************Fill************/
-        ps.push(10);
-        ps.push(20);
-        ps.push(30);
 
-        /******Check if it is empty******/
-        cout << ps.empty() << endl;
+        s_ptr = new Peekback_Stack(6);
+        s_ptr->push(1);
+        s_ptr->push(3);
+        s_ptr->push(5);
+        s_ptr->push(7);
+        s_ptr->push(9);
 
-        /******Check if it is full******/
-        cout << ps.full() << endl;
+        int peek2;
+        if(s_ptr->peek(3, peek2))
+        {
+                cout << "Peekback_Stack peeks success!" << endl;
+                cout << "Value is : " << peek2 << endl;
+        }
+        else
+        {
+                cout << "Peekback_Stack peeks failed!" << endl;
+        }
 
-        /************Peek************/
-        cout << ps.peek() << endl;
-
-        /************Size************/
-        cout << ps.size() << endl;
-
-        /************Size after pop************/
-        ps.pop();
-        cout << ps.size() << endl;
-
-        /************Print************/
-        ps.print(cout);
-        cout << ps << endl;
-
-        /************Peek Out of Range************/
-        cout << ps.peek(1024) << endl;
+        
 
         return 0;
 }
