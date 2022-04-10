@@ -4151,6 +4151,50 @@ if(Fibonacci *pf = dynamic_cast<Fibonacci*>(ps))
 
 
 
+# Chapter 6. Programming with Templates
+
+**📌What a BinaryTree is?**
+
+In this chapter, we are implementing a binary tree data structure on our own. The following is the characteristics of a binary tree.
+
+- A tree consists of <u>**nodes**</u>(vertices) and <u>**links**</u>.
+- 2 links between 1 node
+- the 1st node is called <u>**root**</u>   e.g.(15)
+- a node without children is called <u>**leaf**</u>   e.g.(8, 12, 17, 28)
+- All values less than a node is on its **<u>LEFT</u>** side  e.g.(3<9)
+- All values greater than a node is on its **<u>RIGHT</u>** side  e.g.(9<12)
+
+<img src="img/image-20220410171104480.png" alt="image-20220410171104480" style="zoom: 33%;" />
+
+
+
+**📌Traversal Algorithm**
+
+It has 3 types of traversal algorithm:
+
+- preorder - Root => Left => Right
+- inorder -  Left => Root => Right
+- postorder - Left => Right => Root
+
+<div align="center">
+<figure>
+    <img src="img/ex-preorder-traversal.png" style="width:50%">
+    <figcaption>preorder</figcaption>
+</figure>
+    <figure>
+    <img src="img/ex-inorder-traversal.png" style="width:50%">
+    <figcaption>inorder</figcaption>
+</figure>
+    <figure>
+    <img src="img/ex-post-order-traversal.png" style="width:50%">
+    <figcaption>postorder</figcaption>
+</figure>
+</div>
+
+
+
+## 6.1. Parameterized Types
+
 
 
 
