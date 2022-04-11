@@ -276,3 +276,52 @@ The preceding algorithm is kind of smart. It loops from the back and delete from
 
 
 
+
+
+## Assignment 1
+
+**📌`PlayingFair.cpp`**
+
+This assignment is the one I think is the most tricky and fun! It is asked to implement a recursive algorithm which can produce the following order. This is the algorithm concerning the "fair", e.g. in Ban-Pick of a League of Legend Game.
+
+<img src="img/image-20220411222124093.png" alt="image-20220411222124093" style="zoom:67%;" />
+
+The secrect is to make the order in cross reference order. Taking the "Order 2" as an example:
+
+<img src="img/image-20220411222535521.png" alt="image-20220411222535521" style="zoom: 50%;" />
+
+The very smart algorithm is the following:
+
+```c++
+string aSequenceOfOrder(int n) {
+    if(n == 0)
+    {
+        return "A";
+    }
+    else if(n < 0)
+    {
+        error("Index is smaller than 0!!");
+    }
+    else
+    {
+        return aSequenceOfOrder(n-1)+bSequenceOfOrder(n-1);
+    }
+
+}
+
+string bSequenceOfOrder(int n) {
+    if(n == 0)
+    {
+        return "B";
+    }
+    else if(n < 0)
+    {
+        error("Index is smaller than 0!!");
+    }
+    else
+    {
+        return bSequenceOfOrder(n-1)+aSequenceOfOrder(n-1);
+    }
+}
+```
+

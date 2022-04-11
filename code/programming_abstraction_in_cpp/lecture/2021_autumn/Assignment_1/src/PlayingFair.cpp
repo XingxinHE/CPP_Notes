@@ -7,21 +7,38 @@
 #include "error.h"
 using namespace std;
 
+// the trick is to cross reference
 string aSequenceOfOrder(int n) {
-    /* TODO: Delete this line and the next two lines, then implement this function. */
-    (void) n;
-    return "";
+    if(n == 0)
+    {
+        return "A";
+    }
+    else if(n < 0)
+    {
+        error("Index is smaller than 0!!");
+    }
+    else
+    {
+        return aSequenceOfOrder(n-1)+bSequenceOfOrder(n-1);
+    }
+
 }
 
+// the trick is to cross reference
 string bSequenceOfOrder(int n) {
-    /* TODO: Delete this line and the next two lines, then implement this function. */
-    (void) n;
-    return "";
+    if(n == 0)
+    {
+        return "B";
+    }
+    else if(n < 0)
+    {
+        error("Index is smaller than 0!!");
+    }
+    else
+    {
+        return bSequenceOfOrder(n-1)+aSequenceOfOrder(n-1);
+    }
 }
-
-
-
-
 
 
 /* * * * * * Provided Test Cases * * * * * */
@@ -63,7 +80,13 @@ PROVIDED_TEST("Triggers error on negative inputs.") {
 }
 
 
-
+STUDENT_TEST("Sequences of order 6 are correct.")
+{
+    EXPECT_EQUAL(aSequenceOfOrder(6),
+    "ABBABAABBAABABBABAABABBAABBABAABBAABABBAABBABAABABBABAABBAABABBA");
+    EXPECT_EQUAL(bSequenceOfOrder(6),
+    "BAABABBAABBABAABABBABAABBAABABBAABBABAABBAABABBABAABABBAABBABAAB");
+}
 
 
 
