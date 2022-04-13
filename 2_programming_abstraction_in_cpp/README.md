@@ -325,3 +325,65 @@ string bSequenceOfOrder(int n) {
 }
 ```
 
+
+
+**📌`Sandpiles.cpp`**
+
+From this assignment, I figure out a good idea on implementing recursive function:
+
+- 1️⃣ Think about the base case first!
+- 2️⃣ Focous the action on one iteration, that's it! The rest throw in the recursive.
+
+The sandpiles function demands the following behavior:
+
+<img src="img/image-20220412095526056.png" alt="image-20220412095526056" style="zoom:80%;" />
+
+When a cell is up to 4, its cardinal direction cell increments **1** and itself becomes **0**. If the `row` and `col` is out of bound, never mind.
+
+```c++
+void dropSandOn(Grid<int>& world, int row, int col) {
+    // out of bounds, return
+    if(!world.inBounds(row, col))
+    {
+        return;
+    }
+    // in bounds, increment
+    world[row][col]++;
+
+    // sum up to 4, spread it!
+    if(world[row][col] == 4)
+    {
+        world[row][col] = 0;
+        dropSandOn(world, row+1, col);
+        dropSandOn(world, row, col+1);
+        dropSandOn(world, row-1, col);
+        dropSandOn(world, row, col-1);
+    }
+    else
+    {
+        return;
+    }
+}
+```
+
+The test case could be:
+
+```c++
+PROVIDED_TEST("Non-chaining topples work.") {
+    /* Create a simple source grid. */
+    Grid<int> before = {
+        { 0, 0, 0 },
+        { 1, 3, 1 },
+        { 0, 2, 0 }
+    };
+    Grid<int> after = {
+        { 0, 1, 0 },
+        { 2, 0, 2 },
+        { 0, 3, 0 }
+    };
+
+    dropSandOn(before, 1, 1);
+    EXPECT_EQUAL(before, after); // The above call changes 'before.'
+}
+```
+

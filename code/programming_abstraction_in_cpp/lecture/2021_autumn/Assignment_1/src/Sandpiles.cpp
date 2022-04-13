@@ -7,10 +7,27 @@
 using namespace std;
 
 void dropSandOn(Grid<int>& world, int row, int col) {
-    /* TODO: Delete this line and the three after it, then implement this function. */
-    (void) world;
-    (void) row;
-    (void) col;
+    // out of bounds, return
+    if(!world.inBounds(row, col))
+    {
+        return;
+    }
+    // in bounds, increment
+    world[row][col]++;
+
+    // sum up to 4, spread it!
+    if(world[row][col] == 4)
+    {
+        world[row][col] = 0;
+        dropSandOn(world, row+1, col);
+        dropSandOn(world, row, col+1);
+        dropSandOn(world, row-1, col);
+        dropSandOn(world, row, col-1);
+    }
+    else
+    {
+        return;
+    }
 }
 
 
@@ -71,20 +88,22 @@ PROVIDED_TEST("Two topples chain.") {
     EXPECT_EQUAL(before, after); // The above call changes 'before.'
 }
 
-/* TODO: You will need to add your own tests into this suite of test cases. Think about the sorts
- * of inputs we tested here, and, importantly, what sorts of inputs we *didn't* test here. Some
- * general rules of testing:
- *
- *    1. Try extreme cases. What are some very large cases to check? What are some very small cases?
- *
- *    2. Be diverse. There are a lot of possible inputs out there. Make sure you have tests that account
- *       for cases that aren't just variations of one another.
- *
- *    3. Be sneaky. Don't just try standard inputs. Try weird ones that you wouldn't expect anyone to
- *       actually enter, but which are still perfectly legal.
- *
- * Happy testing!
- */
+STUDENT_TEST("Verify my pen paper result.") {
+
+    Grid<int> before = {
+        { 3, 3, 2},
+        { 2, 3, 3},
+        { 0, 2, 3}
+    };
+    Grid<int> after = {
+        { 1, 3, 0},
+        { 1, 0, 3},
+        { 2, 1, 1}
+    };
+
+    dropSandOn(before, 1, 1);
+    EXPECT_EQUAL(before, after);
+}
 
 
 
