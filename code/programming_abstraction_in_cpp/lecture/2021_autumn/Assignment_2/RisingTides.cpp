@@ -54,7 +54,6 @@ Grid<bool> floodedRegionsIn(const Grid<double>& terrain,
     }
 
     return floodRegion;
-
 }
 
 /***** Test Cases Below This Point *****/
@@ -299,4 +298,27 @@ PROVIDED_TEST("Stress test: Handles a large, empty world quickly.") {
             EXPECT_EQUAL(water[row][col], true);
         }
     }
+}
+
+
+
+STUDENT_TEST("Random number generated in Grasshopper") {
+    Grid<double> world = {
+        {9.53,4.11,5.9},
+        {6.23,5.54,7.28},
+        {6.07,8.05,6.51}
+    };
+
+    // water source
+    Vector<GridLocation> sources = {
+        { 0, 2 }
+    };
+
+    Grid<bool> expected = {
+        {false,true,true},
+        {false,true,false},
+        {false,false,false}
+    };
+
+    EXPECT_EQUAL(floodedRegionsIn(world, sources, 6), expected);
 }

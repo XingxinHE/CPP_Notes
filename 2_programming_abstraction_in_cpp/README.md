@@ -273,7 +273,7 @@ void deduplicate1(Vector<string> &vec)
 
 
 
-> ​	Fixed Version 2✔
+> ​	Fixed Version 2✔⭐
 
 ```c++
 void deduplicate2(Vector<string> &vec)
@@ -408,4 +408,6 @@ PROVIDED_TEST("Non-chaining topples work.") {
 ## Assignment 2
 
 **📌`RisingTides.cpp`**
+
+This assignment is really fun and it is very helpful to taste the algorithm behind.
 
