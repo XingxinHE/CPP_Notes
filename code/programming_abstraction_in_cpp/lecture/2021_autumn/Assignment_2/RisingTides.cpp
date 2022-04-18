@@ -12,52 +12,48 @@ Grid<bool> floodedRegionsIn(const Grid<double>& terrain,
                             double height) {
 
     // output is a Grid of bool indicating if it is flooded or not
-    Grid<bool> flood(terrain.numRows(), terrain.numCols(), false);
+    Grid<bool> floodRegion(terrain.numRows(), terrain.numCols(), false);
 
-    // enque start location
-    Queue<GridLocation> start_location;
+    // queue for test if its cardinal direction cell is flooded
+    Queue<GridLocation> isFloodQueue;
 
+    // enqueue the rain source, if the coord is flooded
     for(const GridLocation& loc : sources)
     {
         if(terrain.get(loc) <= height)
         {
-            flood.set(loc, true);
-            start_location.enqueue(loc);
+            floodRegion.set(loc, true);
+            isFloodQueue.enqueue(loc);
         }
     }
 
-    while(!start_location.isEmpty())
+    // cardinal direction => (1,0) (0,1) (-1,0) (0,-1)
+    Vector<int> cardinal_direction = {1, 0,-1, 0, 1};
+    while(!isFloodQueue.isEmpty())
     {
-        GridLocation current_location = start_location.dequeue();
-        int row = current_location.row;
-        int col = current_location.col;
+        GridLocation loc = isFloodQueue.dequeue();
+        int row = loc.row;
+        int col = loc.col;
 
-        if(terrain.get(current_location) <= height)
+        for(int i = 0; i < cardinal_direction.size() - 1; i++)
         {
-            if(flood.inBounds(row + 1, col) && flood[row+1][col] == false && terrain[row+1][col]<=height)
+            // iterate its adjacent cell in its cardinal direction
+            int adjacent_row = row + cardinal_direction[i];
+            int adjacent_col = col + cardinal_direction[i+1];
+            GridLocation adjacent_cell(adjacent_row, adjacent_col);
+
+            // AND 3 criteria for processing a cell is flooded
+            if(floodRegion.inBounds(adjacent_cell) &&            // the adjacent cell is in bounds
+                    floodRegion.get(adjacent_cell) == false &&   // the adjacent cell is currently unflooded
+                    terrain.get(adjacent_cell) <= height)        // the adjacent cell is lower than the height
             {
-                flood[row+1][col] = true;
-                start_location.enqueue(GridLocation(row+1, col));
-            }
-            if(flood.inBounds(row - 1, col) && flood[row-1][col] == false && terrain[row-1][col]<=height)
-            {
-                flood[row-1][col] = true;
-                start_location.enqueue(GridLocation(row-1, col));
-            }
-            if(flood.inBounds(row, col+1) && flood[row][col+1] == false && terrain[row][col+1]<=height)
-            {
-                flood[row][col+1] = true;
-                start_location.enqueue(GridLocation(row, col+1));
-            }
-            if(flood.inBounds(row, col-1) && flood[row][col-1] == false&& terrain[row][col-1]<=height)
-            {
-                flood[row][col-1] = true;
-                start_location.enqueue(GridLocation(row, col-1));
+                floodRegion.set(adjacent_cell, true);
+                isFloodQueue.enqueue(adjacent_cell);
             }
         }
     }
 
-    return flood;
+    return floodRegion;
 
 }
 
