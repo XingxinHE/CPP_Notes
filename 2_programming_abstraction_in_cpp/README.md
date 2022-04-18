@@ -168,6 +168,22 @@ while(!q.isEmpty())
 
 
 
+```c++
+#include "gwindow.h"
+
+
+```
+
+
+
+
+
+Exhaustive Search
+
+
+
+
+
 # Code and Assignment
 
 ## Section 1

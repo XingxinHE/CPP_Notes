@@ -3,16 +3,63 @@
 #include "queue.h"
 using namespace std;
 
+
+// terrain is a grid recording the height, mimic the topography
+// source is the rain comes from
+// height is the water level
 Grid<bool> floodedRegionsIn(const Grid<double>& terrain,
                             const Vector<GridLocation>& sources,
                             double height) {
-    /* TODO: Delete this line and the next four lines, then implement this function. */
-    (void) terrain;
-    (void) sources;
-    (void) height;
-    return {};
-}
 
+    // output is a Grid of bool indicating if it is flooded or not
+    Grid<bool> flood(terrain.numRows(), terrain.numCols(), false);
+
+    // enque start location
+    Queue<GridLocation> start_location;
+
+    for(const GridLocation& loc : sources)
+    {
+        if(terrain.get(loc) <= height)
+        {
+            flood.set(loc, true);
+            start_location.enqueue(loc);
+        }
+    }
+
+    while(!start_location.isEmpty())
+    {
+        GridLocation current_location = start_location.dequeue();
+        int row = current_location.row;
+        int col = current_location.col;
+
+        if(terrain.get(current_location) <= height)
+        {
+            if(flood.inBounds(row + 1, col) && flood[row+1][col] == false && terrain[row+1][col]<=height)
+            {
+                flood[row+1][col] = true;
+                start_location.enqueue(GridLocation(row+1, col));
+            }
+            if(flood.inBounds(row - 1, col) && flood[row-1][col] == false && terrain[row-1][col]<=height)
+            {
+                flood[row-1][col] = true;
+                start_location.enqueue(GridLocation(row-1, col));
+            }
+            if(flood.inBounds(row, col+1) && flood[row][col+1] == false && terrain[row][col+1]<=height)
+            {
+                flood[row][col+1] = true;
+                start_location.enqueue(GridLocation(row, col+1));
+            }
+            if(flood.inBounds(row, col-1) && flood[row][col-1] == false&& terrain[row][col-1]<=height)
+            {
+                flood[row][col-1] = true;
+                start_location.enqueue(GridLocation(row, col-1));
+            }
+        }
+    }
+
+    return flood;
+
+}
 
 /***** Test Cases Below This Point *****/
 PROVIDED_TEST("Nothing gets wet if there are no water sources.") {
