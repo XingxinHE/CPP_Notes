@@ -184,9 +184,9 @@ Exhaustive Search
 
 
 
-# Code and Assignment
+# -------Code and Assignment-------
 
-## Section 1
+# Section 1
 
 **📌Deduplicating**
 
@@ -294,7 +294,7 @@ The preceding algorithm is kind of smart. It loops from the back and delete from
 
 
 
-## Assignment 1
+# Assignment 1
 
 **📌`PlayingFair.cpp`**
 
@@ -405,9 +405,146 @@ PROVIDED_TEST("Non-chaining topples work.") {
 
 
 
-## Assignment 2
+# Assignment 2
 
-**📌`RisingTides.cpp`**
+## **📌`RisingTides.cpp`**⭐
 
-This assignment is really fun and it is very helpful to taste the algorithm behind.
+The assignment is asked to implment an algorithm to mimic the <u>**flooding**</u> of a <u>**terrain**</u>.
 
+<img src="img/image-20220419093247318.png" alt="image-20220419093247318" style="zoom: 50%;" />
+
+The idea here is to adopt <u>***breadth-first search***</u> algorithm! It is fun! *<u>Breadth-first search</u>* is typically implemented by using a <u>**queue**</u>🤘 that will process every <u>*flooded location*</u>. The idea is the following: 
+
+- 1️⃣ we begin by iterating each water sources, enqueuing those flooded regions💧. 
+- 2️⃣ we’ll then dequeue the flooded regions, test if *<u>its adjacent cells</u>* in cardinal directions⬆⬇⬅➡ are flooded. If flooded, enqueue in the queue
+- 3️⃣ keep iterates until it the queue is empty
+
+The following is the pseudo code:
+
+```
+  create an empty queue;
+ for (each water source at or below the water level)
+ {
+     flood that square;
+     add that square to the queue;
+ }
+ while (the queue is not empty) 
+ {
+     dequeue a position from the front of the queue;
+     for (each square adjacent to the position in a cardinal direction) 
+     {
+         if (that square is at or below the water level and isn't yet flooded) 
+         {
+             flood that square;
+             add that square to the queue;
+         }
+     }
+ }
+```
+
+The following is the code:
+
+```c++
+Grid<bool> floodedRegionsIn(const Grid<double>& terrain,
+                            const Vector<GridLocation>& sources,
+                            double height) {
+
+    // output is a Grid of bool indicating if it is flooded or not
+    Grid<bool> floodRegion(terrain.numRows(), terrain.numCols(), false);
+
+    // queue for test if its cardinal direction cell is flooded
+    Queue<GridLocation> isFloodQueue;
+
+    // enqueue the rain source, if the coord is flooded
+    for(const GridLocation& loc : sources)
+    {
+        if(terrain.get(loc) <= height)
+        {
+            floodRegion.set(loc, true);
+            isFloodQueue.enqueue(loc);
+        }
+    }
+
+    // cardinal direction => (1,0) (0,1) (-1,0) (0,-1)
+    Vector<int> cardinal_direction = {1, 0,-1, 0, 1};
+    while(!isFloodQueue.isEmpty())
+    {
+        GridLocation loc = isFloodQueue.dequeue();
+        int row = loc.row;
+        int col = loc.col;
+
+        for(int i = 0; i < cardinal_direction.size() - 1; i++)
+        {
+            // iterate its adjacent cell in its cardinal direction
+            int adjacent_row = row + cardinal_direction[i];
+            int adjacent_col = col + cardinal_direction[i+1];
+            GridLocation adjacent_cell(adjacent_row, adjacent_col);
+
+            // AND 3 criteria for processing a cell is flooded
+            if(floodRegion.inBounds(adjacent_cell) &&            // the adjacent cell is in bounds
+                    floodRegion.get(adjacent_cell) == false &&   // the adjacent cell is currently unflooded
+                    terrain.get(adjacent_cell) <= height)        // the adjacent cell is lower than the height
+            {
+                floodRegion.set(adjacent_cell, true);
+                isFloodQueue.enqueue(adjacent_cell);
+            }
+        }
+    }
+
+    return floodRegion;
+}
+```
+
+I think there is one more super important thing I want to mention up here....⭐ Which is I used the `for` loop to iterate the cardinal directions.
+
+<img src="img/image-20220419095437416.png" alt="image-20220419095437416" style="zoom:50%;" />
+
+If we start looking from `(1,0)` counter clockwise, we will find out that the points are:
+
+<img src="img/image-20220419100135893.png" alt="image-20220419100135893" style="zoom:50%;" />
+
+We can cross reference the coordinate!!⭐⭐⭐ Therefore, I make a `Vector<int>` to iterate.
+
+
+
+
+
+## **📌`RosettaStone.cpp`**
+
+Few thing I learned from this exercise. The first thing is about
+
+
+
+
+
+
+
+**📌Integer Overflow**
+
+Suprisingly, the `.size()` and `.length()` functions return ***<u>unsigned integer</u>***, and therefore it may cause an error if we want to subtract from it.
+
+```c++
+// ERROR!!❌
+string str = "HELLO";
+int offset = 6;
+for(int i = 0; i < str.length() - offset; i++)
+{
+    
+}
+
+// CHECK FIRST✅
+if(str.length() < offset)
+{
+    return;
+}
+for(int i = 0; i < str.length() - offset; i++)
+{
+ 	// running safe here   
+}
+```
+
+
+
+
+
+Cosine Similarity

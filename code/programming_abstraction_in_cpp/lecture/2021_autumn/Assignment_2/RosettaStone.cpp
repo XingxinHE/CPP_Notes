@@ -1,50 +1,160 @@
 #include "RosettaStone.h"
 #include "GUI/SimpleTest.h"
+#include "set.h"
+#include <cmath>
+#include "priorityqueue.h"
 using namespace std;
 
 Map<string, double> kGramsIn(const string& str, int kGramLength) {
-    /* TODO: Delete this comment and the other lines here, then implement
-     * this function.
-     */
-    (void) str;
-    (void) kGramLength;
-    return {};
+
+    // check if the input is validate
+    if(kGramLength <= 0)
+    {
+        error("The kGramLength should be greater than 0.");
+    }
+
+    // k-grams
+    Map<string, double> kGrams;
+
+    if(str.length() < kGramLength)
+    {
+        return kGrams;
+    }
+
+    for(int i = 0; i <= str.length() - kGramLength; i ++)
+    {
+        string sub = str.substr(i, kGramLength);
+        if(kGrams.containsKey(sub))
+        {
+            kGrams[sub] += 1;
+        }
+        else
+        {
+            kGrams[sub] = 1;
+        }
+    }
+
+    return kGrams;
 }
 
 Map<string, double> normalize(const Map<string, double>& input) {
-    /* TODO: Delete this comment and the other lines here, then implement
-     * this function.
-     */
-    (void) input;
-    return {};
+    // check validity
+    if(input.isEmpty())
+    {
+        error("The input Map is empty");
+        return {};
+    }
+
+    // sum the values
+    double sum = 0;
+    for(string key : input)
+    {
+
+        sum += pow(input[key], 2);
+    }
+
+    // check if the sum is 0
+    if(sum == 0)
+    {
+        error("The sum values are 0.");
+    }
+    else
+    {
+        sum = sqrt(sum);
+    }
+
+    // Normalized Map
+    Map<string, double> normalizedMap;
+    for(string key : input)
+    {
+        normalizedMap[key] = input[key] / sum;
+    }
+
+    return normalizedMap;
 }
 
 Map<string, double> topKGramsIn(const Map<string, double>& source, int numToKeep) {
-    /* TODO: Delete this comment and the other lines here, then implement
-     * this function.
-     */
-    (void) source;
-    (void) numToKeep;
-    return {};
+
+    Map<string, double> filtered;
+
+    // check validity of source
+    if(source.isEmpty() || numToKeep==0)
+    {
+        return filtered;
+    }
+
+    // check validity of numToKeep
+    if(numToKeep < 0)
+    {
+        error("Number to keep is negative.");
+    }
+
+    // enqueue the key-value pair with priority
+    PriorityQueue<string> prioQueue;
+    for(string key : source)
+    {
+        prioQueue.enqueue(key, -source[key]);
+    }
+
+    // dequeue the frontmost element
+    int i = 0;
+    while(!prioQueue.isEmpty() && i < numToKeep)  // in case the numToKeep is longer than queue
+    {
+        string key = prioQueue.dequeue();
+        filtered[key] = source[key];
+        i++;
+    }
+
+    return filtered;
 }
 
+
+
 double cosineSimilarityOf(const Map<string, double>& lhs, const Map<string, double>& rhs) {
-    /* TODO: Delete this comment and the other lines here, then implement
-     * this function.
-     */
-    (void) lhs;
-    (void) rhs;
-    return {};
+    // check validity
+    if(lhs.isEmpty() || rhs.isEmpty())
+    {
+        return {};
+    }
+
+    // similarity sum
+    double similarity = 0;
+    for(string key : lhs)
+    {
+        if(rhs.containsKey(key))
+        {
+            similarity += lhs[key] * rhs[key];
+        }
+    }
+
+    return similarity;
 }
 
 string guessLanguageOf(const Map<string, double>& textProfile,
                        const Set<Corpus>& corpora) {
-    /* TODO: Delete this comment and the other lines here, then implement
-     * this function.
-     */
-    (void) textProfile;
-    (void) corpora;
-    return "";
+
+    // check validity
+    if(textProfile.isEmpty() || corpora.isEmpty())
+    {
+        error("The input is empty!");
+    }
+
+    // the best
+    Corpus mostRelevant;
+    double highestSimilarity = 0;
+
+    // filtering
+    for(Corpus cor : corpora)
+    {
+        double similarity = cosineSimilarityOf(textProfile, cor.profile);
+        if(similarity > highestSimilarity)
+        {
+            mostRelevant = cor;
+            highestSimilarity = similarity;
+        }
+    }
+
+    return mostRelevant.name;
 }
 
 
