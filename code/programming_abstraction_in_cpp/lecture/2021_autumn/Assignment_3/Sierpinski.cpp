@@ -18,6 +18,7 @@ void drawTriangle(GWindow& window,
                   double x2, double y2) {
     window.setColor("black");
     window.fillPolygon({ x0, y0, x1, y1, x2, y2 });
+
 }
 
 /* TODO: Refer to Sierpinski.h for more information about what this function should do.
@@ -28,10 +29,33 @@ void drawSierpinskiTriangle(GWindow& window,
                             double x1, double y1,
                             double x2, double y2,
                             int order) {
-    /* TODO: Delete this comment, these next lines of code, and implement this function. */
-    (void) window;
-    (void) x0; (void) y0;
-    (void) x1; (void) y1;
-    (void) x2; (void) y2;
-    (void) order;
+    if(order < 0)
+    {
+        return;
+    }
+    if(order == 0)
+    {
+        drawTriangle(window, x0, y0, x1, y1, x2, y2);
+    }
+    else
+    {
+        drawSierpinskiTriangle(
+                    window,
+                    x0,         y0,
+                    (x0+x1)/2, (y0+y1)/2,
+                    (x0+x2)/2, (y0+y2)/2,
+                    order - 1);
+        drawSierpinskiTriangle(
+                    window,
+                    x1,         y1,
+                    (x0+x1)/2, (y0+y1)/2,
+                    (x1+x2)/2, (y1+y2)/2,
+                    order - 1);
+        drawSierpinskiTriangle(
+                    window,
+                    x2,         y2,
+                    (x2+x1)/2, (y2+y1)/2,
+                    (x0+x2)/2, (y0+y2)/2,
+                    order - 1);
+    }
 }

@@ -52,6 +52,28 @@ int elem_seq[] = {
 };
 ```
 
+3️⃣:
+
+```c++
+// declared but not initialized
+int* elem_seq = new int[3];
+cout << elem_seq[0] << endl;    // 2395876
+cout << elem_seq[1] << endl;    // -197630894
+```
+
+4️⃣:
+
+```c++
+// declared and initialized, a bit slower
+int* elem_seq = new int[3]();   //👈 the`()`
+cout << elem_seq[0] << endl;    // 0
+cout << elem_seq[1] << endl;    // 0
+```
+
+
+
+
+
 
 
 **📌Initialize a vector**

@@ -1,3 +1,228 @@
+
+
+
+
+# 11.Pointers and Array
+
+
+
+**📌NULL/garbage poitner**
+
+```c++
+int* p1 = nullptr;
+cout << pt << endl;  //0
+cout << *pt << endl;  //KABOOM
+
+// testing for nullness
+if(p1 == nullptr)  {...}  //true
+if(p1)             {...}  //false 👈regular version
+if(!p1)            {...}  //true  👈regular version
+```
+
+
+
+**📌non-pointer and pointer initialization**⭐
+
+I have been confused for a long time why we have 2 different ways of initialization.
+
+```c++
+// non-poitner
+Date d1;
+d1.month = 4;
+d1.day = 21;
+// pointer
+Date* d2;
+d2->month = 4;
+d2->day = 20;
+```
+
+The main difference is that the later one <u>***will not be deleted automatically by the garbage collection***</u>!!
+
+```c++
+// non-poitner
+void foo1()
+{
+    Date d1;
+    d1.month = 4;
+    d1.day = 21;
+    ...
+    
+    // d1 will be thrown away once out of this scope
+}
+
+// pointer
+void foo2()
+{
+    Date* d2;
+    d2->month = 4;
+    d2->day = 20;
+    ...
+    
+    // d2 will NOT be thrown away!
+}
+
+```
+
+
+
+**📌Fun Fact of `->`**
+
+```c++
+// The followings are the same!
+d2->month = 4;
+(*d2).month = 4;
+```
+
+So `->` is a <u>shorthand</u> for **dereference and then access**.
+
+
+
+**📌Deep Insight of Linked List**
+
+```c++
+struct ListNode
+{
+	int num;
+    ListNode* next;
+};
+```
+
+
+
+<img src="img/image-20220421162746355.png" alt="image-20220421162746355" style="zoom:50%;" />
+
+
+
+**📌Reassigning Pointers**
+
+Suppose you have the following relation:
+
+<img src="img/image-20220421173246199.png" alt="image-20220421173246199" style="zoom: 67%;" />
+
+What should the following look like?
+
+1️⃣
+
+```c++
+a->next = b->next;
+```
+
+<img src="img/image-20220421173349065.png" alt="image-20220421173349065" style="zoom:67%;" />
+
+
+
+2️⃣
+
+```c++
+a = b->next;
+```
+
+<img src="img/image-20220421174109978.png" alt="image-20220421174109978" style="zoom: 80%;" />
+
+
+
+ 3️⃣
+
+```c++
+a = b;
+```
+
+<img src="img/image-20220421174233808.png" alt="image-20220421174233808" style="zoom:80%;" />
+
+
+
+4️⃣
+
+```c++
+a->next->next = b;
+```
+
+<img src="img/image-20220421174504624.png" alt="image-20220421174504624" style="zoom:80%;" />
+
+
+
+
+
+**📌Incorrect Ways Implementing Linked List**
+
+The `addFront` is the following:
+
+```c++
+void addFront(ListNode* front, int value)
+{
+    ListNode* temp = new ListNode(value);
+    temp->next = front;
+    front = temp;
+}
+
+// the client code
+int main()
+{
+    ListNode* list = ...;
+    addFront(list, 10);
+}
+```
+
+Unfortunately, it does not work that way:
+
+<img src="img/image-20220421211125264.png" alt="image-20220421211125264" style="zoom: 50%;" />
+
+It only update the local variable `front`!🙁🙁Because the pointer is not passed by reference...
+
+<img src="img/image-20220421211230327.png" alt="image-20220421211230327" style="zoom: 50%;" />
+
+
+
+**📌Correct Way Implementing Linked List**
+
+And you have to pass by reference:
+
+```c++
+void addFront(ListNode*& front, int value)
+{
+    //...
+}
+```
+
+So fxxking weird!😱 But that is how it is...
+
+<img src="img/image-20220421211725765.png" alt="image-20220421211725765" style="zoom:50%;" />
+
+
+
+**📌Destroy an Array**
+
+```c++
+// constructor
+ArrayStack::ArrayStack()
+{
+    elements = new int[10]();
+    size = 0;
+    capacity = 10;
+}
+
+// destructor
+ArrayStack::~ArrayStack()
+{
+    // 🤚 When you delete an array, you have to => `delete[] `; others are fine
+    delete[] elements;
+}
+```
+
+
+
+
+
+# 16.Binary Tree
+
+
+
+
+
+
+
+
+
 # Stanford Library
 
 ```c++
@@ -407,7 +632,7 @@ PROVIDED_TEST("Non-chaining topples work.") {
 
 # Assignment 2
 
-## **📌`RisingTides.cpp`**⭐
+## **`RisingTides.cpp`**⭐
 
 The assignment is asked to implment an algorithm to mimic the <u>**flooding**</u> of a <u>**terrain**</u>.
 
@@ -509,13 +734,88 @@ We can cross reference the coordinate!!⭐⭐⭐ Therefore, I make a `Vector<int
 
 
 
-## **📌`RosettaStone.cpp`**
+## **`RosettaStone.cpp`**
 
 Few thing I learned from this exercise. The first thing is about
 
+**📌Trigram**
+
+> ​	What is it?
+
+For the following string
+
+<div align="center">
+    A BANANA BANDANA
+</div>
+
+The trigram is the following:
+
+```
+"ANA": 3        " BA": 2		"A B": 2
+"BAN": 2		"AND": 1		"DAN": 1
+"NA ": 1		"NAN": 1		"NDA": 1
+```
+
+> ​	Comparison between languages using trigram
+
+The following is the trigram of <u>**English**</u>:
+
+```
+" th": 667		"the": 616		"he ": 533
+" an": 497		"nd ": 492		"and": 470
+"ion": 423		" of": 376		" in": 375
+"of ": 363		"tio": 333		"ed ": 320
+"ing": 318		"man": 289		"ng ": 288
+```
+
+The following is the trigram of <u>**Spanish**</u>:
+
+```
+" de": 531		"os ": 396		"de ": 374
+"ent": 298		" la": 293		"es ": 277
+"la ": 239		"el ": 232		" co": 217
+" es": 208		"en ": 198		"ien": 198
+"nte": 196		"as ": 193		" en": 185
+```
+
+> ​	Application of trigram
+
+The trigram is used to detect the similarity among languages. The following is one of the application where you browse the explorer on a foreign website with notification on the language.
+
+![](img/TranslateThisPage.png)
 
 
 
+**📌UTF-8**
+
+In short, UTF-8 is a historical artifacts which can date back to 1980s when C++ was developed. At the beginning, the memory is scarce and developer can only use a little bit. Therefore the `char` is designed to support only **256** values. But as the world is more and more global, the `char` must not only support English but also other languages. Therefore, the UTF-8 is implemented to support these languages. The following is an example of UTF-8.
+
+```html
+\u4e0a\u6d77\u9b54\u5e7b\u75ab\u60c5
+上海魔幻疫情
+```
+
+
+
+**📌Cosine Similarity**
+
+The compare the similarity, we adopt the cosine similarity which does the following:
+
+```
+Profile 1			Profile 2
+
+"aaa": 0.333		"bbb": 0.333
+"bbb": 0.667		"ccc": 0.667
+"ccc": 0.667		"ddd": 0.667
+```
+
+We only calculate the similarity between matched trigrams:
+
+```
+      (product of "bbb" frequencies) + (product of "ccc" frequencies)
+    = (0.667 × 0.333) + (0.667 × 0.667)
+    = 0.667
+```
 
 
 
@@ -545,6 +845,163 @@ for(int i = 0; i < str.length() - offset; i++)
 
 
 
+**📌Code**
+
+In general, this assignment is not hard which is credited to Prof and tutor who separated the big puzzle into several functions. Please refer to [here](../code/programming_abstraction_in_cpp/lecture/2021_autumn/Assignment_2/RosettaStone.cpp).
 
 
-Cosine Similarity
+
+
+
+# Assignment 3
+
+## `Sierpinski.cpp`
+
+<img src="img/0a6983e497b8d576da6570feae4fded5.png" alt="Sierpinski triangles, orders 0 through 4" style="zoom: 33%;" />
+
+**📌What is the black and white standing for?**
+
+Every triangle drawn here is black; the white triangles represent places where no triangle was drawn.
+
+
+
+**📌Code**
+
+```c++
+/*
+ * This is a helper function which actually draws the triangle
+ */
+void drawTriangle(GWindow& window,
+                  double x0, double y0,
+                  double x1, double y1,
+                  double x2, double y2) {
+    window.setColor("black");
+    window.fillPolygon({ x0, y0, x1, y1, x2, y2 });
+
+}
+
+/*
+ * The recursion functions.
+ */
+void drawSierpinskiTriangle(GWindow& window,
+                            double x0, double y0,
+                            double x1, double y1,
+                            double x2, double y2,
+                            int order) {
+    // check validity
+    if(order < 0)
+    {
+        return;
+    }
+    
+    // draw a triangle if the order reaches 0
+    if(order == 0)
+    {
+        drawTriangle(window, x0, y0, x1, y1, x2, y2);
+    }
+    // else keep segmenting...
+    else
+    {
+        drawSierpinskiTriangle(
+                    window,
+                    x0,         y0,
+                    (x0+x1)/2, (y0+y1)/2,
+                    (x0+x2)/2, (y0+y2)/2,
+                    order - 1);
+        drawSierpinskiTriangle(
+                    window,
+                    x1,         y1,
+                    (x0+x1)/2, (y0+y1)/2,
+                    (x1+x2)/2, (y1+y2)/2,
+                    order - 1);
+        drawSierpinskiTriangle(
+                    window,
+                    x2,         y2,
+                    (x2+x1)/2, (y2+y1)/2,
+                    (x0+x2)/2, (y0+y2)/2,
+                    order - 1);
+    }
+}
+```
+
+
+
+
+
+## `HumanPyramids.cpp`
+
+**📌Problem Definition**
+
+The problem is asked to calculate the **<u>weight</u>** of a specific person. The weight per person is 160 pounds.
+
+![A human pyramid. The person on top is labeled A. Beneath person A are people B and C. Beneath B and C are people D, E, and F. Beneath D, E, and F are G, H, I, and J. Beneath G, H, I, and J are K, L, M, N, and O. Person A, B, and C are smiling. The people toward the bottom of the pyramid appear to be in pretty signficant pain due to all the weight they're carrying.](img/humanpyramid.png)
+
+For example, the weight of E is the following:
+$$
+\begin{align}
+E &= \frac{1}{2}(B+\frac{1}{2}A)+\frac{1}{2}(C+\frac{1}{2}A)\\
+&= \frac{1}{2}(160+\frac{1}{2}160)+\frac{1}{2}(160+\frac{1}{2}160)\\
+&= 80 + 40 + 80 + 40\\
+&=240
+\end{align}
+$$
+For simplicity, we use coordinate the identify the person:
+
+<img src="img/humanpyramid_milestone1.png" alt="A human pyramid annotated with coordinates. The topmost person is at postiion (0, 0). Below her are people at positions (1, 0) and (1, 1). Below them are people at positions (2, 0), (2, 1), and (2, 2). And below that are people at positions (3, 0), (3, 1), (3, 2), and (3, 3)." style="zoom:67%;" />
+
+**📌Design the Recursion**
+
+- the base case => the top node which has nothing above it, therefore <u>**returns 0**</u>.
+- the regular case
+  - **left node** => <u>only right parent above it</u>
+  - **nodes in between** => <u>both left and right parents above it</u>
+  - **right node** => <u>only left parent above it</u>
+
+```c++
+double weightOnBackOf(int row, int col, int pyramidHeight) {
+    // check validity
+    if(row < 0 || col < 0)
+    {
+
+        error("Row and Column can't be less than 0.");
+    }
+    if(row >= pyramidHeight)
+    {
+        error("Row is out of bound");
+    }
+
+    //base case
+    if(row == 0)
+    {
+        return 0;
+    }
+    else
+    {
+        int next_row = row - 1;
+        int next_col_left = col - 1;
+        int next_col_right = col;
+        // 🤚Left node
+        if(next_col_left < 0)
+        {
+            return 0.5*(160 + weightOnBackOf(next_row, next_col_right, pyramidHeight));
+        }
+        // 🤚Right Node
+        else if(next_col_right > next_row)
+        {
+            return 0.5*(160 + weightOnBackOf(next_row, next_col_left, pyramidHeight));
+        }
+        // 🤚Nodes not in the edge
+        else
+        {
+            return 0.5*(160 + weightOnBackOf(next_row, next_col_left, pyramidHeight)) +
+                   0.5*(160 + weightOnBackOf(next_row, next_col_right, pyramidHeight));
+        }
+
+    }
+}
+```
+
+
+
+
+

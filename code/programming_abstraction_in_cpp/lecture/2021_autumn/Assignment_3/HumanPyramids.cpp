@@ -1,15 +1,49 @@
+#include "error.h"
 #include "HumanPyramids.h"
+#include "grid.h"
+#include "map.h"
 using namespace std;
 
 /* TODO: Refer to HumanPyramids.h for more information about what this function should do.
  * Then, delete this comment.
  */
 double weightOnBackOf(int row, int col, int pyramidHeight) {
-    /* TODO: Delete the next few lines and implement this function. */
-    (void) row;
-    (void) col;
-    (void) pyramidHeight;
-    return 0;
+    // check validity
+    if(row < 0 || col < 0)
+    {
+
+        error("Row and Column can't be less than 0.");
+    }
+    if(row >= pyramidHeight)
+    {
+        error("Row is out of bound");
+    }
+
+    //base case
+    if(row == 0)
+    {
+        return 0;
+    }
+    else
+    {
+        int next_row = row - 1;
+        int next_col_left = col - 1;
+        int next_col_right = col;
+        if(next_col_left < 0)
+        {
+            return 0.5*(160 + weightOnBackOf(next_row, next_col_right, pyramidHeight));
+        }
+        else if(next_col_right > next_row)
+        {
+            return 0.5*(160 + weightOnBackOf(next_row, next_col_left, pyramidHeight));
+        }
+        else
+        {
+            return 0.5*(160 + weightOnBackOf(next_row, next_col_left, pyramidHeight)) +
+                   0.5*(160 + weightOnBackOf(next_row, next_col_right, pyramidHeight));
+        }
+
+    }
 }
 
 
@@ -55,6 +89,7 @@ PROVIDED_TEST("Stress test: Memoization is implemented (should take under a seco
      * line immediately after this one - the one that starts with SHOW_ERROR - once
      * you have implemented memoization to test whether it works correctly.
      */
+
     SHOW_ERROR("This test is configured to always fail until you delete this line from\n         HumanPyramids.cpp. Once you have implemented memoization and want\n         to check whether it works correctly, remove the indicated line.");
 
     /* Do not delete anything below this point. :-) */
