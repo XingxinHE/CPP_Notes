@@ -5,19 +5,16 @@
 using namespace std;
 
 
-
+// recursion helper function
 double weightOnBackOfTable(GridLocation& gridLocation, Map<GridLocation, double>& table);
 
-/* TODO: Refer to HumanPyramids.h for more information about what this function should do.
- * Then, delete this comment.
- */
+// recursion main function
 double weightOnBackOf(int row, int col, int pyramidHeight) {
     Map<GridLocation, double> table;
 
     // check validity
     if(row < 0 || col < 0)
     {
-
         error("Row and Column can't be less than 0.");
     }
     if(row >= pyramidHeight)
@@ -37,29 +34,32 @@ double weightOnBackOfTable(GridLocation& gridLocation, Map<GridLocation, double>
     {
         return 0;
     }
+    // value already recorded in the table
     else if(table.containsKey(gridLocation))
     {
         return table[gridLocation];
     }
+    // value not recorded
     else
     {
         int next_row = gridLocation.row - 1;
         int next_col_left = gridLocation.col - 1;
         int next_col_right = gridLocation.col;
+        // coord on the left edge
         if(next_col_left < 0)
         {
             GridLocation cellUpRight(next_row, next_col_right);
             table[gridLocation] =
                     0.5*(160 + weightOnBackOfTable(cellUpRight, table));
-            return 0.5*(160 + weightOnBackOfTable(cellUpRight, table));
         }
+        // coord on the right edge
         else if(next_col_right > next_row)
         {
             GridLocation cellUpLeft(next_row, next_col_left);
             table[gridLocation] =
                     0.5*(160 + weightOnBackOfTable(cellUpLeft, table));
-            return 0.5*(160 + weightOnBackOfTable(cellUpLeft, table));
         }
+        // coord in between
         else
         {
             GridLocation cellUpLeft(next_row, next_col_left);
@@ -67,10 +67,11 @@ double weightOnBackOfTable(GridLocation& gridLocation, Map<GridLocation, double>
 
             table[gridLocation] = 0.5*(160 + weightOnBackOfTable(cellUpLeft, table)) +
                                   0.5*(160 + weightOnBackOfTable(cellUpRight, table));
-
-            return 0.5*(160 + weightOnBackOfTable(cellUpLeft, table)) +
-                    0.5*(160 + weightOnBackOfTable(cellUpRight, table));
         }
+
+        // no matter which case, the gridLocation now has value
+        // return it
+        return table[gridLocation];
     }
 }
 
@@ -79,23 +80,6 @@ double weightOnBackOfTable(GridLocation& gridLocation, Map<GridLocation, double>
 
 /* * * * * * Test Cases * * * * * */
 #include "GUI/SimpleTest.h"
-
-/* TODO: Add your own tests here. You know the drill - look for edge cases, think about
- * very small and very large cases, etc.
- */
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 /* * * * * * Test cases from the starter files below this point. * * * * * */
 
@@ -111,28 +95,6 @@ PROVIDED_TEST("Function reports errors in invalid cases.") {
 }
 
 PROVIDED_TEST("Stress test: Memoization is implemented (should take under a second)") {
-    /* TODO: Yes, we are asking you to make a change to this test case! Delete the
-     * line immediately after this one - the one that starts with SHOW_ERROR - once
-     * you have implemented memoization to test whether it works correctly.
-     */
 
-    //SHOW_ERROR("This test is configured to always fail until you delete this line from\n         HumanPyramids.cpp. Once you have implemented memoization and want\n         to check whether it works correctly, remove the indicated line.");
-
-    /* Do not delete anything below this point. :-) */
-
-    /* This will take a LONG time to complete if memoization isn't implemented.
-     * We're talking "heat death of the universe" amounts of time. :-)
-     *
-     * If you did implement memoization but this test case is still hanging, make
-     * sure that in your recursive function (not the wrapper) that your recursive
-     * calls are to your new recursive function and not back to the wrapper. If you
-     * call the wrapper again, you'll get a fresh new memoization table rather than
-     * preserving the one you're building up in your recursive exploration, and the
-     * effect will be as if you hadn't implemented memoization at all.
-     */
     EXPECT(weightOnBackOf(100, 50, 200) >= 10000);
 }
-
-/* TODO: Add your own tests here. You know the drill - look for edge cases, think about
- * very small and very large cases, etc.
- */
