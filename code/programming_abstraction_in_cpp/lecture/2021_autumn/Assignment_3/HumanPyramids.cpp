@@ -4,10 +4,16 @@
 #include "map.h"
 using namespace std;
 
+
+
+double weightOnBackOfTable(GridLocation& gridLocation, Map<GridLocation, double>& table);
+
 /* TODO: Refer to HumanPyramids.h for more information about what this function should do.
  * Then, delete this comment.
  */
 double weightOnBackOf(int row, int col, int pyramidHeight) {
+    Map<GridLocation, double> table;
+
     // check validity
     if(row < 0 || col < 0)
     {
@@ -19,34 +25,54 @@ double weightOnBackOf(int row, int col, int pyramidHeight) {
         error("Row is out of bound");
     }
 
+    //recursion
+    GridLocation current(row, col);
+    return weightOnBackOfTable(current, table);
+}
+
+double weightOnBackOfTable(GridLocation& gridLocation, Map<GridLocation, double>& table)
+{
     //base case
-    if(row == 0)
+    if(gridLocation == GridLocation(0,0))
     {
         return 0;
     }
+    else if(table.containsKey(gridLocation))
+    {
+        return table[gridLocation];
+    }
     else
     {
-        int next_row = row - 1;
-        int next_col_left = col - 1;
-        int next_col_right = col;
+        int next_row = gridLocation.row - 1;
+        int next_col_left = gridLocation.col - 1;
+        int next_col_right = gridLocation.col;
         if(next_col_left < 0)
         {
-            return 0.5*(160 + weightOnBackOf(next_row, next_col_right, pyramidHeight));
+            GridLocation cellUpRight(next_row, next_col_right);
+            table[gridLocation] =
+                    0.5*(160 + weightOnBackOfTable(cellUpRight, table));
+            return 0.5*(160 + weightOnBackOfTable(cellUpRight, table));
         }
         else if(next_col_right > next_row)
         {
-            return 0.5*(160 + weightOnBackOf(next_row, next_col_left, pyramidHeight));
+            GridLocation cellUpLeft(next_row, next_col_left);
+            table[gridLocation] =
+                    0.5*(160 + weightOnBackOfTable(cellUpLeft, table));
+            return 0.5*(160 + weightOnBackOfTable(cellUpLeft, table));
         }
         else
         {
-            return 0.5*(160 + weightOnBackOf(next_row, next_col_left, pyramidHeight)) +
-                   0.5*(160 + weightOnBackOf(next_row, next_col_right, pyramidHeight));
-        }
+            GridLocation cellUpLeft(next_row, next_col_left);
+            GridLocation cellUpRight(next_row, next_col_right);
 
+            table[gridLocation] = 0.5*(160 + weightOnBackOfTable(cellUpLeft, table)) +
+                                  0.5*(160 + weightOnBackOfTable(cellUpRight, table));
+
+            return 0.5*(160 + weightOnBackOfTable(cellUpLeft, table)) +
+                    0.5*(160 + weightOnBackOfTable(cellUpRight, table));
+        }
     }
 }
-
-
 
 
 
@@ -90,7 +116,7 @@ PROVIDED_TEST("Stress test: Memoization is implemented (should take under a seco
      * you have implemented memoization to test whether it works correctly.
      */
 
-    SHOW_ERROR("This test is configured to always fail until you delete this line from\n         HumanPyramids.cpp. Once you have implemented memoization and want\n         to check whether it works correctly, remove the indicated line.");
+    //SHOW_ERROR("This test is configured to always fail until you delete this line from\n         HumanPyramids.cpp. Once you have implemented memoization and want\n         to check whether it works correctly, remove the indicated line.");
 
     /* Do not delete anything below this point. :-) */
 
