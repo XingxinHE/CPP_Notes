@@ -1,3 +1,198 @@
+# 1.Overview of C++
+
+## 1.2 The history of C++
+
+**📌Days before C++**
+
+People are using machine language which reflects the design of the hardware rather than the needs of programmers.
+
+
+
+**📌High-level programming language**
+
+The first high-level programming language is called FORTRAN(formula translation) which resembles the mathematical formulas into machine language.
+
+
+
+**📌Object-oriented paradigm**
+
+Before it, it is **procedural paradigm** represented by C. C++ is built of C and shifts the paradigm.
+
+
+
+## 1.3. The compilation process
+
+You should be aware of the following concepts:
+
+- source file
+- compiler
+- object file
+- executable file
+- libraries
+- linker
+
+
+
+<div align="center">
+    <figure>
+  <img src="img/image-20220426232537206.png" alt="Trulli" style="width:80%">
+</figure>
+</div>
+
+
+
+
+
+## 1.4. The structure of a C++ program
+
+<div align="center">
+    <figure>
+  <img src="img/image-20220426232658220.png" alt="Trulli" style="width:80%">
+</figure>
+</div>
+
+
+
+## 1.6. Data Types
+
+**📌Integer types**
+
+If `long int` + `int`, the result is `int` which will promote the precision.
+
+
+
+**📌Floating-point types**
+
+Floating-point with scientific notation.
+
+```c++
+double num = 2.9979E+8;
+```
+
+`E+8` means $10^{8}$
+
+
+
+**📌Characters**
+
+ASCII stands for American Standard Code for Information Interchange.
+
+<div align="center">
+    <figure>
+  <img src="img/image-20220426233651268.png" alt="Trulli" style="width:80%">
+</figure>
+</div>
+
+The row stands for 10, col stands for 1. Therefore `A` is 65 = 10 * 6 + 5 * 1
+
+
+
+**📌Strings**
+
+The `string` is not a primitive type in C++ while it is, in fact, a library type(history artifact with C). In this book, we uses the `string` library wherever possible.
+
+
+
+## 1.7. Expressions
+
+**📌Mixing types in an expression**
+
+The type-conversion is with the following order:
+
+<div align="center">
+    <figure>
+  <img src="img/image-20220427095419723.png" alt="Trulli" style="width:80%">
+</figure>
+</div>
+
+For example:
+
+```c++
+double num = 0;
+num += 1;
+// num now is 1.0
+```
+
+
+
+**📌Truncation**
+
+It is the operation of discarding a decimal fraction.
+
+```c++
+int result = 9 / 4;  //result is 2
+```
+
+
+
+**📌Type casts**
+
+type cast in C++:
+
+```c++
+quotient = double(num) / den;
+```
+
+type cast in C#:
+
+```c#
+quotient = (double) num / den;
+```
+
+
+
+**📌Embedded Assignment**
+
+```c++
+int x, y, z;
+z = (x = 6) + (y = 7);
+```
+
+While we don't recommend these kinds of operation which are difficult to understand.
+
+
+
+**📌Multiple Assignment**
+
+```c++
+int n1, n2, n3;
+n1 = n2 = n3 = 0;
+```
+
+
+
+**📌Increment and Decrement Operator**
+
+The difference between `++x` and `x++`.
+
+```c++
+{
+    cout << *first << endl;
+    *at = *first;
+    at++;
+    first++;
+}
+```
+
+is equivalent to the following:
+
+```c++
+{
+    cout << *first << endl;
+    *at++ = *first++;
+}
+```
+
+
+
+## 1.8. Statements
+
+**📌Predicate Functions**
+
+Functions like `isVowel()` or `isAlphabet` are called predicate functions.
+
+
+
 
 
 
@@ -1000,6 +1195,12 @@ double weightOnBackOf(int row, int col, int pyramidHeight) {
     }
 }
 ```
+
+
+
+
+
+**📌Memorization Implementation**
 
 
 
