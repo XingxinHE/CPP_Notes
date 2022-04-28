@@ -193,6 +193,39 @@ Functions like `isVowel()` or `isAlphabet` are called predicate functions.
 
 
 
+# 2.Functions and Libraries
+
+## 2.2. Libraries
+
+**📌Roles of libraries**
+
+- Implementer, who implements a library
+- Client, calls functions provided by a library
+
+
+
+## 2.3. Defining functions in C++
+
+**📌Procedure**
+
+A function that does not return a value and is instead executed for its effect.
+
+
+
+**📌C does not have function overloading**
+
+ew...
+
+
+
+## 2.4. The mechanics of function calls
+
+**📌Stack Frame**
+
+A new space created by system for all the local variables required when calling a function. In Visual Studio debug mode, there is a tab called `Local`.
+
+
+
 
 
 
@@ -411,6 +444,20 @@ ArrayStack::~ArrayStack()
 # 16.Binary Tree
 
 
+
+# Review Questions
+
+## Chapter 1
+
+
+
+
+
+## Chapter 2
+
+
+
+# Exercises
 
 
 

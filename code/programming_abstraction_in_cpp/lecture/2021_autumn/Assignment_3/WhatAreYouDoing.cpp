@@ -1,37 +1,76 @@
 #include "WhatAreYouDoing.h"
+#include "strlib.h"
 using namespace std;
 
-/* TODO: Read the comments in WhatAreYouDoing.h to see what this function needs to do, then
- * delete this comment.
- *
- * Don't forget about the tokenize function defined in WhatAreYouDoing.h; you'll almost
- * certainly want to use it.
+
+/*
+ * Function: emphasesHelper
+ * Usage:  emphasesHelper(0, tokens, emphases);
+ * --------------------------------------------
+ * Modify the words and emphases as pass by reference
+ */
+extern void emphasesHelper(int round, Vector<string> &words, Set<string> &emphases);
+
+/*
+ * Function: allEmphasesOf
+ * Usage: EXPECT_EQUAL(allEmphasesOf("Hello"), expected);
+ * ------------------------------------------------------
+ * Return all the emphases of a sentence.
  */
 Set<string> allEmphasesOf(const string& sentence) {
-    /* TODO: Delete this line and the next one, then implement this function. */
-    (void) sentence;
-    return {};
+
+    // check validity
+    if(sentence.length()==0)
+    {
+        error("The sentence is empty");
+    }
+
+    // tokens
+    Vector<string> tokens = tokenize(sentence);
+
+    // define output
+    Set<string> emphases;
+
+    // run
+    emphasesHelper(0, tokens, emphases);
+
+    return emphases;
+}
+
+/*
+ * Function: emphasesHelper
+ * Usage:  emphasesHelper(0, tokens, emphases);
+ * --------------------------------------------
+ * Modify the words and emphases as pass by reference
+ */
+void emphasesHelper(int round, Vector<string> &words, Set<string> &emphases)
+{
+    // the last one, concat and add to the set
+    if(round == words.size())
+    {
+        string onePattern = stringJoin(words, "");
+        emphases.add(onePattern);
+    }
+    // token is not a word
+    else if(!isalpha(words[round][0]))
+    {
+        emphasesHelper(round + 1, words, emphases);
+    }
+    // it is a word, recurse call to upper and lower
+    else
+    {
+        // upper recursion
+        words[round] = toUpperCase(words[round]);
+        emphasesHelper(round+1, words, emphases);  // a upper branch here
+
+        // lower recursion
+        words[round] = toLowerCase(words[round]);
+        emphasesHelper(round+1, words, emphases);  // a lower branch here
+    }
 }
 
 /* * * * * * Test Cases * * * * * */
 #include "GUI/SimpleTest.h"
-
-/* TODO: Add your own tests here. You know the drill - look for edge cases, think about
- * very small and very large cases, etc.
- */
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 /* * * * * * Test cases from the starter files below this point. * * * * * */
 
@@ -109,4 +148,44 @@ PROVIDED_TEST("Stress test: Generates each option once (should take at most a fe
      */
     string yeats = "Turing and turning in a widening gyre / the falcon cannot hear the falconer.";
     EXPECT_EQUAL(allEmphasesOf(yeats).size(), 8192);
+}
+
+STUDENT_TEST("Critique on Shanghai's policy on COVID-19")
+{
+    Set<string> expected = {
+        "SHANGHAI COVID POLICY IS SHIT.",
+        "SHANGHAI COVID POLICY IS shit.",
+        "SHANGHAI COVID POLICY is SHIT.",
+        "SHANGHAI COVID POLICY is shit.",
+        "SHANGHAI COVID policy IS SHIT.",
+        "SHANGHAI COVID policy IS shit.",
+        "SHANGHAI COVID policy is SHIT.",
+        "SHANGHAI COVID policy is shit.",
+        "SHANGHAI covid POLICY IS SHIT.",
+        "SHANGHAI covid POLICY IS shit.",
+        "SHANGHAI covid POLICY is SHIT.",
+        "SHANGHAI covid POLICY is shit.",
+        "SHANGHAI covid policy IS SHIT.",
+        "SHANGHAI covid policy IS shit.",
+        "SHANGHAI covid policy is SHIT.",
+        "SHANGHAI covid policy is shit.",
+        "shanghai COVID POLICY IS SHIT.",
+        "shanghai COVID POLICY IS shit.",
+        "shanghai COVID POLICY is SHIT.",
+        "shanghai COVID POLICY is shit.",
+        "shanghai COVID policy IS SHIT.",
+        "shanghai COVID policy IS shit.",
+        "shanghai COVID policy is SHIT.",
+        "shanghai COVID policy is shit.",
+        "shanghai covid POLICY IS SHIT.",
+        "shanghai covid POLICY IS shit.",
+        "shanghai covid POLICY is SHIT.",
+        "shanghai covid POLICY is shit.",
+        "shanghai covid policy IS SHIT.",
+        "shanghai covid policy IS shit.",
+        "shanghai covid policy is SHIT.",
+        "shanghai covid policy is shit."
+    };
+
+    EXPECT_EQUAL(allEmphasesOf("SHANGHAI COVID POLICY IS SHIT."), expected);
 }
