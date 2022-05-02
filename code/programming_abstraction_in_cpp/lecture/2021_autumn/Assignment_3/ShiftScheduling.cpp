@@ -2,32 +2,104 @@
 #include "Shift.h"
 using namespace std;
 
-/* TODO: Refer to ShiftScheduling.h for more information about what this function should do.
- * Then, delete this comment and replace it with one of your own.
+
+/* Functions Prototypes */
+Set<Shift> asSet(const Vector<Shift>& shifts);
+bool isOverlap(Shift currentShift, const Vector<Shift> &currentHigh);
+void highestValueHelper(int round,
+                        int maxHours,
+                        const Vector<Shift> &shiftsVec,
+                        Vector<Shift> &currentHigh);
+bool isSurpassed(Vector<Shift> lhs, Vector<Shift> rhs);
+
+/*
+ * Function: highestValueScheduleFor
+ * Usage: auto schedule = highestValueScheduleFor(asSet(shifts), 11);
+ * ------------------------------------------------------------------
+ * Find the optimal combination of shifts which produce the highest value.
  */
 Set<Shift> highestValueScheduleFor(const Set<Shift>& shifts, int maxHours) {
-    /* TODO: Delete the next few lines and implement this function. */
-    Set<Shift> high;
-    int localHour = maxHours;
+
+    if(maxHours < 0)
+    {
+        error("Invalid working hours.");
+    }
+
+    int shiftSize = shifts.size();
+    Vector<Shift> shiftsVec;
     for(Shift s : shifts)
     {
-        int timeRange = lengthOf(s);
-        bool isOverlap = false;
-        for(Shift ss : high)
+        shiftsVec += s;
+    }
+
+    Vector<Shift> highVec;
+
+    for(int i = 0; i < shiftSize; i++)
+    {
+        Vector<Shift> currentHigh;
+        highestValueHelper(i, maxHours, shiftsVec, currentHigh);
+
+        if(isSurpassed(highVec, currentHigh))
         {
-            if(overlapsWith(ss, s))
-            {
-                isOverlap = true;
-                break;
-            }
-        }
-        if(timeRange < localHour && !isOverlap)
-        {
-            high += s;
-            localHour -= timeRange;
+            highVec = currentHigh;
         }
     }
-    return high;
+
+    return asSet(highVec);
+}
+
+
+
+
+bool isOverlap(Shift currentShift, const Vector<Shift> &currentHigh)
+{
+    bool isOverlap = false;
+    for(Shift s : currentHigh)
+    {
+        if(overlapsWith(currentShift, s))
+        {
+            isOverlap = true;
+            break;
+        }
+    }
+    return isOverlap;
+}
+
+void highestValueHelper(int round, int maxHours,const Vector<Shift> &shiftsVec, Vector<Shift> &currentHigh)
+{
+    if(round >= shiftsVec.size() || maxHours <= 0)
+    {
+        return;
+    }
+    Shift currentShift = shiftsVec[round];
+
+    int length = lengthOf(currentShift);
+
+    if(!isOverlap(currentShift, currentHigh) && maxHours >= length)
+    {
+        currentHigh += currentShift;
+        highestValueHelper(round + 1, maxHours - length, shiftsVec, currentHigh);
+    }
+    else
+    {
+        highestValueHelper(round + 1, maxHours, shiftsVec, currentHigh);
+    }
+}
+
+bool isSurpassed(Vector<Shift> lhs, Vector<Shift> rhs)
+{
+    int lNum = 0;
+    int rNum = 0;
+    for(Shift s : lhs)
+    {
+        lNum += s.value;
+    }
+    for(Shift s : rhs)
+    {
+        rNum += s.value;
+    }
+
+    return lNum < rNum;
 }
 
 
