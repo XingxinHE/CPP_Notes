@@ -1,4 +1,5 @@
 #include "ShiftScheduling.h"
+#include "Shift.h"
 using namespace std;
 
 /* TODO: Refer to ShiftScheduling.h for more information about what this function should do.
@@ -6,9 +7,27 @@ using namespace std;
  */
 Set<Shift> highestValueScheduleFor(const Set<Shift>& shifts, int maxHours) {
     /* TODO: Delete the next few lines and implement this function. */
-    (void) shifts;
-    (void) maxHours;
-    return {};
+    Set<Shift> high;
+    int localHour = maxHours;
+    for(Shift s : shifts)
+    {
+        int timeRange = lengthOf(s);
+        bool isOverlap = false;
+        for(Shift ss : high)
+        {
+            if(overlapsWith(ss, s))
+            {
+                isOverlap = true;
+                break;
+            }
+        }
+        if(timeRange < localHour && !isOverlap)
+        {
+            high += s;
+            localHour -= timeRange;
+        }
+    }
+    return high;
 }
 
 
