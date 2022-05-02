@@ -48,9 +48,12 @@ Set<Shift> highestValueScheduleFor(const Set<Shift>& shifts, int maxHours) {
     return asSet(highVec);
 }
 
-
-
-
+/*
+ * Function: isOverlap
+ * Usage: bool flag = isOverlap(currentShift, currentHigh);
+ * ------------------------------------------------------------------
+ * Determine whether this shift is already in the current combination.
+ */
 bool isOverlap(Shift currentShift, const Vector<Shift> &currentHigh)
 {
     bool isOverlap = false;
@@ -65,6 +68,12 @@ bool isOverlap(Shift currentShift, const Vector<Shift> &currentHigh)
     return isOverlap;
 }
 
+/*
+ * Function: highestValueHelper
+ * Usage: void highestValueHelper(round, maxHours, shiftsVec, currentHigh);
+ * ------------------------------------------------------------------------
+ * The main recursion function.
+ */
 void highestValueHelper(int round, int maxHours,const Vector<Shift> &shiftsVec, Vector<Shift> &currentHigh)
 {
     if(round >= shiftsVec.size() || maxHours <= 0)
@@ -86,6 +95,12 @@ void highestValueHelper(int round, int maxHours,const Vector<Shift> &shiftsVec, 
     }
 }
 
+/*
+ * Function: isSurpassed
+ * Usage: bool flag = isSurpassed(lhs, rhs);
+ * -----------------------------------------
+ * Determine which vector of shift has more value.
+ */
 bool isSurpassed(Vector<Shift> lhs, Vector<Shift> rhs)
 {
     int lNum = 0;
