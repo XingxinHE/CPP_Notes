@@ -226,6 +226,246 @@ A new space created by system for all the local variables required when calling 
 
 
 
+# 3.Strings
+
+
+
+## 3.1. Using strings as abstract values
+
+**📌The `cin >>` operator**
+
+It will read the word separated by whitespace.
+
+```c++
+cin >> name;
+```
+
+When you type:
+
+```cmd
+Eric Roberts
+```
+
+The name will only store the first word - `Eric`.
+
+
+
+**📌`getline` to read entire line**
+
+```c++
+getline(cin, str);
+```
+
+When you type:
+
+```cmd
+Eric Roberts
+```
+
+The `str` will store `Eric Roberts`.
+
+
+
+## 3.2. String operations
+
+**📌"methods" and "free functions"**
+
+- methods - functions defined in the class.
+- free functions - functions defined out of the class.
+
+
+
+**📌sender and receiver**
+
+- sender - the object that initiates the method is called the sender
+- receiver - the object that is the target of that transmission
+
+```c++
+receiver.name(arguments);
+```
+
+
+
+**📌lexicographic order**
+
+The order defined by the underlying ASCII codes.
+
+
+
+**📌`.at()` of `<string>` library**
+
+When you access certain element of a `string` object, you can:
+
+```c++
+str[0] = 'x';
+str.at(0) = 'x';  ✅
+```
+
+The latter is much safer since it will <u>**check**</u> whether the index is valid.
+
+
+
+**📌`size_t` in `string` class**
+
+The `string` class complicates matters by using the `size_t`[^1] to represent both index positions and lengths in a string.
+
+
+
+
+📌`str.substr(start, n)` 
+
+It creates a new string by extracting `n` characters from `str` starting at the index position specified by `start`.
+
+
+
+📌`str.find(pattern)`
+
+The `find` method will try to find the pattern:
+
+- success - return the 1st index of that pattern
+- failed - return `string::npos`
+
+The `find` can also take an optional second argument which indicates the index position at which to start the search.
+
+
+
+**📌Exported methods**
+
+<img src="img/image-20220503211844918.png" alt="image-20220503211844918" style="zoom:80%;" />
+
+
+
+## 3.3. The `<cctype>` library⭐
+
+**📌Why learn this?**
+
+Working with legacy C-style code, you have to get familiar with this library.
+
+
+
+**📌Exported methods**
+
+<img src="img/image-20220503211812930.png" alt="image-20220503211812930" style="zoom:80%;" />
+
+
+
+
+
+## 3.5. The legacy of C-style strings
+
+**📌History of `<string>` library**
+
+In its early years, C++ succeeded in part because it includes all of C as a subset, thereby making it possible to evolve gradually from one language to the other. That design decision, however, means that C++ includes some aspects of C that no longer make sense in a modern object-oriented language, but nonetheless need yo be maintained for compatibility.
+
+
+
+**📌`string` in C++ is not a primitive type**
+
+To prove that:
+
+```c++
+string str = "Hello world!";                        // VALID✅
+string str1 = "hello" + ", " + "world!";            // INVALID❌
+string str2 = string("hello") + ", " + "world!";    // VALID✅
+```
+
+
+
+
+
+# 5.Collections
+
+**📌ADT**
+
+A type defined in terms of its <u>**behavior**</u> rather than its representation is called ***abstract data type***, which is often abbreviated to ***ADT***.
+
+
+
+**📌STL**
+
+Standard Template Library.
+
+
+
+## 5.1. The Vector class
+
+**📌The Con of Array**
+
+- the size is fixed
+- The array does not explicitly specify the length of an array. Therefore, we often accompany an integer to track the size.
+- does not support insert and remove operation
+- array does not have bound-checking
+
+
+
+**📌Some Jargon**
+
+```c++
+Vector<string> vec;
+```
+
+- base type - the type enclosed within the angle brackets is called the ***base type*** for the collection.
+- parameterized classes - Classes that include a base-type specification are called ***parameterized classes*** in the object-oriented community.
+- template - In C++, parameterized classes are more often called ***templates***.
+- generic - In C#, they call it *generic*.
+
+
+
+**📌bounds-checking**
+
+The operation of testing whether an index is valid is called ***bounds-checking***.
+
+
+
+ **📌Use `Vector` to count letters**
+
+```c++
+int main()
+{
+	Vector<int> letternCounts(26);
+    ifstream infile;
+    promptUserForFile(infile, "Input File: ");
+    while(infile.get(ch))
+    {
+        if(isalpha(ch))
+        {
+            letterCounts[toupper(ch) - 'A']++;     //🤚Take a look here
+        }
+    }
+    infile.close();
+    for(char ch = 'A'; ch <= 'Z'; ch++)            //🤚Take a look here
+    {
+        cout << setw(7) << letterCounts[ch - 'A'] << " " << ch << endl;
+    }
+
+    return 0;
+}
+```
+
+The most importance points lie in the following:
+
+```c++
+letterCounts[toupper(ch) - 'A']++;
+```
+
+It is a very smart move which takes advantage of the ASCII code and converts to integer. For example, `'A'` is the `0` element and therefore `'A' - 'A'` are `65 -65` which is `0`.
+
+
+
+## 5.2. The Stack class
+
+## 5.3. The Queue class
+
+## 5.4. The Map class
+
+## 5.5. The Set class
+
+## 5.6. Iterating over a collection
+
+
+
+
+
 
 
 
@@ -1252,4 +1492,12 @@ double weightOnBackOf(int row, int col, int pyramidHeight) {
 
 
 
+
+
+
+
+
+
+
+[^1]: The actual type of `size_t` is <u>**platform-dependent**</u>; a common mistake is to assume `size_t` is the same as `unsigned int`, which can lead to programming errors, particularly as 64-bit architectures become more prevalent.
 

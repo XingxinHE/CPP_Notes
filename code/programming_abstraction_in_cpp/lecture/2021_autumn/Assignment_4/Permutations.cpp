@@ -27,7 +27,7 @@ Set<string> permutationsRec(string str, string chosen) {
     else {
         /* Hold all permutations we find. */
         Set<string> result;
-        for (int i = 0; i < str.size(); i++) {
+        for (int i = 0; i < str.length(); i++) {
             /* Form a new string of all the remaining letters by grabbing everything
              * up to but not including the current character, then everything after
              * the current character.
@@ -38,7 +38,9 @@ Set<string> permutationsRec(string str, string chosen) {
             /* Find all permutations we can make with this choice and add them into
              * the result.
              */
-            Set<string> thisOption = permutationsRec(remaining, chosen += ch);
+            // THE PROBLEM IS HERE⚠!! previous is "chosen += ch"
+            // which increment itself!!
+            Set<string> thisOption = permutationsRec(remaining, chosen + ch);
             result += thisOption;
         }
 
