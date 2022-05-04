@@ -454,19 +454,102 @@ It is a very smart move which takes advantage of the ASCII code and converts to 
 
 ## 5.2. The Stack class
 
+**📌Importance of Stack⭐⭐**
+
+The primary reason that stacks are important in programming is that nested function calls behave in a stack-oriented fashion!.
+
+<img src="img/image-20220504231853166.png" alt="image-20220504231853166" style="zoom: 80%;" />
+
+Like the preceding diagram, the function calls are invoked in a stack frame. 
+
+
+
+
+
 ## 5.3. The Queue class
+
+**📌Simulations and models**
+
+Most problems are far too complex to allow for a complete understanding. There are just too many details. The reason to build a model is that, <u>despite the complexity of a particular problem</u>. If you can come up with a reasonable model for a process, you can often translate the dynamics of the model into a program that captures the behavior of that model. Such a program is called a <u>***simulation***</u>.
+
+
+
+**📌Poisson Distribution**
+
+**Poisson distribution** is a [discrete probability distribution](https://en.wikipedia.org/wiki/Discrete_probability_distribution) that expresses the probability of a given number of events occurring in a fixed interval of time or space if these events occur with a known constant mean rate and [independently](https://en.wikipedia.org/wiki/Statistical_independence) of the time since the last event.
+
+
 
 ## 5.4. The Map class
 
+**📌Jargon**
+
+The following 3 are the same.
+
+- symbol tables - in Computer Science
+- map - in C++
+- dictionary - in C#
+
+
+
+**📌Associative arrays**
+
+Arrays implemented using maps as their underlying representation are called **associative arrays**.
+
+
+
+
+
 ## 5.5. The Set class
+
+**📌Lexicon**
+
+A set of words with no associated definitions is called a ***lexicon***[^2].
+
+
+
+
 
 ## 5.6. Iterating over a collection
 
+**📌range-based `for` loop**
+
+The syntax is like the following:
+
+```c++
+for(type variable : collection)
+{
+    body of the loop
+}
+```
+
+<u>DISCLAIMER⚠</u>, the preceding feature is only supported in and after C++ 11 standard.
 
 
 
+**📌`foreach` in Stanford Library**
+
+The Stanford C++ libraries include an interface called `foreach.h` that uses the C++ preprocessor to define a `foreach` macro:
+
+```c++
+#include "foreach.h"
+foreach(type variable in collection)
+{
+    body of the loop
+}
+```
 
 
+
+**📌Iteration order**
+
+Each collection class defines its own policy about iteration order, usually based on considerations of efficiency.
+
+- `Vector` - iterate through index
+- `Grid` - the default is row-major order
+- `Map` - natural order, e.g. `int` as key - ascending order, `string` as key - lexicographic order
+- `Set` & `Lexicon` - natural order
+- `Stack` & `Queue` - can't be iterated⚠
 
 
 
@@ -1495,9 +1578,11 @@ double weightOnBackOf(int row, int col, int pyramidHeight) {
 
 
 
-
+# End
 
 
 
 [^1]: The actual type of `size_t` is <u>**platform-dependent**</u>; a common mistake is to assume `size_t` is the same as `unsigned int`, which can lead to programming errors, particularly as 64-bit architectures become more prevalent.
+
+[^2]: lexicon被翻译成辞典是不正确的，因为lexicon强调是一串不带释义的英文单词。讲白了就是一个set of English words
 
