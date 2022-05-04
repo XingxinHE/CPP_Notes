@@ -7,11 +7,37 @@ using namespace std;
 bool canBeMadeDisasterReady(const Map<string, Set<string>>& roadNetwork,
                             int numCities,
                             Set<string>& supplyLocations) {
-    /* TODO: Delete the next few lines and implement this function. */
-    (void) roadNetwork;
-    (void) numCities;
-    (void) supplyLocations;
-    return false;
+    // error case
+    if(numCities < 0)
+    {
+        error("Invalid supply!");
+    }
+
+    // base case
+    if(numCities == 0)
+    {
+        return roadNetwork.isEmpty();
+    }
+    // recursive case
+    else
+    {
+        if(roadNetwork.isEmpty())
+        {
+            return true;
+        }
+        string city = roadNetwork.firstKey();
+        Set<string> network = roadNetwork[city];
+        Map<string, Set<string>> roadNetworkCopy = roadNetwork;
+        roadNetworkCopy.remove(city);
+        supplyLocations += city;
+        for(string adjacentCity : network)
+        {
+            roadNetworkCopy.remove(adjacentCity);
+        }
+        return canBeMadeDisasterReady(roadNetworkCopy,
+                                      numCities - 1,
+                                      supplyLocations);
+    }
 }
 
 

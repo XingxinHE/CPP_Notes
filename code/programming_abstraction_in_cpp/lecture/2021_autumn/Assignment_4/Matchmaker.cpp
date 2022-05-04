@@ -62,72 +62,72 @@ bool isGreater(const Map<string, Map<string, int>>& possibleLinks,
 Set<Pair> maximumWeightMatching(const Map<string, Map<string, int>>& possibleLinks) {
 
     Set<Pair> result;
-    if(possibleLinks.isEmpty())
-    {
-        return result;
-    }
-    else
-    {
-        for(const string & key1 : possibleLinks)
-        {
-            // make a copy for permutation
-            Map<string, Map<string, int>> possibleLinksCopy = possibleLinks;
+//    if(possibleLinks.isEmpty())
+//    {
+//        return result;
+//    }
+//    else
+//    {
+//        for(const string & key1 : possibleLinks)
+//        {
+//            // make a copy for permutation
+//            Map<string, Map<string, int>> possibleLinksCopy = possibleLinks;
 
-            Map<string, int> key1Connection = possibleLinksCopy[key1];
-            if(key1Connection.isEmpty())
-            {
-                continue;
-            }
+//            Map<string, int> key1Connection = possibleLinksCopy[key1];
+//            if(key1Connection.isEmpty())
+//            {
+//                continue;
+//            }
 
-            // find the current max key and max value
-            string maxKey;
-            int maxValue = -1;
-            for(const string & key2 : key1Connection)
-            {
-                int value = key1Connection[key2];
-                if(value> maxValue)
-                {
-                    maxKey = key2;
-                    maxValue = value;
-                }
-            }
+//            // find the current max key and max value
+//            string maxKey;
+//            int maxValue = -1;
+//            for(const string & key2 : key1Connection)
+//            {
+//                int value = key1Connection[key2];
+//                if(value> maxValue)
+//                {
+//                    maxKey = key2;
+//                    maxValue = value;
+//                }
+//            }
 
-            // cull the key1 and key2
-            /*
-             * ├── key1❌
-             * │   ├──key2❌
-             * │   ├──key3
-             * ├── key2❌
-             * │   ├──key1❌
-             */
-            possibleLinksCopy.remove(key1);
-            possibleLinksCopy.remove(maxKey);
+//            // cull the key1 and key2
+//            /*
+//             * ├── key1❌
+//             * │   ├──key2❌
+//             * │   ├──key3
+//             * ├── key2❌
+//             * │   ├──key1❌
+//             */
+//            possibleLinksCopy.remove(key1);
+//            possibleLinksCopy.remove(maxKey);
 
-            // cull the key1 and key2 from other keys
-            /*
-             * ├── key1
-             * │   ├──key2
-             * │   ├──key3❌
-             * ├── key2
-             * │   ├──key1
-             */
-            for(const string & key3 : possibleLinksCopy)
-            {
-                possibleLinksCopy[key3].remove(key1);
-                possibleLinksCopy[key3].remove(maxKey);
-            }
+//            // cull the key1 and key2 from other keys
+//            /*
+//             * ├── key1
+//             * │   ├──key2
+//             * │   ├──key3❌
+//             * ├── key2
+//             * │   ├──key1
+//             */
+//            for(const string & key3 : possibleLinksCopy)
+//            {
+//                possibleLinksCopy[key3].remove(key1);
+//                possibleLinksCopy[key3].remove(maxKey);
+//            }
 
-            Pair pair(key1, maxKey);
-            Set<Pair> maxSet = maximumWeightMatching(possibleLinksCopy);
-            maxSet += pair;
+//            Pair pair(key1, maxKey);
+//            Set<Pair> maxSet = maximumWeightMatching(possibleLinksCopy);
+//            maxSet += pair;
 
-            // see which one is greater
-            if(isGreater(possibleLinks, result, maxSet))
-            {
-                result = maxSet;
-            }
-        }
-    }
+//            // see which one is greater
+//            if(isGreater(possibleLinks, result, maxSet))
+//            {
+//                result = maxSet;
+//            }
+//        }
+//    }
     return result;
 }
 
