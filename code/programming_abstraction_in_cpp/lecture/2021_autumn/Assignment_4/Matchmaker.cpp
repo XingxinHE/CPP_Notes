@@ -1,80 +1,197 @@
 #include "Matchmaker.h"
+#include <algorithm>
 using namespace std;
 
-bool hasPerfectMatching(const Map<string, Set<string>>& possibleLinks, Set<Pair>& matching) {
-    /* TODO: Delete this comment and these remaining lines, then implement this function. */
-    (void) possibleLinks;
-    (void) matching;
-    return false;
+
+bool hasPerfectMatching(const Map<string, Set<string>>& possibleLinks, Set<Pair>& matching)
+{
+    if (possibleLinks.isEmpty())
+    {
+        //base case
+        matching = {};
+        return true;
+    }
+    else
+    {
+        //recursive case
+        string firstPerson = possibleLinks.firstKey();
+        Map<string, Set<string>> posLinksCopy = possibleLinks;
+        posLinksCopy.remove(firstPerson);
+        for (const string& possibleLink: posLinksCopy)
+        {
+            Map<string, Set<string>> remainingLinks = posLinksCopy;
+            if (remainingLinks[possibleLink].contains(firstPerson))
+            {
+                //see if first person wants to work with posLink
+                remainingLinks.remove(possibleLink);
+                Pair possiblePair (firstPerson, possibleLink);
+                if (hasPerfectMatching(remainingLinks, matching))
+                {
+                    matching += possiblePair;
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+}
+
+bool isGreater(const Map<string, Map<string, int>>& possibleLinks,
+               const Set<Pair> &lhs,
+               const Set<Pair> &rhs)
+{
+    int lValue = 0;
+    int rValue = 0;
+    for(const Pair &pair : lhs)
+    {
+        string key1 = pair.first();
+        string key2 = pair.second();
+        lValue += possibleLinks[key1][key2];
+    }
+
+    for(const Pair &pair : rhs)
+    {
+        string key1 = pair.first();
+        string key2 = pair.second();
+        rValue += possibleLinks[key1][key2];
+    }
+
+    return rValue > lValue;
 }
 
 Set<Pair> maximumWeightMatching(const Map<string, Map<string, int>>& possibleLinks) {
-    /* TODO: Delete this comment and these remaining lines, then implement this function. */
-    (void) possibleLinks;
-    return { };
+
+    Set<Pair> result;
+    if(possibleLinks.isEmpty())
+    {
+        return result;
+    }
+    else
+    {
+        for(const string & key1 : possibleLinks)
+        {
+            // make a copy for permutation
+            Map<string, Map<string, int>> possibleLinksCopy = possibleLinks;
+
+            Map<string, int> key1Connection = possibleLinksCopy[key1];
+            if(key1Connection.isEmpty())
+            {
+                continue;
+            }
+
+            // find the current max key and max value
+            string maxKey;
+            int maxValue = -1;
+            for(const string & key2 : key1Connection)
+            {
+                int value = key1Connection[key2];
+                if(value> maxValue)
+                {
+                    maxKey = key2;
+                    maxValue = value;
+                }
+            }
+
+            // cull the key1 and key2
+            /*
+             * ├── key1❌
+             * │   ├──key2❌
+             * │   ├──key3
+             * ├── key2❌
+             * │   ├──key1❌
+             */
+            possibleLinksCopy.remove(key1);
+            possibleLinksCopy.remove(maxKey);
+
+            // cull the key1 and key2 from other keys
+            /*
+             * ├── key1
+             * │   ├──key2
+             * │   ├──key3❌
+             * ├── key2
+             * │   ├──key1
+             */
+            for(const string & key3 : possibleLinksCopy)
+            {
+                possibleLinksCopy[key3].remove(key1);
+                possibleLinksCopy[key3].remove(maxKey);
+            }
+
+            Pair pair(key1, maxKey);
+            Set<Pair> maxSet = maximumWeightMatching(possibleLinksCopy);
+            maxSet += pair;
+
+            // see which one is greater
+            if(isGreater(possibleLinks, result, maxSet))
+            {
+                result = maxSet;
+            }
+        }
+    }
+    return result;
 }
 
 /* * * * * Test Cases Below This Point * * * * */
 
 namespace {
-    /* Utility to go from a list of triples to a world. */
-    struct WeightedLink {
-        string from;
-        string to;
-        int cost;
-    };
-    Map<string, Map<string, int>> fromWeightedLinks(const Vector<WeightedLink>& links) {
-        Map<string, Map<string, int>> result;
-        for (const auto& link: links) {
-            result[link.from][link.to] = link.cost;
-            result[link.to][link.from] = link.cost;
-        }
-        return result;
+/* Utility to go from a list of triples to a world. */
+struct WeightedLink {
+    string from;
+    string to;
+    int cost;
+};
+Map<string, Map<string, int>> fromWeightedLinks(const Vector<WeightedLink>& links) {
+    Map<string, Map<string, int>> result;
+    for (const auto& link: links) {
+        result[link.from][link.to] = link.cost;
+        result[link.to][link.from] = link.cost;
     }
+    return result;
+}
 
-    /* Pairs to world. */
-    Map<string, Set<string>> fromLinks(const Vector<Pair>& pairs) {
-        Map<string, Set<string>> result;
-        for (const auto& link: pairs) {
-            result[link.first()].add(link.second());
-            result[link.second()].add(link.first());
-        }
-        return result;
+/* Pairs to world. */
+Map<string, Set<string>> fromLinks(const Vector<Pair>& pairs) {
+    Map<string, Set<string>> result;
+    for (const auto& link: pairs) {
+        result[link.first()].add(link.second());
+        result[link.second()].add(link.first());
     }
+    return result;
+}
 
-    /* Checks if a set of pairs forms a perfect matching. */
-    bool isPerfectMatching(const Map<string, Set<string>>& possibleLinks,
-                           const Set<Pair>& matching) {
-        /* Need to check that
+/* Checks if a set of pairs forms a perfect matching. */
+bool isPerfectMatching(const Map<string, Set<string>>& possibleLinks,
+                       const Set<Pair>& matching) {
+    /* Need to check that
          *
          * 1. each pair is indeed a possible link,
          * 2. each person appears in exactly one pair.
          */
-        Set<string> used;
-        for (Pair p: matching) {
-            /* Are these folks even in the group of people? */
-            if (!possibleLinks.containsKey(p.first())) return false;
-            if (!possibleLinks.containsKey(p.second())) return false;
+    Set<string> used;
+    for (Pair p: matching) {
+        /* Are these folks even in the group of people? */
+        if (!possibleLinks.containsKey(p.first())) return false;
+        if (!possibleLinks.containsKey(p.second())) return false;
 
-            /* If these people are in the group, are they linked? */
-            if (!possibleLinks[p.first()].contains(p.second()) ||
+        /* If these people are in the group, are they linked? */
+        if (!possibleLinks[p.first()].contains(p.second()) ||
                 !possibleLinks[p.second()].contains(p.first())) {
-                return false;
-            }
-
-            /* Have we seen them before? */
-            if (used.contains(p.first()) || used.contains(p.second())) {
-                return false;
-            }
-
-            /* Add them both. */
-            used += p.first();
-            used += p.second();
+            return false;
         }
 
-        /* Confirm that's everyone. */
-        return used.size() == possibleLinks.size();
+        /* Have we seen them before? */
+        if (used.contains(p.first()) || used.contains(p.second())) {
+            return false;
+        }
+
+        /* Add them both. */
+        used += p.first();
+        used += p.second();
     }
+
+    /* Confirm that's everyone. */
+    return used.size() == possibleLinks.size();
+}
 }
 
 #include "GUI/SimpleTest.h"
@@ -107,8 +224,8 @@ PROVIDED_TEST("hasPerfectMatching works on a world with two linked people.") {
      * The matching is {A, B}
      */
     auto links = fromLinks({
-        { "A", "B" }
-    });
+                               { "A", "B" }
+                           });
 
     Set<Pair> unused;
     EXPECT(hasPerfectMatching(links, unused));
@@ -122,8 +239,8 @@ PROVIDED_TEST("hasPerfectMatching works on a world with two linked people, and p
      * The matching is {A, B}
      */
     auto links = fromLinks({
-        { "A", "B" }
-    });
+                               { "A", "B" }
+                           });
 
     Set<Pair> expected = {
         { "A", "B" }
@@ -145,10 +262,10 @@ PROVIDED_TEST("hasPerfectMatching works on a triangle of people.") {
      * There is no perfect matching here, unfortunately.
      */
     auto links = fromLinks({
-        { "A", "B" },
-        { "B", "C" },
-        { "C", "A" }
-    });
+                               { "A", "B" },
+                               { "B", "C" },
+                               { "C", "A" }
+                           });
 
     Set<Pair> unused;
     EXPECT(!hasPerfectMatching(links, unused));
@@ -166,11 +283,11 @@ PROVIDED_TEST("hasPerfectMatching works on a square of people.") {
      * Either will work.
      */
     auto links = fromLinks({
-        { "A", "B" },
-        { "B", "C" },
-        { "C", "D" },
-        { "D", "A" }
-    });
+                               { "A", "B" },
+                               { "B", "C" },
+                               { "C", "D" },
+                               { "D", "A" }
+                           });
 
     Set<Pair> unused;
     EXPECT(hasPerfectMatching(links, unused));
@@ -188,11 +305,11 @@ PROVIDED_TEST("hasPerfectMatching works on a square of people, and produces outp
      * Either will work.
      */
     auto links = fromLinks({
-        { "A", "B" },
-        { "B", "C" },
-        { "C", "D" },
-        { "D", "A" }
-    });
+                               { "A", "B" },
+                               { "B", "C" },
+                               { "C", "D" },
+                               { "D", "A" }
+                           });
 
     Set<Pair> matching;
     EXPECT(hasPerfectMatching(links, matching));
@@ -212,12 +329,12 @@ PROVIDED_TEST("hasPerfectMatching works on a pentagon of people.") {
      * length.
      */
     auto links = fromLinks({
-        { "A", "B" },
-        { "B", "C" },
-        { "C", "D" },
-        { "D", "E" },
-        { "E", "A" }
-    });
+                               { "A", "B" },
+                               { "B", "C" },
+                               { "C", "D" },
+                               { "D", "E" },
+                               { "E", "A" }
+                           });
 
     Set<Pair> unused;
     EXPECT(!hasPerfectMatching(links, unused));
@@ -245,12 +362,12 @@ PROVIDED_TEST("hasPerfectMatching works on a line of six people.") {
     Vector<string> people = { "A", "B", "C", "D", "E", "F" };
     do {
         Map<string, Set<string>> links = fromLinks({
-            { people[0], people[1] },
-            { people[1], people[2] },
-            { people[2], people[3] },
-            { people[3], people[4] },
-            { people[4], people[5] }
-        });
+                                                       { people[0], people[1] },
+                                                       { people[1], people[2] },
+                                                       { people[2], people[3] },
+                                                       { people[3], people[4] },
+                                                       { people[4], people[5] }
+                                                   });
 
         Set<Pair> matching;
         EXPECT(hasPerfectMatching(links, matching));
@@ -281,12 +398,12 @@ PROVIDED_TEST("hasPerfectMatching works on a more complex negative example.") {
     Vector<string> people = { "A", "B", "C", "D", "E", "F" };
     do {
         Map<string, Set<string>> links = fromLinks({
-            { people[0], people[2] },
-            { people[1], people[2] },
-            { people[2], people[3] },
-            { people[3], people[4] },
-            { people[3], people[5] },
-        });
+                                                       { people[0], people[2] },
+                                                       { people[1], people[2] },
+                                                       { people[2], people[3] },
+                                                       { people[3], people[4] },
+                                                       { people[3], people[5] },
+                                                   });
 
         Set<Pair> matching;
         EXPECT(!hasPerfectMatching(links, matching));
@@ -317,13 +434,13 @@ PROVIDED_TEST("hasPerfectMatching works on a more complex positive example.") {
     Vector<string> people = { "A", "B", "C", "D", "E", "F" };
     do {
         Map<string, Set<string>> links = fromLinks({
-            { people[0], people[1] },
-            { people[1], people[2] },
-            { people[2], people[3] },
-            { people[3], people[1] },
-            { people[2], people[4] },
-            { people[3], people[5] },
-        });
+                                                       { people[0], people[1] },
+                                                       { people[1], people[2] },
+                                                       { people[2], people[3] },
+                                                       { people[3], people[1] },
+                                                       { people[2], people[4] },
+                                                       { people[3], people[5] },
+                                                   });
 
         Set<Pair> matching;
         EXPECT(hasPerfectMatching(links, matching));
@@ -351,12 +468,12 @@ PROVIDED_TEST("hasPerfectMatching works on a caterpillar.") {
     Vector<string> people = { "A", "B", "C", "D", "E", "F" };
     do {
         Map<string, Set<string>> links = fromLinks({
-            { people[0], people[1] },
-            { people[1], people[2] },
-            { people[0], people[3] },
-            { people[1], people[4] },
-            { people[2], people[5] },
-        });
+                                                       { people[0], people[1] },
+                                                       { people[1], people[2] },
+                                                       { people[0], people[3] },
+                                                       { people[1], people[4] },
+                                                       { people[2], people[5] },
+                                                   });
 
         Set<Pair> matching;
         EXPECT(hasPerfectMatching(links, matching));
@@ -468,8 +585,8 @@ PROVIDED_TEST("maximumWeightMatching: Works for a single pair of people.") {
      * Best option is to pick A -- B.
      */
     auto links = fromWeightedLinks({
-        { "A", "B", 1 }
-    });
+                                       { "A", "B", 1 }
+                                   });
 
     /* Should pick A--B. */
     EXPECT_EQUAL(maximumWeightMatching(links), {{"A", "B"}});
@@ -484,8 +601,8 @@ PROVIDED_TEST("maximumWeightMatching: Won't pick a negative edge.") {
      * Best option is to not match anyone!
      */
     auto links = fromWeightedLinks({
-        { "A", "B", -1 }
-    });
+                                       { "A", "B", -1 }
+                                   });
 
     /* Should pick A--B. */
     EXPECT_EQUAL(maximumWeightMatching(links), {});
@@ -500,9 +617,9 @@ PROVIDED_TEST("maximumWeightMatching: Works on a line of three people.") {
      * Best option is to pick B -- C.
      */
     auto links = fromWeightedLinks({
-        { "A", "B", 1 },
-        { "B", "C", 2 },
-    });
+                                       { "A", "B", 1 },
+                                       { "B", "C", 2 },
+                                   });
 
     /* Should pick B--C. */
     EXPECT_EQUAL(maximumWeightMatching(links), { {"B", "C"} });
@@ -519,10 +636,10 @@ PROVIDED_TEST("maximumWeightMatching: Works on a triangle.") {
      * Best option is to pick B -- C.
      */
     auto links = fromWeightedLinks({
-        { "A", "B", 1 },
-        { "B", "C", 3 },
-        { "A", "C", 2 }
-    });
+                                       { "A", "B", 1 },
+                                       { "B", "C", 3 },
+                                       { "A", "C", 2 }
+                                   });
 
     /* Should pick B--C. */
     EXPECT_EQUAL(maximumWeightMatching(links), { {"B", "C"} });
@@ -542,11 +659,11 @@ PROVIDED_TEST("maximumWeightMatching: Works on a square.") {
      * Best option is to pick BC/AD.
      */
     auto links = fromWeightedLinks({
-        { "A", "B", 1 },
-        { "B", "C", 2 },
-        { "C", "D", 4 },
-        { "D", "A", 8 },
-    });
+                                       { "A", "B", 1 },
+                                       { "B", "C", 2 },
+                                       { "C", "D", 4 },
+                                       { "D", "A", 8 },
+                                   });
 
     EXPECT_EQUAL(maximumWeightMatching(links), { {"A", "D"}, {"B", "C"} });
 }
@@ -561,10 +678,10 @@ PROVIDED_TEST("maximumWeightMatching: Works on a line of four people.") {
      * matching.
      */
     auto links = fromWeightedLinks({
-        { "A", "B", 1 },
-        { "B", "C", 3 },
-        { "C", "D", 1 },
-    });
+                                       { "A", "B", 1 },
+                                       { "B", "C", 3 },
+                                       { "C", "D", 1 },
+                                   });
 
     /* Should pick B--C. */
     EXPECT_EQUAL(maximumWeightMatching(links), { {"B", "C"} });
@@ -597,13 +714,13 @@ PROVIDED_TEST("maximumWeightMatching: Small stress test (should take at most a s
     Vector<string> people = { "A", "B", "C", "D", "E", "F" };
     do {
         auto links = fromWeightedLinks({
-            { people[0], people[1], 5 },
-            { people[1], people[2], 1 },
-            { people[2], people[0], 1 },
-            { people[3], people[0], 1 },
-            { people[4], people[1], 1 },
-            { people[5], people[2], 1 },
-        });
+                                           { people[0], people[1], 5 },
+                                           { people[1], people[2], 1 },
+                                           { people[2], people[0], 1 },
+                                           { people[3], people[0], 1 },
+                                           { people[4], people[1], 1 },
+                                           { people[5], people[2], 1 },
+                                       });
 
         Set<Pair> expected = {
             { people[0], people[1] },
