@@ -25,18 +25,29 @@ bool canBeMadeDisasterReady(const Map<string, Set<string>>& roadNetwork,
         {
             return true;
         }
-        string city = roadNetwork.firstKey();
-        Set<string> network = roadNetwork[city];
+
+        bool flag = false;
         Map<string, Set<string>> roadNetworkCopy = roadNetwork;
-        roadNetworkCopy.remove(city);
-        supplyLocations += city;
-        for(string adjacentCity : network)
+        for(string city : roadNetworkCopy)
         {
-            roadNetworkCopy.remove(adjacentCity);
+
+            Set<string> network = roadNetwork[city];
+            roadNetworkCopy.remove(city);
+            supplyLocations += city;
+            for(string adjacentCity : network)
+            {
+                roadNetworkCopy.remove(adjacentCity);
+            }
+            flag = canBeMadeDisasterReady(roadNetworkCopy,
+                                          numCities - 1,
+                                          supplyLocations);
+            if(flag)
+            {
+                break;
+            }
         }
-        return canBeMadeDisasterReady(roadNetworkCopy,
-                                      numCities - 1,
-                                      supplyLocations);
+
+        return flag;
     }
 }
 
