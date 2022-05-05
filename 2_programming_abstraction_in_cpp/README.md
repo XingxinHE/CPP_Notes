@@ -553,6 +553,84 @@ Each collection class defines its own policy about iteration order, usually base
 
 
 
+# 7.Introduction to Recursion
+
+**📌What is Recursion?**
+
+Recursion is defined as any solution technique in which <u>large problems</u> are solved by <u>reducing them to smaller problems</u> ***of the same form***.
+
+
+
+**📌Why Recursion?**
+
+Using recursion makes it possible to solve complex programs in <u>simple and profoundly elegant</u> ways.
+
+
+
+**📌How to learn recursion?**
+
+First of all, learning how to use recursion can be difficult🙁. But! you should develop the <u>**intuition**</u> necessary to make recursion seem as natural as all the other control structures.
+
+
+
+## 7.1. A simple example of recursion
+
+**📌When should you use recursion?**
+
+When you are faced with a task that exceeds your own capacity, the answer lies in delegating part of the work to others.
+
+
+
+**📌Recursive paradigm**
+
+The recursive function is more or less like the following:
+
+```
+if (test for simple case)
+{
+	Compute a simple solution without using recursion.
+}
+else
+{
+	Break the problem down into subproblems of the same form.
+	Solve each of the subproblems by calling this function recursively.
+	Reassemble the subproblem solutions into a solution for the whole.
+}
+```
+
+Because the solution depends on dividing hard problems into simpler instances of the same problem, recursive solutions of this form are often called <u>**divide-and-conquer**</u> algorithms.
+
+
+
+**📌How to judge whether the problem can be solved by recursion?**
+
+1. You must be able to <u>**identify simple cases**</u> for which the answer is easily determined.
+2. You must be able to <u>**identify a recursive decomposition**</u> that allows you to break any complex instance of the problem into simpler problems of the same form.
+
+
+
+## 7.2. The factorial function
+
+**📌Iterative[^3] and Recursive**
+
+Iterative and recursive strategies are <u>often seen as opposites</u> because they can be used to solve the same problem in rather different ways.
+
+However, sometimes we will use iterative strategy in recursive strategy.
+
+
+
+📌
+
+
+
+
+
+# 8.Recursive Strategies
+
+
+
+
+
 # 11.Pointers and Array
 
 
@@ -1585,4 +1663,6 @@ double weightOnBackOf(int row, int col, int pyramidHeight) {
 [^1]: The actual type of `size_t` is <u>**platform-dependent**</u>; a common mistake is to assume `size_t` is the same as `unsigned int`, which can lead to programming errors, particularly as 64-bit architectures become more prevalent.
 
 [^2]: lexicon被翻译成辞典是不正确的，因为lexicon强调是一串不带释义的英文单词。讲白了就是一个set of English words
+
+[^3]: Implementations that use looping (typically by using `for` and `while` statements) are said to be ***iterative***.
 
