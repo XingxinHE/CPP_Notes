@@ -850,11 +850,113 @@ ArrayStack::~ArrayStack()
 
 ## Chapter 1
 
+> ​	20.How do you specify a shorthand assignment operation?
+
+The shorthand assignment operation is the following
+
+```c++
+x+=3;
+```
+
+
+
+> ​	26.What for loop control line would you use in each of the following situations?
+
+a.	Counting from 1 to 100
+
+```c++
+for (int i = 1; i <= 100; i++)
+```
+
+b.	Counting by sevens starting at 0 until the number has more than two digits
+
+```c++
+for (int i = 0; i < 100; i += 7)
+```
+
+c.	Counting backward by twos from 100 to 0
+
+```c++
+for (int i = 100; i >= 0; i -= 2)
+```
+
 
 
 
 
 ## Chapter 2
+
+
+
+## Chapter 3
+
+> ​	9.What two syntactic forms does this chapter describe for selecting an individual character from a string?  How do these two syntactic forms differ in their implementation?
+
+There are 2 syntatics forms:
+
+- `str[index]`
+- `str.at(index)`
+
+The difference is that the `at()` method will check if the index is in bounds which is **safer**.
+
+
+
+> ​	14.Describe how the **compare** method uses the return value to indicate the relative ordering of two strings. Why is this method rarely used in practice?
+
+The `compare()` method is like the following:
+
+```c++
+int receiver.compare(/* argument */);
+```
+
+There are 3 cases:
+
+- `==0`, the length is equal between receiver and sender
+- `<0`, the length of receiver is smaller than the length of sender
+- `>0`, the length of receiver is greater than the length of sender
+
+
+
+> ​	21.What is the result of each of the following calls to the `<cctype>` library:
+
+```c++
+bool flag = isdigit(7);    //false
+bool flag = isdigit('7');  //true
+bool flag = isalnum(7);    //false
+int cha = toupper(7);      //7, and this does not throw an error
+char cha = toupper('A');   //'A'
+char cha = tolower('A');   //'a'
+```
+
+
+
+> ​	23.How can you convert a primitive string value to a C++ string? How can you specify a conversion in the opposite direction?
+
+```c++
+// C => C++
+string str = string(cstr);
+
+// C++ => C
+str.c_str();
+```
+
+
+
+
+
+## Chapter 5
+
+> ​	2.What three advantages does this chapter cite for separating the behavior of a class from its underlying implementation?
+
+- Simplicity
+- Flexibility
+- Security
+
+
+
+> ​	21.Describe in your own words what is meant by the term *discrete time* in the context of a simulation program.
+
+ The simulation is divided into discrete units which is short enough to work.
 
 
 
