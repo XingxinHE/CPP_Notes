@@ -553,6 +553,12 @@ Each collection class defines its own policy about iteration order, usually base
 
 
 
+# 6.Designing Classes
+
+
+
+
+
 # 7.Introduction to Recursion
 
 **📌What is Recursion?**
@@ -957,6 +963,57 @@ str.c_str();
 > ​	21.Describe in your own words what is meant by the term *discrete time* in the context of a simulation program.
 
  The simulation is divided into discrete units which is short enough to work.
+
+
+
+## Chapter 6
+
+> ​	8.What does it mean for a class to be *immutable*?
+
+A class whose internal state can't be modified after initialization. It's kind of like `readonly` in C#.
+
+
+
+> 	12. How does C++ differentiate between the prefix and suffix versions of the `++` and `--` operators?
+
+Suffix takes a dummy argument to prevent violating identical declaration. For example:
+
+```c++
+// prefix version
+Direction operator++(Direction &dir)
+{
+    dir = Direction(dir + 1);
+    return dir;
+}
+
+// suffix version
+Direction operator++(Direction &dir, int)  // the int is a dummpy argument which will never be used.
+{
+    Direction old = dir;
+    dir = Direction(dir + 1);
+    return old;
+}
+```
+
+
+
+> 	18. What are the 5 steps suggested in this chapter as guidelines for designing a class?
+
+They are:
+
+- Standing in the perspective of clients, thinking about how would they do(behavior and interface)
+- Select which kinds of data should be private
+- Design a trail of constructors for different circumstances
+- Think about the public functions as the methods of the class
+- Code and test the implementation
+
+
+
+> ​	22.In the `rational.h` file, why is it necessary to designate the operator methods for `+,-,*,/` as `friend` but not the operator method for the `<<` insertion operator?
+
+Because the `<<` operator does not access the private data member.
+
+
 
 
 
