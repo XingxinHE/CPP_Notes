@@ -974,7 +974,7 @@ A class whose internal state can't be modified after initialization. It's kind o
 
 
 
-> 	12. How does C++ differentiate between the prefix and suffix versions of the `++` and `--` operators?
+> ​	12.How does C++ differentiate between the prefix and suffix versions of the `++` and `--` operators?
 
 Suffix takes a dummy argument to prevent violating identical declaration. For example:
 
@@ -997,7 +997,7 @@ Direction operator++(Direction &dir, int)  // the int is a dummpy argument which
 
 
 
-> 	18. What are the 5 steps suggested in this chapter as guidelines for designing a class?
+> ​	18.What are the 5 steps suggested in this chapter as guidelines for designing a class?
 
 They are:
 
