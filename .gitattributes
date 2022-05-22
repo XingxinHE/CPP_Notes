@@ -1,2 +1,2 @@
 *.1 linguist-language=text
-*.3grams=cpp
+*.3grams linguist-language=cpp
