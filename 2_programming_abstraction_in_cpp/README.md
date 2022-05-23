@@ -555,6 +555,99 @@ Each collection class defines its own policy about iteration order, usually base
 
 # 6.Designing Classes
 
+## 6.1. Representing points
+
+**📌field and member**
+
+In structure, the components are called **fields** and **members**.
+
+
+
+**📌How should we see `struct`?**
+
+The fundamental characteristic of a structure is that it is possible to view it both as a collection of individual fields and as a single value.
+
+```c++
+struct Point
+{
+    int x;
+    int y;
+};
+```
+
+<img src="img/image-20220523223901506.png" alt="image-20220523223901506" style="zoom:67%;" />
+
+
+
+**📌Instance Variable**
+
+The fields of a class are called instance variables.
+
+```c++
+class Point
+{
+    public:
+    	int x;
+    	int y;
+    private:
+    	double a;
+    	double b;
+}
+```
+
+However, `public` instance variables are discouraged in modern object-oriented programming. Therefore, the following is more appropriate:
+
+```c++
+class Point
+{
+    public:
+    // ..methods here
+    
+    private:
+    	int x;
+    	int y;
+};
+```
+
+
+
+**📌A typical class skeleton**
+
+<img src="img/image-20220523224910183.png" alt="image-20220523224910183" style="zoom:67%;" />
+
+
+
+**📌getter and setter**
+
+Methods that retrieve the values of instance variables are formally called *accessors*, but are more often known as ***getters***.
+
+Methods that set the values of specific instance variables are called *mutators* or ***setters***.
+
+> ​	💡These concepts are the same as in `get` and `set` properties in C#.
+
+
+
+**📌immutable**
+
+Before talking about it, I want to introduce you that in history many programmers insist that instance member should not be modified one initialized since it is private. Such class are said to be **immutable**. The preceding diagram of `Point` class is a good example.
+
+> ​	💡However, this is just one of opinion. You are free to choose the strategies.
+
+
+
+**📌separate the interface from the implementation**
+
+This idea results 2 files - header file and source file.
+
+> ​	Header file:
+
+```c++
+```
+
+
+
+
+
 
 
 
