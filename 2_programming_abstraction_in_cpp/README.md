@@ -635,16 +635,140 @@ Before talking about it, I want to introduce you that in history many programmer
 
 
 
-**📌separate the interface from the implementation**
+**📌C++ Class Boilerplate🌟 - separate the interface from the implementation**
 
 This idea results 2 files - header file and source file.
 
 > ​	Header file:
 
 ```c++
+/*
+ * File: point.h
+ * -------------
+ * This interface exports the Point class, which represents a point on
+ * a two-dimensional integer grid.
+ */
+
+#ifndef _point_h
+#define _point_h
+
+#include <string>
+
+class Point
+{
+
+public:
+
+/*
+ * Constructor: Point
+ * Usage: Point origin;
+ *        Point pt(xc, yc);
+ * ------------------------
+ * Creates a Point object. The default constructor sets the coordinates to 0;
+ * the second form sets the coordinates to xc and yc.
+ */
+    Point();
+    Point(int xc, int yc);
+    ~Point();
+
+/*
+ * Methods: getX, getY
+ * Usage: int x = pt.getX();
+ *        int y = pt.getY();
+ * -------------------------
+ * Return the x and y coordinates of the point, respectively.
+ */
+    int getX();
+    int getY();
+
+/*
+ * Methods: toString
+ * Usage: string str = pt.toString();
+ * ----------------------------------
+ * Return a string representation of the Point in the form "(x,y)".
+ */
+    std::string toString();
+
+private:
+    int x;                  /* The x-coordinate */
+    int y;                  /* The y-coordinate */
+};
+
+#endif
+```
+
+> ​	Source file:
+
+```c++
+/*
+ * File: point.cpp
+ * ---------------
+ * This file implements the point.h interface.
+ */
+
+#include "point.h"
+
+/*
+ * Implementation notes: Constructors
+ * ----------------------------------
+ * The constructors initialize the instance variables x and y. In the
+ * second form of the constructor, the parameter names are xc and yc
+ * to avoid the problem of shadowing the instance variable.
+ */
+
+Point::Point()
+      :x(0), y(0)
+{
+}
+
+Point::Point(int xc, int yc)
+      :x(xc), y(yc)
+{
+}
+
+Point::~Point(){}
+
+
+/*
+ * Implementation notes: Getters
+ * -----------------------------
+ * The getters return the value of the corresponding instance variable.
+ * No setters are provided to ensure that Point objects are immutable.
+ */
+
+int Point::getX()
+{
+    return this->x;
+}
+
+int Point::getY()
+{
+    return this->y;
+}
+
+
+/*
+ * Implementation notes: toString
+ * -----------------------------
+ * The implementation of toString uses the std::to_string function from STL.
+ */
+
+std::string Point::toString()
+{
+    std::string output = 
+                        "(" + 
+                        std::to_string(this->x) + 
+                        ", " + 
+                        std::to_string(this->y) + 
+                        ")";
+
+    return output;
+}
 ```
 
 
+
+## 6.2. Operator overloading
 
 
 
@@ -1107,6 +1231,10 @@ They are:
 Because the `<<` operator does not access the private data member.
 
 
+
+## Chapter 11
+
+> ​	2.
 
 
 
