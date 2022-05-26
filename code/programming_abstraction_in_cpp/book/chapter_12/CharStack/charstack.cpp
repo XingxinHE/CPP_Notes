@@ -1,7 +1,7 @@
 #include "charstack.h"
 
 CharStack::CharStack()
-          :m_count(0), m_capacity(10)
+          :m_count(0), m_capacity(INITIAL_CAPACITY)
 {
     m_pArray = new char[m_capacity];
 }
@@ -27,9 +27,7 @@ void CharStack::push(char input)
     {
         resize(true);
     }
-    
-    m_pArray[m_count] = input;
-    m_count++;
+    m_pArray[m_count++] = input;
 }
 
 char CharStack::peek()
@@ -47,14 +45,10 @@ char CharStack::peek()
 
 char CharStack::pop()
 {
-    
-    
     if(!isEmpty())
     {
-        char item = m_pArray[m_count-1];
-        m_pArray[m_count-1] = '\0';
-        m_count--;
-        if (m_count < (0.5 * m_capacity))
+        char item = m_pArray[--m_count];
+        if (m_count < (int(0.5 * m_capacity)))
         {
             resize(false);
         }
@@ -80,26 +74,24 @@ void CharStack::resize(bool isIncrement)
 {
     if (isIncrement)
     {
-        char *pNew = new char[m_capacity * 2];
-        for (int i = 0; i < m_capacity; i++)
-        {
-            pNew[i] = m_pArray[i];
-        }
-        char *pTemp = m_pArray;
-        m_pArray = pNew;
-        delete[] pTemp;
+        char *oldPtr = m_pArray;
         m_capacity *= 2;
+        m_pArray = new char[m_capacity];
+        for (int i = 0; i < m_count; i++)
+        {
+            m_pArray[i] = oldPtr[i];
+        }
+        delete[] oldPtr;
     }
     else
     {
-        char *pNew = new char[int(0.5 * m_capacity)];
+        char *oldPtr = m_pArray;
+        m_capacity = int(0.5 * m_capacity);
+        m_pArray = new char[m_capacity];
         for (int i = 0; i < m_count; i++)
         {
-            pNew[i] = m_pArray[i];
+            m_pArray[i] = oldPtr[i];
         }
-        char *pTemp = m_pArray;
-        m_pArray = pNew;
-        delete[] pTemp;
-        m_capacity = int(0.5 * m_capacity);
+        delete[] oldPtr;
     }
 }

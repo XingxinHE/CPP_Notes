@@ -1063,6 +1063,176 @@ ArrayStack::~ArrayStack()
 
 
 
+# 12.Dynamic Memory Management
+
+
+
+## 12.4. Defining a `CharStack` class
+
+**📌Interface Defined**
+
+The following interfaces are defined:
+
+- constructor
+- destructor
+- `size()`
+- `isEmpty()`
+- `clear()`
+- `push()`
+- `pop()`
+- `peek()`
+
+
+
+**📌My Implementation**
+
+Before reading the book, I tried to do [it](https://github.com/XingxinHE/CPP_Notes/commit/86f75e7c3d28e94f9f01afdf8195ec867f642c83) by myself. However, there is some code better than my version.
+
+> ​	1.Fewer Variable
+
+```c++
+//🤚Can be implemented
+void CharStack::resize(bool isIncrement)
+{
+    if (isIncrement)
+    {
+        char *pNew = new char[m_capacity * 2];
+        for (int i = 0; i < m_capacity; i++)
+        {
+            pNew[i] = m_pArray[i];
+        }
+        char *pTemp = m_pArray;
+        m_pArray = pNew;
+        delete[] pTemp;
+        m_capacity *= 2;
+    }
+    else
+    {
+        char *pNew = new char[int(0.5 * m_capacity)];
+        for (int i = 0; i < m_count; i++)
+        {
+            pNew[i] = m_pArray[i];
+        }
+        char *pTemp = m_pArray;
+        m_pArray = pNew;
+        delete[] pTemp;
+        m_capacity = int(0.5 * m_capacity);
+    }
+}
+```
+
+In the `resize()` function, I used 3 variables which is redundant. The following is implemented:
+
+```c++
+char *oldPtr = m_pArray;                  //👈I declare an oldPtr which points to what m_pArray points to.
+m_pArray = new char[m_capacity * 2];      //👈m_pArray is expanded with new memory
+for (int i = 0; i < m_capacity; i++)
+{
+    m_pArray[i] = oldPtr[i];
+}
+delete[] oldPtr;                          //👈Just delete the old one is fine
+m_capacity *= 2;
+```
+
+> ​	2.Modify Capacity Directly
+
+```c++
+if (isIncrement)
+{
+    char *oldPtr = m_pArray;
+    m_pArray = new char[m_capacity * 2];
+    for (int i = 0; i < m_capacity; i++)
+    {
+        m_pArray[i] = oldPtr[i];
+    }
+    delete[] oldPtr;
+    m_capacity *= 2;
+}
+else
+{
+    char *pNew = new char[int(0.5 * m_capacity)];
+    for (int i = 0; i < m_count; i++)
+    {
+        pNew[i] = m_pArray[i];
+    }
+    char *pTemp = m_pArray;
+    m_pArray = pNew;
+    delete[] pTemp;
+    m_capacity = int(0.5 * m_capacity);
+}
+```
+
+> ​	3.Increment the Index
+
+```c++
+//🤚Can be implemented
+void CharStack::push(char input)
+{
+    if (m_count == m_capacity)
+    {
+        resize(true);
+    }
+    
+    m_pArray[m_count] = input;        //👈Can be implemented
+    m_count++;						  //👈
+}
+```
+
+The increment can be done in one sentence.
+
+```c++
+void CharStack::push(char input)
+{
+    if (m_count == m_capacity)
+    {
+        resize(true);
+    }
+    m_pArray[m_count++] = input;        //👈Increment right away
+}
+```
+
+> ​	4.The Array Needn't to Refill Item
+
+```c++
+//🤚Can be implemented
+char CharStack::pop()
+{
+    if(!isEmpty())
+    {
+        char item = m_pArray[m_count-1];     //👈The top-most element is exactly (current index - 1)
+        m_pArray[m_count-1] = '\0';
+        m_count--;                           //👈
+        if (m_count < (0.5 * m_capacity))
+        {
+            resize(false);
+        }
+        return item;
+    }
+    else
+    {
+        return '\0';
+    }
+}
+```
+
+Can be implemented to:
+
+```c++
+if(!isEmpty())
+{
+    m_count--;
+    if (m_count < (0.5 * m_capacity))
+    {
+        resize(false);
+    }
+    return m_pArray[m_count];
+}
+```
+
+
+
+
+
 
 
 # 16.Binary Tree
