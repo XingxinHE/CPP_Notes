@@ -1231,6 +1231,66 @@ if(!isEmpty())
 
 
 
+## 12.10. LinkedList by myself
+
+
+
+```c++
+ostream& operator<<(ostream &os, const LinkedIntList &list)
+{
+    LinkNode *temp = list.start;
+    while(temp != nullptr)
+    {
+        os << temp->value << endl;
+        temp = temp->next;
+    }
+
+    return os;
+}
+```
+
+=>
+
+```c++
+ostream& operator<<(ostream &os, const LinkedIntList &list)
+{
+    for(LinkNode *temp = list.start; temp != nullptr; temp = temp->next)
+    {
+        os << temp->value << endl;
+    }
+
+    return os;
+}
+```
+
+
+
+
+
+
+
+```c++
+LinkNode *temp = start;
+while(temp->next != nullptr)
+{
+    temp = temp->next;
+}
+
+temp->next = tail;
+```
+
+=>
+
+```c++
+LinkNode *temp = start;
+for(; temp->next != nullptr; temp = temp->next);
+temp->next = tail;
+```
+
+
+
+
+
 
 
 
