@@ -85,6 +85,31 @@ int main()
     }
     printLine();
 
+    cout << "Declare a stack push S-E-X..." << endl;
+    CharStack stack1;
+    stack1.push('S');
+    stack1.push('E');
+    stack1.push('X');
+    printLine();
+
+    cout << "Start testing copy constructor..." << endl;
+    CharStack copyStack(stack1);
+    cout << "Popping the element..." << endl;
+    while(!copyStack.isEmpty())
+    {
+        cout << copyStack.pop() << endl;;
+    }
+    printLine();
+
+    cout << "Start testing equal operator..." << endl;
+    CharStack equalStack = stack1;
+    cout << "Popping the element..." << endl;
+    while(!equalStack.isEmpty())
+    {
+        cout << equalStack.pop() << endl;;
+    }
+    printLine();
+
     return 0;
 }
 

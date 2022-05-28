@@ -29,6 +29,14 @@ public:
     CharStack();
 
 /*
+ * Constructor: CharStack
+ * Usage: CharStack cstk(src);
+ * ----------------------
+ * Initializes the current object to be a deep copy of the specified source.
+ */
+    CharStack(const CharStack &src);
+
+/*
  * Destructor: ~CharStack
  * ----------------------
  * Free any heap storage associated with this character stack.
@@ -41,7 +49,7 @@ public:
  * --------------------------------
  * Returns the number of characters in this stack.
  */
-    int size();
+    int size() const;
 
 /*
  * Method: isEmpty
@@ -49,7 +57,7 @@ public:
  * --------------------------------
  * Returns true if this stack contains no characters.
  */
-    bool isEmpty();
+    bool isEmpty() const;
 
 /*
  * Method: clear
@@ -82,7 +90,15 @@ public:
  * Removes the value of the top character from this stack without
  * removing it.
  */
-    char peek();
+    char peek() const;
+
+/*
+ * Operator: =
+ * Usage: dst = src;
+ * -----------------
+ * Assign src to dst so that the two stacks are independent copies.
+ */
+CharStack & operator=(const CharStack &src);
 
 private:
 /*  Private constants  */
@@ -93,6 +109,7 @@ private:
     char *m_pArray;
 /*  Private function prototypes  */
     void resize(bool isIncrement);
+    void deepCopy(const CharStack &src);
 };
 
 
