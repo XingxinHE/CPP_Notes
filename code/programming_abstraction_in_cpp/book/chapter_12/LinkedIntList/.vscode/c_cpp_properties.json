@@ -1,0 +1,11 @@
+{
+    "configurations": [
+        {
+            "name": "Win32",
+            "includePath": [
+                "${default}"
+            ]
+        }
+    ],
+    "version": 4
+}

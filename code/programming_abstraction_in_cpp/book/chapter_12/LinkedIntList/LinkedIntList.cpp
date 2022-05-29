@@ -87,6 +87,7 @@ void LinkedIntList::addBack(const int value)
 
 void LinkedIntList::addAfter(int refValue, int value)
 {
+    m_size++;
     LinkNode* keyNode = search(start, refValue);
     if (keyNode != nullptr)
     {
@@ -103,6 +104,7 @@ void LinkedIntList::addAfter(int refValue, int value)
 
 void LinkedIntList::removeFront()
 {
+    m_size--;
     if(start != nullptr)
     {
         LinkNode *destroyNode = start;
@@ -113,20 +115,32 @@ void LinkedIntList::removeFront()
 
 void LinkedIntList::removeBack()
 {
+    m_size--;
     LinkNode *temp = start;
     for(; temp->next->next != nullptr; temp = temp->next);
     delete temp->next;
     temp->next = nullptr;
 }
 
-void LinkedIntList::removeValue(int value)
+void LinkedIntList::removeValue(int refValue)
 {
-    LinkNode* keyNode = search(start, value);
-    if (keyNode != nullptr)
+    LinkNode* keyNode = start;
+    if(keyNode->value == refValue)
     {
-        LinkNode* remove = keyNode;
+        removeFront();
+        return;
+    }
+    while (keyNode->next != nullptr)
+    {
+        if(keyNode->next->value == refValue)
+        {
+            LinkNode* remove = keyNode->next;
+            keyNode->next = keyNode->next->next;
+            delete remove;
+            m_size--;
+            return;
+        }
         keyNode = keyNode->next;
-        delete remove;
     }
 }
 

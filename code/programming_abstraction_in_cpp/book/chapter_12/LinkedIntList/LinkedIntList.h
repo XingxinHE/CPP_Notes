@@ -37,6 +37,7 @@ class LinkedIntList
     void release(LinkNode* startNode);
 
     LinkNode* search(LinkNode *startNode, const int value) const;
+    LinkNode* searchDeeper(LinkNode *startNode, const int value) const;
 };
 
 #endif
