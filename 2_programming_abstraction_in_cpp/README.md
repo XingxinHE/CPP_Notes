@@ -1293,6 +1293,219 @@ temp->next = tail;
 
 
 
+**📌Implementation of `LinkNode`**
+
+```c++
+struct LinkNode
+{
+    int value;
+    LinkNode *next;
+};
+```
+
+=>
+
+```c++
+struct LinkNode
+{
+    int value;
+    LinkNode *next;
+	// 🤚add a constructor
+    LinkNode(int _value)
+            :value(_value), next(nullptr)
+    {
+    }
+};
+```
+
+
+
+
+
+```c++
+start = new LinkNode;
+start->next = nullptr;
+start->value = value;
+```
+
+=>
+
+```c++
+start = new LinkNode(value);
+```
+
+
+
+
+
+**📌Implementation of `addFront(int )`**🌟
+
+```c++
+void LinkedIntList::addFront(const int value)
+{
+    m_size++;
+    if(start != nullptr)
+    {
+        LinkNode *old = start;
+        start = new LinkNode(value);
+        start->next = old;
+    }
+    else
+    {
+        start = new LinkNode(value);
+    }
+}
+```
+
+=>
+
+```c++
+void LinkedIntList::addFront(const int value)
+{
+    m_size++;
+
+    LinkNode *newNode = new LinkNode(value);
+    newNode->next = start;
+    start = newNode;
+}
+```
+
+The implementation doesn't give a shit on whether `start` is a `nullptr` or not. **<u>What really matters is what `start` points to!!</u>**
+
+<img src="img/image-20220529144217454.png" alt="image-20220529144217454" style="zoom: 50%;" />
+
+Like the preceding diagram, the `start` points to either a `nullptr` or a piece new node `FFF000`. It doesn't matter.
+
+When you:
+
+```c++
+newNode->next = start;
+```
+
+<img src="img/image-20220529144450658.png" alt="image-20220529144450658" style="zoom:50%;" />
+
+It means what `newNode` will `next` point to is what `start` points to. And the following line of code:
+
+```c++
+start = newNode;
+```
+
+<img src="img/image-20220529144734601.png" alt="image-20220529144734601" style="zoom:50%;" />
+
+It literally means that the `start` points to `newNode`.
+
+
+
+**📌Implementation of `operator<<`**
+
+The following code is kind of dangerous.
+
+```c++
+ostream& operator<<(ostream &os, const LinkedIntList &list)
+{
+    os << "Start -> ";
+    for(LinkNode *temp = list.start; temp != nullptr; temp = temp->next)
+    {
+        os << temp->value << " ->";
+    }
+    os << endl;
+    return os;
+}
+```
+
+A check should be a must.
+
+```c++
+ostream& operator<<(ostream &os, const LinkedIntList &list)
+{
+    os << "Start: { -> ";
+    if(!list.isEmpty())     //🤚This check is a must.
+    {
+        for(LinkNode *temp = list.start; temp != nullptr; temp = temp->next)
+        {
+            os << temp->value << " -> ";
+        }
+    }
+    os << "}" << endl;
+    return os;
+}
+```
+
+
+
+**📌Implementation of Traversal Strategy**
+
+Since this linked list is single direction linked list, therefore it is hard to find the previous node. The following are 2 strategies to find matched node. Suppose
+
+> ​	Find the previous node:  [*]-[x]-[ ]
+
+```c++
+// suppose 'x' is the value you want to search, then we can both track the previous '*'
+// traverse the list to the end, if necessary
+ListNode *curr = start;
+ListNode *prev = nullptr;
+
+while (curr != nullptr) 
+{
+    if (curr->data == value) 
+    {
+        break;
+    }
+    prev = curr;
+    curr = curr->next;
+}
+```
+
+> ​	Find the current node: [ ]-[x]-[ ]
+
+```c++
+// suppose 'x' is the value you want to search, then just search 'x'
+// here is an elegant recursive function
+LinkNode* LinkedIntList::search(LinkNode *startNode, const int value) const
+{
+    if (startNode == nullptr)
+    {
+        return nullptr;
+    }
+    else if(startNode->value == value)
+    {
+        return startNode;
+    }
+    else
+    {
+        return search(startNode->next, value);
+    }
+}
+```
+
+> ​	Elegant Recursive find the previous node: [*]-[x]-[ ]
+
+```c++
+void LinkedIntList::search(LinkNode *&prevNode, LinkNode *&currNode, const int value)
+{
+    if (currNode == nullptr)
+    {
+        return;
+    }
+    else if(currNode->value == value)
+    {
+        return;
+    }
+    else
+    {
+        prevNode = currNode;
+        currNode = currNode->next;
+        search(prevNode, currNode, value);
+    }
+}
+```
+
+
+
+**📌When you `delete` a pointer, it will not become `nullptr`**
+
+
+
 
 
 # 16.Binary Tree

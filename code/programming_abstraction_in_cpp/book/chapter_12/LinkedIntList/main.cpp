@@ -7,7 +7,8 @@ using namespace std;
 int main() {
 
     LinkedIntList list;
-    assert(("The list is empty", list.isEmpty()));
+    cout << list << endl;
+    assert(("The list is empty", !list.isEmpty()));
     
     // start -> 42 -> 17 -> -3 -> 9 /
     list.addBack(42);
@@ -40,7 +41,7 @@ int main() {
     cout << list << endl;
     assert(("First element now is 88", list.first() == 42));
 
-    list.removeValue(17);
+    list.removeValueMarty(17);
     cout << "After remove(17), here is the list again: " << endl;
     // start -> 42 -> -3 -> 9 -> 777/
     cout << list << endl;
@@ -49,6 +50,8 @@ int main() {
     cout << "After removeBack(), here is the list again: " << endl;
     // start -> 42 -> -3 -> 9/
     cout << list << endl;
+
+
 
     list.clear();
     assert(("List should be empty", list.isEmpty() == true));

@@ -8,7 +8,10 @@ LinkedIntList::LinkedIntList()
 
 LinkedIntList::~LinkedIntList()
 {
-    release(start);
+    if (start != nullptr)
+    {
+        release(start);
+    }
 }
 
 int LinkedIntList::size() const
@@ -51,27 +54,16 @@ bool LinkedIntList::contains(const int value) const
 void LinkedIntList::addFront(const int value)
 {
     m_size++;
-    if(start != nullptr)
-    {
-        LinkNode *old = start;
-        start = new LinkNode;
-        start->value = value;
-        start->next = old;
-    }
-    else
-    {
-        start = new LinkNode;
-        start->next = nullptr;
-        start->value = 0;
-    }
+
+    LinkNode *newNode = new LinkNode(value);
+    newNode->next = start;
+    start = newNode;
 }
 
 void LinkedIntList::addBack(const int value)
 {
     m_size++;
-    LinkNode *tail = new LinkNode;
-    tail->value = value;
-    tail->next = nullptr;
+    LinkNode *tail = new LinkNode(value);
 
     if (start == nullptr)
     {
@@ -91,8 +83,7 @@ void LinkedIntList::addAfter(int refValue, int value)
     LinkNode* keyNode = search(start, refValue);
     if (keyNode != nullptr)
     {
-        LinkNode* insert = new LinkNode;
-        insert->value = value;
+        LinkNode* insert = new LinkNode(value);
         insert->next = keyNode->next;
         keyNode->next = insert;
     }
@@ -122,6 +113,13 @@ void LinkedIntList::removeBack()
     temp->next = nullptr;
 }
 
+void LinkedIntList::removeAfter(LinkNode* node)
+{
+    LinkNode *old = node->next;
+    node->next = node->next->next;
+    delete old;
+}
+
 void LinkedIntList::removeValue(int refValue)
 {
     LinkNode* keyNode = start;
@@ -144,48 +142,99 @@ void LinkedIntList::removeValue(int refValue)
     }
 }
 
+bool LinkedIntList::removeValueMarty(int value) {
+
+    // traverse the list to the end, if necessary
+    LinkNode *curr = start;
+    LinkNode *prev = nullptr;
+
+    search(prev, curr, value);
+
+    // case: the first node is the match
+    if (prev == nullptr)
+    {
+        removeFront();
+        return true;
+    }
+    // case: fail to find such value
+    if (curr == nullptr)
+    {
+        
+        return false;
+    }
+    // case: the node from the rest
+    removeAfter(prev);
+    return true;
+}
+
 void LinkedIntList::clear()
 {
-    release(start);
+    while (start != nullptr) 
+    {
+        LinkNode *temp = start;
+        start = start->next;
+        delete temp;
+    }
 }
 
 ostream& operator<<(ostream &os, const LinkedIntList &list)
 {
-    os << "Start -> ";
-    for(LinkNode *temp = list.start; temp != nullptr; temp = temp->next)
+    os << "Start: { -> ";
+    if(!list.isEmpty())
     {
-        os << temp->value << " ->";
+        for(LinkNode *temp = list.start; temp != nullptr; temp = temp->next)
+        {
+            os << temp->value << " -> ";
+        }
     }
-    os << endl;
+    os << "}" << endl;
     return os;
 }
 
-void LinkedIntList::release(LinkNode* startNode)
+void LinkedIntList::release(LinkNode* currNode)
 {
-    if(startNode->next == nullptr)
+    if(currNode->next == nullptr)
     {
-        delete startNode;
+        delete currNode;
         return;
     }
     else
     {
-        release(startNode->next);
-        delete startNode;
+        release(currNode->next);
+        delete currNode;
     }
 }
 
-LinkNode* LinkedIntList::search(LinkNode *startNode, const int value) const
+LinkNode* LinkedIntList::search(LinkNode *currNode, const int value) const
 {
-    if (startNode == nullptr)
+    if (currNode == nullptr)
     {
         return nullptr;
     }
-    else if(startNode->value == value)
+    else if(currNode->value == value)
     {
-        return startNode;
+        return currNode;
     }
     else
     {
-        return search(startNode->next, value);
+        return search(currNode->next, value);
+    }
+}
+
+void LinkedIntList::search(LinkNode *&prevNode, LinkNode *&currNode, const int value)
+{
+    if (currNode == nullptr)
+    {
+        return;
+    }
+    else if(currNode->value == value)
+    {
+        return;
+    }
+    else
+    {
+        prevNode = currNode;
+        currNode = currNode->next;
+        search(prevNode, currNode, value);
     }
 }

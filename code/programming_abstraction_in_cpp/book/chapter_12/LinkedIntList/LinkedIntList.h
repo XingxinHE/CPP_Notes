@@ -24,7 +24,9 @@ class LinkedIntList
 
     void removeFront();
     void removeBack();
+    void removeAfter(LinkNode* node);
     void removeValue(int value);
+    bool removeValueMarty(int value);
 
     void clear();
 
@@ -37,7 +39,7 @@ class LinkedIntList
     void release(LinkNode* startNode);
 
     LinkNode* search(LinkNode *startNode, const int value) const;
-    LinkNode* searchDeeper(LinkNode *startNode, const int value) const;
+    void search(LinkNode *&prevNode, LinkNode *&startNode, const int value);
 };
 
 #endif
