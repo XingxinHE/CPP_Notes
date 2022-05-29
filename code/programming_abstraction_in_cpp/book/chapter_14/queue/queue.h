@@ -1,3 +1,4 @@
+#include <stdexcept>
 /*
 * File: queue.h
 * -------------
@@ -18,6 +19,7 @@ template <typename ValueType>
 class Queue
 {
     
+/* Public Section */
 public:
     /*
     * Constructor: Queue
@@ -25,7 +27,7 @@ public:
     * ------------------------------
     * Initializes a new empty queue.
     */
-    Queue();
+    Queue<ValueType>();
 
 
 
@@ -35,7 +37,7 @@ public:
     * -------------------------
     * Frees any heap storage associated with this queue.
     */
-    ~Queue();
+    ~Queue<ValueType>();
 
 
 
@@ -99,7 +101,113 @@ public:
 
 
 
-    private:
+/* Private Section */
+private:
+
+/* Type for linked list cell */
+    struct LinkNode
+    {
+        ValueType value;                  /* The data value.                 */
+        LinkNode *next;                       /* Link to the next cell.          */
+
+        LinkNode(ValueType input)             /* Constructor.                    */
+            :value(input), next(nullptr)
+        {
+        }
+    };
+    
+    int m_count;
+    LinkNode *m_startCell;
+    LinkNode *m_endCell;
 
 };
+
+
+template<typename ValueType>
+Queue<ValueType>::Queue()
+                :m_count(0), m_startCell(nullptr), m_endCell(nullptr)
+{
+}
+
+template<typename ValueType>
+Queue<ValueType>::~Queue()
+{
+    clear();
+}
+
+template<typename ValueType>
+int Queue<ValueType>::size() const
+{
+    return m_count;
+}
+
+
+template<typename ValueType>
+bool Queue<ValueType>::isEmpty() const
+{
+    return m_count == 0;
+}
+
+template<typename ValueType>
+void Queue<ValueType>::clear()
+{
+    while (m_startCell != nullptr)
+    {
+        LinkNode *node = m_startCell;
+        m_startCell = m_startCell->next;
+        delete node;
+    }
+    m_endCell = nullptr;
+}
+
+template<typename ValueType>
+void Queue<ValueType>::enqueue(ValueType value)
+{
+    m_count++;
+    LinkNode *node = new LinkNode(value);
+    if (m_startCell == nullptr)
+    {
+        m_startCell = node;
+        m_endCell = node;
+        return;
+    }
+
+    m_endCell->next = node;
+    m_endCell = node;
+    return;
+}
+
+template<typename ValueType>
+ValueType Queue<ValueType>::dequeue()
+{
+    if(m_count == 0)
+    {
+        throw std::invalid_argument("Try to dequeue from an empty queue.");
+    }
+    m_count--;
+
+    ValueType result = m_startCell->value;
+    LinkNode *node = m_startCell;
+    m_startCell = m_startCell->next;
+    delete node;
+    if (m_count == 0)
+    {
+        m_endCell = nullptr;
+    }
+    
+    return result;
+}
+
+template<typename ValueType>
+ValueType Queue<ValueType>::peek() const
+{
+    if(m_count == 0)
+    {
+        throw std::invalid_argument("Try to peek from an empty queue.");
+    }
+    ValueType result = m_startCell->value;
+    
+    return result;
+}
+
 #endif
