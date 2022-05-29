@@ -1,6 +1,7 @@
 #include <stdexcept>
 #include "LinkedIntList.h"
 
+
 LinkedIntList::LinkedIntList()
               :m_size(0), start(nullptr)
 {
@@ -169,12 +170,7 @@ bool LinkedIntList::removeValueMarty(int value) {
 
 void LinkedIntList::clear()
 {
-    while (start != nullptr) 
-    {
-        LinkNode *temp = start;
-        start = start->next;
-        delete temp;
-    }
+    release(start);
 }
 
 ostream& operator<<(ostream &os, const LinkedIntList &list)
@@ -191,17 +187,13 @@ ostream& operator<<(ostream &os, const LinkedIntList &list)
     return os;
 }
 
-void LinkedIntList::release(LinkNode* currNode)
+void LinkedIntList::release(LinkNode *&currNode)
 {
-    if(currNode->next == nullptr)
+    if(currNode != nullptr)
     {
-        delete currNode;
-        return;
-    }
-    else
-    {
-        release(currNode->next);
-        delete currNode;
+        LinkNode *old = currNode;
+        currNode = currNode->next;
+        release(currNode);
     }
 }
 

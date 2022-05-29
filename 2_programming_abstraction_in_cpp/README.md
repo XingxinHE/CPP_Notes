@@ -1502,7 +1502,63 @@ void LinkedIntList::search(LinkNode *&prevNode, LinkNode *&currNode, const int v
 
 
 
-**📌When you `delete` a pointer, it will not become `nullptr`**
+**📌A pointer after `delete`  is not `nullptr`**
+
+The following code how I implement `clear()`, in the end the `start` is not `nullptr`.
+
+```c++
+void LinkedIntList::clear()
+{
+    release(start);
+}
+
+void LinkedIntList::release(LinkNode* currNode)
+{
+    if(currNode->next == nullptr)
+    {
+        delete currNode;
+        return;
+    }
+    else
+    {
+        release(currNode->next);
+        delete currNode;
+    }
+}
+```
+
+You can either place a `nullptr` after calling `release()`, or you can do the following:
+
+```c++
+void LinkedIntList::clear()
+{
+    while (start != nullptr) 
+    {
+        LinkNode *temp = start;
+        start = start->next;
+        delete temp;
+    }
+}
+```
+
+or make the recursive version:
+
+```c++
+void LinkedIntList::clear()
+{
+    release(start);
+}
+
+void LinkedIntList::release(LinkNode *&currNode)
+{
+    if(currNode != nullptr)
+    {
+        LinkNode *old = currNode;
+        currNode = currNode->next;
+        release(currNode);
+    }
+}
+```
 
 
 

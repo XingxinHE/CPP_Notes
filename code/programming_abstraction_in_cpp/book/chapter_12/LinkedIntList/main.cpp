@@ -8,7 +8,6 @@ int main() {
 
     LinkedIntList list;
     cout << list << endl;
-    assert(("The list is empty", !list.isEmpty()));
     
     // start -> 42 -> 17 -> -3 -> 9 /
     list.addBack(42);
@@ -51,11 +50,15 @@ int main() {
     // start -> 42 -> -3 -> 9/
     cout << list << endl;
 
-
-
+    cout << "Stress test..." << endl;
+    for (int i = 0; i < 1000000; i++)
+    {
+        list.addFront(i);
+    }
+    assert(("List should greater than 100000", list.size() > 1000000));
     list.clear();
-    assert(("List should be empty", list.isEmpty() == true));
-
+    assert(("List is empty.", list.isEmpty() == true));
+    
 
     return 0;
 }
