@@ -11,6 +11,8 @@
 #include <iostream>
 #include <exception>
 
+using namespace std;
+
 /*
 * Class: Vector<ValueType>
 * ------------------------
@@ -114,23 +116,48 @@ public:
     * elements. This method signals an error if the index is outside the
     * array range.
     */
-    ValueType &operator[](int index);
-
-    friend ostream &operator<<(ostream &os, const Vector<ValueType> &src);
+    ValueType& operator[](int index);
 
 
+
+    /*
+    * Operator: =
+    * -----------
+    * A deep copy by '== operator.
+    */
+    Vector<ValueType>& operator=(const Vector<ValueType> &src);
+
+
+
+/*
+* Implementation notes: Vector data structure
+* -------------------------------------------
+* The elements of the Vector are stored in a dynamic array of
+* the specified element type. If the space in the array is ever
+* exhausted, the implementation doubles the array capacity.
+*/
 private:
 
+/* Constant variables */
     static const int INITIAL_SIZE = 10;
+
+/* Instance variables */
     int m_capacity;
     int m_count;
     ValueType *array;
 
+/* Private method prototypes */
     void deepCopy(const Vector<ValueType> &src);
-    void resize(bool isIncrement)
-
+    void resize(bool isIncrement);
 };
 
+/*
+* Implementation notes: Vector constructor and destructor
+* -------------------------------------------------------
+* The two implementations of the constructor each allocate storage for
+* the dynamic array and then initialize the other fields of the object.
+* The destructor frees the heap memory used by the dynamic array.
+*/
 template<typename ValueType>
 Vector<ValueType>::Vector()
                  :m_capacity(INITIAL_SIZE), m_count(0)
@@ -139,7 +166,7 @@ Vector<ValueType>::Vector()
 }
 
 template<typename ValueType>
-Vector<ValueType>::Vector(int n, ValueType value = ValueType())
+Vector<ValueType>::Vector(int n, ValueType value)
                  :m_capacity(INITIAL_SIZE), m_count(n)
 {
     m_capacity = n > m_capacity? 2 * n : m_capacity;
@@ -162,6 +189,14 @@ Vector<ValueType>::~Vector()
     delete[] array;
 }
 
+
+
+/*
+* Implementation notes: Vector methods
+* ------------------------------------
+* The basic Vector methods are straightforward and should require
+* no detailed documentation.
+*/
 template<typename ValueType>
 int Vector<ValueType>::size() const
 {
@@ -184,25 +219,9 @@ void Vector<ValueType>::clear()
 }
 
 template<typename ValueType>
-void Vector<ValueType>::deepCopy(const Vector<ValueType> &src)
-{
-    if(this != &src)
-    {
-        this->m_capacity = src.m_capacity;
-        this->m_count = src.m_count;
-        delete[] array;
-        array = new ValueType[m_capacity];
-        for (int i = 0; i < m_count; i++)
-        {
-            array[i] = src.array[i];
-        }
-    }
-}
-
-template<typename ValueType>
 ValueType Vector<ValueType>::get(int index) const
 {
-    if (0 < index && index < m_count)
+    if (0 <= index && index < m_count)
     {
         ValueType result = array[index];
         return result;
@@ -216,11 +235,40 @@ ValueType Vector<ValueType>::get(int index) const
 template<typename ValueType>
 void Vector<ValueType>::set(int index, ValueType value)
 {
-    if (0 < index && index < m_count)
+    if (0 <= index && index < m_count)
     {
-        ValueType *temp = array;
-        temp += index;
-        *temp = value;
+        array[index] = value;
+    }
+    else
+    {
+        throw std::invalid_argument("Index is out of bound.");
+    }
+}
+
+
+
+/*
+* Implementation notes: add, insertAt, removeAt
+* ---------------------------------------------
+* These methods must shift the existing elements in the array to make
+* room for a new element or to close up the space left by a deleted one.
+*/
+template<typename ValueType>
+void Vector<ValueType>::insertAt(int index, ValueType value)
+{
+    if (0 <= index && index < m_count)
+    {
+        if((m_count + 1) > m_capacity)
+        {
+            resize(true);
+        }
+        for (int i = m_count; i >= index; i--)
+        {
+            array[i] = array[i-1];
+        }
+        
+        array[index] = value;
+        m_count++;
     }
     else
     {
@@ -229,22 +277,19 @@ void Vector<ValueType>::set(int index, ValueType value)
 }
 
 template<typename ValueType>
-void Vector<ValueType>::insertAt(int index, ValueType value)
+void Vector<ValueType>::removeAt(int index)
 {
-    if (0 < index && index < m_count)
+    if (0 <= index && index < m_count)
     {
-        if((m_count + 1) > m_capacity)
+        if((m_count - 1) < int(0.5 * m_capacity))
         {
-            resize(true);
+            resize(false);
         }
-        for (int i = m_count; i > index+1; i--)
+        for (int i = index; i < m_count - 1; i++)
         {
-            array[i+1] = array[i]
+            array[i] = array[i + 1];
         }
-        
-        ValueType *temp = array;
-        temp += index;
-        *temp = value;
+        m_count--;
     }
     else
     {
@@ -252,6 +297,66 @@ void Vector<ValueType>::insertAt(int index, ValueType value)
     }
 }
 
+template<typename ValueType>
+void Vector<ValueType>::add(ValueType value)
+{
+    if((m_count + 1) > m_capacity)
+    {
+        resize(true);
+    }
+    array[m_count++] = value;
+}
+
+
+
+/*
+* Implementation notes: Vector selection
+* --------------------------------------
+* The following code implements traditional array selection using square
+* brackets for the index. To ensure that clients can assign to array
+* elements, this method uses an & to return the result by reference.
+*/
+template<typename ValueType>
+ValueType& Vector<ValueType>::operator[](int index)
+{
+    return array[index];
+}
+
+template<typename ValueType>
+Vector<ValueType>& Vector<ValueType>::operator=(const Vector<ValueType> &src)
+{
+    if(this != &src)
+    {
+        delete[] array;
+        this->deepCopy(src);
+    }
+    return *this;
+}
+
+
+template<typename ValueType>
+ostream &operator<<(ostream &os, const Vector<ValueType> &src)
+{
+    os << "Vector: [";
+    for (int i = 0; i < src.size(); i++)
+    {
+        os << src.get(i) << ", ";
+        if (i > 0 && (i % 20 == 0))
+        {
+            os << endl;
+        }
+    }
+    os << "]" << endl;
+    return os;
+}
+
+
+
+/*
+* Implementation notes: resize
+* ----------------------------
+* This method resize the array capacity whenever it runs out of space or shrink.
+*/
 template<typename ValueType>
 void Vector<ValueType>::resize(bool isIncrement)
 {
@@ -273,6 +378,22 @@ void Vector<ValueType>::resize(bool isIncrement)
     }
 
     delete[] oldArray;
+}
+
+template<typename ValueType>
+void Vector<ValueType>::deepCopy(const Vector<ValueType> &src)
+{
+    if(this != &src)
+    {
+        this->m_capacity = src.m_capacity;
+        this->m_count = src.m_count;
+        delete[] array;
+        array = new ValueType[m_capacity];
+        for (int i = 0; i < m_count; i++)
+        {
+            array[i] = src.array[i];
+        }
+    }
 }
 
 #endif

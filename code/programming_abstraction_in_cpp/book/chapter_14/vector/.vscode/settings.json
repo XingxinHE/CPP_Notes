@@ -10,6 +10,13 @@
         "unordered_map": "cpp",
         "vector": "cpp",
         "xstring": "cpp",
-        "xutility": "cpp"
+        "xutility": "cpp",
+        "variant": "cpp",
+        "exception": "cpp",
+        "system_error": "cpp",
+        "type_traits": "cpp",
+        "utility": "cpp",
+        "xtr1common": "cpp",
+        "iosfwd": "cpp"
     }
 }
