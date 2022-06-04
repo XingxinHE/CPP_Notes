@@ -176,4 +176,70 @@ void BinarySearchTree::findNodeRec(TreeNode *&prev, TreeNode *&curr, int value)
 }
 
 
+void BinarySearchTree::remove(int value)
+{
+    if (m_root == nullptr)
+    {
+        return;
+    }
 
+    TreeNode *prev = nullptr;
+    TreeNode *curr = m_root;
+    findNodeRec(prev, curr, value);
+    if (curr != nullptr)
+    {
+        //打代码打到这里，这里找到当前的节点==value了，之后看怎么去除和重新连接
+        if (isLeaf(curr))
+        {
+            if(prev->value > curr->value)
+            {
+                prev->LNode = nullptr;
+            }
+            else
+            {
+                prev->RNode = nullptr;
+            }
+            delete curr;
+        }
+        if(isTree(curr))
+        {
+
+        }
+        
+    }
+    
+    
+}
+
+
+bool BinarySearchTree::isLeaf(TreeNode *node) const
+{
+    if(node->LNode != nullptr || node->RNode != nullptr)
+    {
+        return false;
+    }
+    else
+    {
+        return true;
+    }
+}
+
+bool BinarySearchTree::isTree(TreeNode *node) const
+{
+    return node->LNode != nullptr && node->RNode != nullptr;
+}
+
+TreeNode* BinarySearchTree::findMax(TreeNode *node) const
+{
+    if (node == nullptr)
+    {
+        return nullptr;
+    }
+    TreeNode *prev = nullptr;
+    while (node != nullptr)
+    {
+        prev = node;
+        node = node->RNode;
+    }
+    return prev;
+}

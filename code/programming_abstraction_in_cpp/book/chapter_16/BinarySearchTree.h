@@ -40,6 +40,11 @@ private:
     bool containsRec(TreeNode *node, int value) const;
     std::string toString(TreeNode *node) const;
     void findNodeRec(TreeNode *&prev, TreeNode *&curr, int value);
+    bool isLeaf(TreeNode *node) const;
+    bool isTree(TreeNode *node) const;
+
+    TreeNode* findMin(TreeNode *node) const;
+    TreeNode* findMax(TreeNode *node) const;
     
     
 };
