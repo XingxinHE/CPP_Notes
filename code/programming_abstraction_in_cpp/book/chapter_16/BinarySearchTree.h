@@ -17,7 +17,7 @@ public:
     void add(int value);
     void remove(int value);
     std::string toString() const;
-    friend ostream& operator<<(ostream &os, const BinarySearchTree &bTree);
+    friend std::ostream& operator<<(std::ostream &os, const BinarySearchTree &bTree);
 
 
 private:
@@ -36,9 +36,10 @@ private:
     int m_count;
 
     void deleteRec(TreeNode *node);
-    void addRec(TreeNode *node, int value);
+    void addRec(TreeNode *&node, int value);
     bool containsRec(TreeNode *node, int value) const;
     std::string toString(TreeNode *node) const;
+    void findNodeRec(TreeNode *&prev, TreeNode *&curr, int value);
     
     
 };

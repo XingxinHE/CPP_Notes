@@ -48,9 +48,8 @@ int BinarySearchTree::findMax() const
     }
     else
     {
-        throw std::out_of_range("The binary tree is empty");
+        throw std::out_of_range("The binary tree is empty.");
     }
-
 }
 
 void BinarySearchTree::add(int value)
@@ -58,7 +57,7 @@ void BinarySearchTree::add(int value)
     addRec(m_root, value);
 }
 
-void BinarySearchTree::addRec(TreeNode *node, int value)
+void BinarySearchTree::addRec(TreeNode *&node, int value)
 {
     if(node == nullptr)
     {
@@ -122,7 +121,7 @@ string BinarySearchTree::toString(TreeNode *node) const
     }
     string output = "";
     output += toString(node->LNode);
-    output += node->value;
+    output += to_string(node->value) + "->";
     output += toString(node->RNode);
     return output;
 }
@@ -147,6 +146,33 @@ ostream & operator<<(ostream &os, const BinarySearchTree &bTree)
     string output = bTree.toString();
     os << output << endl;
     return os;
+}
+
+void BinarySearchTree::findNodeRec(TreeNode *&prev, TreeNode *&curr, int value)
+{
+    if (curr == nullptr)
+    {
+        return;
+    }
+    else
+    {
+        if(value == curr->value)
+        {
+            return;
+        }
+        else if(value < curr->value)
+        {
+            prev = curr;
+            curr = curr->LNode;
+            findNodeRec(prev, curr, value);
+        }
+        else
+        {
+            prev = curr;
+            curr = curr->RNode;
+            findNodeRec(prev, curr, value);
+        }
+    }
 }
 
 
