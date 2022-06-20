@@ -2039,6 +2039,126 @@ The preceding algorithm is kind of smart. It loops from the back and delete from
 
 
 
+# Section 2
+
+**📌The height of that tree**
+
+The function prototype is:
+
+```c++
+int height(TreeNode* node);
+```
+
+Apparently, this should be a recursive function. My code is the following:
+
+> ​	👌
+
+```c++
+int height(TreeNode *node) {
+    if(node == nullptr)
+    {
+        return 0;
+    }
+    else if(node->left == nullptr && node->right != nullptr)
+    {
+        return 1 + height(node->right);
+    }
+    else if(node->left != nullptr && node->right == nullptr)
+    {
+        return 1 + height(node->left);
+    }
+    else if(node->left != nullptr && node->right != nullptr)
+    {
+        return 1 + max(height(node->left), height(node->right));
+    }
+    else
+    {
+        return 1;
+    }
+}
+```
+
+The idea is to see whether the left or right branch has more depth. However, it has redundancy and it can be optimized as:
+
+> ​	👌+✅+👍
+
+```c++
+int height(TreeNode * node)
+{
+    if (node == nullptr)
+    {
+        return 0;
+    }
+    else
+    {
+        return 1 + max(height(node->left), height(node->right));
+    }
+}
+```
+
+Very elegant!
+
+
+
+**📌Tree Equality**
+
+Write a function:
+
+```c++
+bool areEqual(TreeNode* one, TreeNode* two);
+```
+
+to check the equality of two tree having the exact same <u>shape</u> and <u>contents</u>.
+
+> ​	👌
+
+```c++
+bool areEqual(TreeNode* one, TreeNode* two)
+{
+    // can be combine (1/2)
+    if(one == nullptr && two == nullptr)
+    {
+        return true;
+    }
+    else if(one != nullptr && two != nullptr)
+    {
+        // 2 tree are equal meaning both a. shape b. content
+        return one->data == two->data &&
+               areEqual(one->left, two->left) &&
+               areEqual(one->right, two->right);
+    }
+    // can be combine (2/2)
+    else
+    {
+        return false;
+    }
+}
+```
+
+The preceding code actually has some space to be optimized.
+
+> ​	👌+✅+👍
+
+```c++
+bool areEqual(TreeNode* one, TreeNode* two)
+{
+    if(one == nullptr || two == nullptr)
+    {
+        return one == two;  //if both are null, they are true, other wise is false
+    }
+    else //both are not nullptr
+    {
+        return one->data == two->data &&
+               areEqual(one->left, two->left) &&
+               areEqual(one->right, two->right);
+    }
+}
+```
+
+This is much more elegant! 
+
+
+
 
 
 # Assignment 1

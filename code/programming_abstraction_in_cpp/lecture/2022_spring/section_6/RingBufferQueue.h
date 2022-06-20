@@ -33,13 +33,18 @@ public:
     int size();
 
 private:
-    static const int INITIAL_CAPACITY = 10;
-    int* m_array;
-    int m_head;
-    int m_tail;
-    int m_capacity;
-    int m_count;
-    int nextIndex(int index);
+    // TODO: Include any private member functions
+    // or member variables here as you deem appropriate.
+    // Then, delete these lines.
 
+    /* Note: since this is a header file, we've opted to refer to
+     * ostream by its "full name" of std::ostream.
+     *
+     * By listing this method as a "friend", this method can break
+     * object encapsulation and access private member variables
+     * of the RBQueue object.
+     *
+     * TODO: delete these lines and write a method comment
+     */
     friend std::ostream& operator<<(std::ostream& out, const RBQueue& queue);
 };

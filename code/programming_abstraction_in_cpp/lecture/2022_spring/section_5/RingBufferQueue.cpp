@@ -6,85 +6,87 @@ using namespace std;
 /**
  * TODO: write a method comment
  */
-RBQueue::RBQueue() {
-    // Delete these lines, then implement
-    // this method.
-
+RBQueue::RBQueue()
+       :m_head(0), m_tail(0), m_capacity(INITIAL_CAPACITY),
+        m_array(nullptr)
+{
+    m_array = new int[m_capacity];
 }
 
 /**
  * TODO: write a method comment
  */
 RBQueue::~RBQueue() {
-    // Delete these lines, then implement
-    // this method.
-
+    delete[] m_array;
 }
 
 /**
  * TODO: write a method comment
  */
 void RBQueue::enqueue(int elem) {
-    // The following lines are just here to
-    // disable compiler warnings and errors.
-    // Delete these lines, then implement
-    // this method.
-    (void) elem;
+    if(!this->isFull())
+    {
+        m_count++;
+        m_tail = nextIndex(m_tail + 1);
+        m_array[m_tail] = elem;
+    }
 }
 
 /**
  * TODO: write a method comment
  */
 int RBQueue::dequeue() {
-    // The following lines are just here to
-    // disable compiler warnings and errors.
-    // Delete these lines, then implement
-    // this method.
-    return 0;
+    if(!this->isEmpty())
+    {
+        m_count--;
+        int result = m_array[m_head];
+        m_head = nextIndex(m_head - 1);
+        return result;
+    }
+    else
+    {
+        error("Sorry, the queue is empty.");
+    }
 }
 
 /**
  * TODO: write a method comment
  */
 int RBQueue::peek() {
-    // The following lines are just here to
-    // disable compiler warnings and errors.
-    // Delete these lines, then implement
-    // this method.
-    return 0;
+    if(!this->isEmpty())
+    {
+        return m_array[m_head];
+    }
+    else
+    {
+        error("Sorry, the queue is empty.");
+    }
 }
 
 /**
  * TODO: write a method comment
  */
 bool RBQueue::isEmpty() {
-    // The following lines are just here to
-    // disable compiler warnings and errors.
-    // Delete these lines, then implement
-    // this method.
-    return false;
+    return m_count == 0;
 }
 
 /**
  * TODO: write a method comment
  */
 bool RBQueue::isFull() {
-    // The following lines are just here to
-    // disable compiler warnings and errors.
-    // Delete these lines, then implement
-    // this method.
-    return false;
+    return m_count == m_capacity;
 }
 
 /**
  * TODO: write a method comment
  */
 int RBQueue::size() {
-    // The following lines are just here to
-    // disable compiler warnings and errors.
-    // Delete these lines, then implement
-    // this method.
-    return 0;
+    return m_count;
+}
+
+int RBQueue::nextIndex(int index)
+{
+    return (index + m_capacity) % m_capacity;
 }
 
 /**
