@@ -31,13 +31,38 @@ using namespace std;
 
 
 TreeNode* biggestNodeIn(TreeNode* root) {
-    /* TODO: Your code goes here! */
-    return nullptr;
+    if(root == nullptr) return nullptr;
+    else
+    {
+        TreeNode *node = root;
+        for(; node->right != nullptr; node = node->right);
+        return node;
+    }
 }
 
 TreeNode* secondBiggestNodeIn(TreeNode* root) {
-    /* TODO: Your code goes here! */
-    return nullptr;
+    if(root == nullptr) return nullptr;
+    else
+    {
+        TreeNode *prev = nullptr;
+        TreeNode *curr = root;
+        for(; curr->right != nullptr; prev = curr, curr = curr->right);
+        if(prev == nullptr)
+        {
+            if(curr->left != nullptr)
+            {
+                return biggestNodeIn(curr->left);
+            }
+            else
+            {
+                return nullptr;
+            }
+        }
+        else
+        {
+            return prev;
+        }
+    }
 }
 
 PROVIDED_TEST("Simple tests for biggestNodeIn function") {
@@ -86,7 +111,10 @@ PROVIDED_TEST("Simple tests for secondBiggestNodeIn function") {
 
     freeTree(tree);
     tree = createTreeFromVector({/* Level 1 */ 5, /* Level 2 */ 3, 6, /* Level 3 */ 1, 4, EMPTY, 9, /* Level 4 */ EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, 8, EMPTY});
-    EXPECT_EQUAL(tree->right->right->left, secondBiggestNodeIn(tree));
+    TreeNode *actual = secondBiggestNodeIn(tree);
+    TreeNode *expected = tree->right->right->left;
+    std::cout << actual->data << expected->data << endl;
+    EXPECT_EQUAL(actual, expected);
 
     freeTree(tree);
     tree = createTreeFromVector({/* Level 1 */ 5, /* Level 2 */ 3, 6, /* Level 3 */ 1, 4, EMPTY, 9, /* Level 4 */ EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, 8, 10});

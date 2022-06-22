@@ -32,8 +32,19 @@ using namespace std;
  */
 
 void removeLeaves(TreeNode*& node) {
-    /* TODO: Your code goes here! */
-    (void) node;
+    if(node == nullptr) return;
+    else if(node->left == nullptr && node->right == nullptr)
+    {
+        delete node;
+        node = nullptr;
+        return;
+    }
+    else
+    {
+        removeLeaves(node->left);
+        removeLeaves(node->right);
+        return;
+    }
 }
 
 PROVIDED_TEST("Simple set of test cases for countLeft function") {

@@ -27,9 +27,23 @@ using namespace std;
  * left-hand subtree of another node.
  */
 
-int countLeftNodes(TreeNode *node) {
-    /* TODO: Your code goes here! */
-    return 0;
+int countLeftNodes(TreeNode *node)
+{
+    if(node == nullptr) return 0;
+    else
+    {
+        int count = 0;
+        if(node->left != nullptr)
+        {
+            count++;
+            count += countLeftNodes(node->left);
+        }
+        if(node->right != nullptr)
+        {
+            count += countLeftNodes(node->right);
+        }
+        return count;
+    }
 }
 
 

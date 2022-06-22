@@ -2039,7 +2039,7 @@ The preceding algorithm is kind of smart. It loops from the back and delete from
 
 
 
-# Section 2
+# Section 8
 
 **📌The height of that tree**
 
@@ -2156,6 +2156,126 @@ bool areEqual(TreeNode* one, TreeNode* two)
 ```
 
 This is much more elegant! 
+
+
+
+**📌Count Left Nodes**
+
+A left child is a node that appears as the root of a left-hand subtree of another node.
+
+```
+     3
+    / \
+   /   \
+  5     2
+/      / \
+1     4    6
+```
+
+For example, the left nodes of the preceding is `5,1,4`.
+
+> ​	👌+👍
+
+```c++
+int countLeftNodes(TreeNode *node)
+{
+    if(node == nullptr) return 0;
+    else
+    {
+        // my strategy is to sum up all the left and right
+        // the strategy is straight forward.
+        int count = 0;
+        if(node->left != nullptr)
+        {
+            count++;
+            count += countLeftNodes(node->left);
+        }
+        if(node->right != nullptr)
+        {
+            count += countLeftNodes(node->right);
+        }
+        return count;
+    }
+}
+```
+
+> ​	👌+👍
+
+```c++
+int countLeftNodes(TreeNode *node)
+{
+    if (node == nullptr)
+    {
+        return 0;
+    }
+    // it first tries to look whether its left branch is empty
+    else if (node->left == nullptr)
+    {
+        return countLeftNodes(node->right);
+    }
+    else
+    {
+        return 1 + countLeftNodes(node->left) + countLeftNodes(node->right);
+    }
+}
+```
+
+
+
+**📌Find out Tree is Balanced**
+
+A tree <u>is balanced</u> if its left and right subtrees are balanced trees whose heights <u>**differ by at most 1**</u>.
+
+For example:
+
+<img src="img\balanced.png" style="zoom: 33%;" />
+
+The following algorithm is beautiful and it is a bit hard to understand...
+
+```c++
+bool isBalanced(TreeNode *node)
+{
+    if(node == nullptr) return true;
+    // ⭐ the key step (recursive) is designed as followed 
+    else if(!isBalanced(node->left) || !isBalanced(node->right))
+    {
+        return false;
+    }
+    // ⭐ the key step (count the height) is designed as followed 
+    else
+    {
+        int leftHeight = height(node->left);
+        int rightHeight = height(node->right);
+        return abs(leftHeight - rightHeight) <= 1;
+    }
+}
+```
+
+
+
+**📌Remove Leaves**
+
+This one is pretty simple.
+
+<img src="img\pruning.png" style="zoom: 33%;" />
+
+```c++
+void removeLeaves(TreeNode*& node) {
+    if(node == nullptr) return;
+    else if(node->left == nullptr && node->right == nullptr)
+    {
+        delete node;
+        node = nullptr;  //you can do this since node is passed by reference!
+        return;
+    }
+    else
+    {
+        removeLeaves(node->left);
+        removeLeaves(node->right);
+        return;
+    }
+}
+```
 
 
 

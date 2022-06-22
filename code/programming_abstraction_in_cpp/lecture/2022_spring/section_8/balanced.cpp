@@ -15,6 +15,7 @@
 #include "treenode.h"
 #include "utility.h"
 #include "error.h"
+
 using namespace std;
 
 /*
@@ -28,9 +29,31 @@ using namespace std;
  * solved in this section handout.
  */
 
-bool isBalanced(TreeNode *node) {
-    /* TODO: Your code goes here! */
-    return false;
+int heightHelper(TreeNode * node)
+{
+    if (node == nullptr)
+    {
+        return 0;
+    }
+    else
+    {
+        return 1 + max(heightHelper(node->left), heightHelper(node->right));
+    }
+}
+
+bool isBalanced(TreeNode *node)
+{
+    if(node == nullptr) return true;
+    else if(!isBalanced(node->left) || !isBalanced(node->right))
+    {
+        return false;
+    }
+    else
+    {
+        int leftHeight = heightHelper(node->left);
+        int rightHeight = heightHelper(node->right);
+        return abs(leftHeight - rightHeight) <= 1;
+    }
 }
 
 PROVIDED_TEST("Simple set of test cases for balanced function") {
