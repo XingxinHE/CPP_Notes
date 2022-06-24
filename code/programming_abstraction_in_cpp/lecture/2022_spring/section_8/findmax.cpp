@@ -47,16 +47,9 @@ TreeNode* secondBiggestNodeIn(TreeNode* root) {
         TreeNode *prev = nullptr;
         TreeNode *curr = root;
         for(; curr->right != nullptr; prev = curr, curr = curr->right);
-        if(prev == nullptr)
+        if(curr->left != nullptr)
         {
-            if(curr->left != nullptr)
-            {
-                return biggestNodeIn(curr->left);
-            }
-            else
-            {
-                return nullptr;
-            }
+            return biggestNodeIn(curr->left);
         }
         else
         {

@@ -28,9 +28,32 @@ using namespace std;
  * etc.
  */
 
+
+bool isBSTRec(TreeNode* lowBound, TreeNode* root, TreeNode* highBound)
+{
+    if(root == nullptr) return true;
+    else
+    {
+        if(lowBound != nullptr && lowBound->data >= root->data)
+        {
+            return false;
+        }
+        if(highBound != nullptr && highBound->data <= root->data)
+        {
+            return false;
+        }
+
+        return isBSTRec(lowBound, root->left, root)
+             &&isBSTRec(root, root->right, highBound);
+    }
+}
+
 bool isBST(TreeNode* root) {
-    /* TODO: Your code goes here! */
-    return false;
+    if(root == nullptr) return true;
+    else
+    {
+        return isBSTRec(nullptr, root, nullptr);
+    }
 }
 
 PROVIDED_TEST("Simple positive tests for isBST function") {

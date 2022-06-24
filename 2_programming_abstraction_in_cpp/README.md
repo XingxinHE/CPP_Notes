@@ -2281,6 +2281,104 @@ void removeLeaves(TreeNode*& node) {
 
 
 
+**📌The Ultimate and Penultimate Values**
+
+That 2 values refer to biggest and second biggest value. For the first one, it is quite easy.
+
+> ​	Biggest(iterative version)
+
+```c++
+TreeNode* biggestNodeIn(TreeNode* root) {
+    if(root == nullptr) return nullptr;
+    else
+    {
+        TreeNode *node = root;
+        for(; node->right != nullptr; node = node->right);
+        return node;
+    }
+}
+```
+
+> ​	Biggest(recursive version)
+
+```c++
+TreeNode* biggestNodeIn(TreeNode* root) {
+    if (root == nullptr) error("Nothing to see here, folks.");
+    if (root->right == nullptr) return root;
+    return biggestNodeIn(root->right);
+}
+```
+
+> ​	Second Biggest
+
+For second biggest, there are 2 cases which require a "previous" variable to store that value.
+
+//TODO a diagram here
+
+```c++
+TreeNode* secondBiggestNodeIn(TreeNode* root) {
+    if(root == nullptr) return nullptr;
+    else
+    {
+        TreeNode *prev = nullptr;
+        TreeNode *curr = root;
+        for(; curr->right != nullptr; prev = curr, curr = curr->right);
+        if(curr->left != nullptr)
+        {
+            return biggestNodeIn(curr->left);
+        }
+        else
+        {
+            return prev;
+        }
+    }
+}
+```
+
+
+
+**📌Checking BST Validity**
+
+This one is super hard which requires checking every node in "inorder" and ensures they are sorted.
+
+//TODO - digest this one.
+
+```c++
+bool isBSTRec(TreeNode* lowBound, TreeNode* root, TreeNode* highBound)
+{
+    if(root == nullptr) return true;
+    else
+    {
+        if(lowBound != nullptr && lowBound->data >= root->data)
+        {
+            return false;
+        }
+        if(highBound != nullptr && highBound->data <= root->data)
+        {
+            return false;
+        }
+
+        return isBSTRec(lowBound, root->left, root)
+             &&isBSTRec(root, root->right, highBound);
+    }
+}
+
+bool isBST(TreeNode* root)
+{
+    if(root == nullptr) return true;
+    else
+    {
+        return isBSTRec(nullptr, root, nullptr);
+    }
+}
+```
+
+
+
+
+
+
+
 # Assignment 1
 
 **📌`PlayingFair.cpp`**
