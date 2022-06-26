@@ -30,21 +30,15 @@ public:
     int peek();
     bool isEmpty();
     bool isFull();
-    int size();
+    int size() const;
 
 private:
-    // TODO: Include any private member functions
-    // or member variables here as you deem appropriate.
-    // Then, delete these lines.
+    static const int INITIAL_CAPACITY = 5;
+    int* m_array;
+    int m_head;
+    int m_tail;
+    int m_capacity;
+    void expandCapacity();
 
-    /* Note: since this is a header file, we've opted to refer to
-     * ostream by its "full name" of std::ostream.
-     *
-     * By listing this method as a "friend", this method can break
-     * object encapsulation and access private member variables
-     * of the RBQueue object.
-     *
-     * TODO: delete these lines and write a method comment
-     */
     friend std::ostream& operator<<(std::ostream& out, const RBQueue& queue);
 };

@@ -27,8 +27,30 @@ using namespace std;
  * you will need to create new nodes.)
  */
 
-void braid(Node*& front) {
-    (void) front;
+
+void braidHelper(Node *& main, Node *element1, Node *element2)
+{
+    if(element1 != nullptr && element2 != nullptr)
+    {
+        main = new Node{element1->data, nullptr};
+        main->next = new Node{element2->data, nullptr};
+        braidHelper(main->next->next, element1->next, element2->next);
+    }
+}
+
+void braid(Node*& front)
+{
+    Node *tail = front;
+    Node *head = front;
+    Node *revHead = new Node{front->data, nullptr};
+    while(tail->next != nullptr)
+    {
+        tail = tail->next;
+        Node *prevHead = revHead;
+        revHead = new Node{tail->data, prevHead};
+    }
+    front = nullptr;
+    braidHelper(front, head, revHead);
 }
 
 /* * * * * Provided Tests Below This Point * * * * */
@@ -56,6 +78,8 @@ PROVIDED_TEST("Third example from handout") {
     Node *braidedList = createListFromVector({1, 15, 3, 10, 6, 6, 10, 3, 15, 1});
 
     braid(originalList);
+    // 1-3-6-10-15
+    // 15-10-6-3-1
 
     EXPECT(listEqual(originalList, braidedList));
 }

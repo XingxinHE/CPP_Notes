@@ -24,20 +24,39 @@ using namespace std;
  * attempt all possible passwords up to that length (inclusive).
  */
 
+static const int    PASSWORD_LENGTH   = 5;
+static const string PASSWORD_TO_CRACK = "yanxi";
+
 bool login(string password) {
-    return (password == "csizawesome");
+    return (password == PASSWORD_TO_CRACK);
 }
 
 
+string crackingRec(string current, int maxLength)
+{
+    if(login(current)) return current;
+    if(current.length() == maxLength) return "";
+    for(char ch = 'a'; ch <= 'z'; ch++)
+    {
+        string password = crackingRec(current + ch, maxLength);
+        if(password != "") return password;
+
+        char upperCh = toupper(ch);
+        password = crackingRec(current + upperCh, maxLength);
+        if(password != "") return password;
+    }
+    return "";
+}
+
 
 string crackingPasswords(int n){
-    // TODO: Your code here
-    return "";
+    if(n < 0) error("The length cannot be negative.");
+    return crackingRec("", n);
 }
 
 
 /* * * * * Provided Tests Below This Point * * * * */
 
 PROVIDED_TEST("Provided Test: Example from handout.") {
-    EXPECT_EQUAL(crackingPasswords(11), "csizawesome");
+    EXPECT_EQUAL(crackingPasswords(PASSWORD_LENGTH), PASSWORD_TO_CRACK);
 }

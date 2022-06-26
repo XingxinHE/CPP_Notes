@@ -44,22 +44,27 @@ void insert(StringNode*& front, int index, string value) {
     }
     if(index == 0)
     {
-        StringNode *node = new StringNode;
-        node->data = value;
-        node->next = front;
+//        StringNode *node = new StringNode;
+//        node->data = value;
+//        node->next = front;
+//        front = node;
+
+        StringNode *node = new StringNode{value, front};
         front = node;
     }
     else
     {
         StringNode *temp = front;
-        for(int i = 0; i < index - 1; i++)
+        for(int i = 1; i < index; i++)
         {
             temp = temp->next;
         }
-        StringNode *node = new StringNode;
-        node->data = value;
-        node->next = temp->next;
-        temp->next = node;
+
+        temp->next = new StringNode{value, temp->next};
+//        StringNode *node = new StringNode;
+//        node->data = value;
+//        node->next = temp->next;
+//        temp->next = node;
     }
 }
 

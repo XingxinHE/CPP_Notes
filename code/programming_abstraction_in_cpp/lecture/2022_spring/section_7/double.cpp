@@ -31,7 +31,17 @@ using namespace std;
  */
 
 void doubleList(Node*& front) {
-    (void) front;
+    if(front == nullptr) return;
+    Node *travNode = front;
+    Node *copyHead = new Node{front->data, nullptr};
+    Node *copyTail = copyHead;
+    while(travNode->next != nullptr)
+    {
+        travNode = travNode->next;
+        copyTail->next = new Node{travNode->data, nullptr};
+        copyTail = copyTail->next;
+    }
+    travNode->next = copyHead;
 }
 
 

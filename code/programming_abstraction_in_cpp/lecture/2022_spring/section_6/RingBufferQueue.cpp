@@ -2,101 +2,111 @@
 #include "testing/SimpleTest.h"
 
 using namespace std;
-
 /**
  * TODO: write a method comment
  */
-RBQueue::RBQueue() {
-    // Delete these lines, then implement
-    // this method.
-
+RBQueue::RBQueue()
+       :m_head(0), m_tail(0), m_capacity(INITIAL_CAPACITY)
+{
+    m_array = new int[m_capacity];
 }
 
 /**
  * TODO: write a method comment
  */
 RBQueue::~RBQueue() {
-    // Delete these lines, then implement
-    // this method.
-
+    delete[] m_array;
 }
 
 /**
  * TODO: write a method comment
  */
 void RBQueue::enqueue(int elem) {
-    // The following lines are just here to
-    // disable compiler warnings and errors.
-    // Delete these lines, then implement
-    // this method.
-    (void) elem;
+    if(size() == m_capacity-1) expandCapacity();
+    m_array[m_tail] = elem;
+    m_tail = (m_tail + 1) % m_capacity;
 }
 
 /**
  * TODO: write a method comment
  */
 int RBQueue::dequeue() {
-    // The following lines are just here to
-    // disable compiler warnings and errors.
-    // Delete these lines, then implement
-    // this method.
-    return 0;
+    if(!this->isEmpty())
+    {
+        int result = m_array[m_head];
+        m_head = (m_head + 1) % m_capacity;
+        return result;
+    }
+    else
+    {
+        error("Sorry, the queue is empty.");
+    }
 }
 
 /**
  * TODO: write a method comment
  */
 int RBQueue::peek() {
-    // The following lines are just here to
-    // disable compiler warnings and errors.
-    // Delete these lines, then implement
-    // this method.
-    return 0;
+    if(!this->isEmpty())
+    {
+        return m_array[m_head];
+    }
+    else
+    {
+        error("Sorry, the queue is empty.");
+    }
 }
 
 /**
  * TODO: write a method comment
  */
 bool RBQueue::isEmpty() {
-    // The following lines are just here to
-    // disable compiler warnings and errors.
-    // Delete these lines, then implement
-    // this method.
-    return false;
+    return m_head == m_tail;
 }
 
 /**
  * TODO: write a method comment
  */
 bool RBQueue::isFull() {
-    // The following lines are just here to
-    // disable compiler warnings and errors.
-    // Delete these lines, then implement
-    // this method.
-    return false;
+    return size() == m_capacity;
 }
 
 /**
  * TODO: write a method comment
  */
-int RBQueue::size() {
-    // The following lines are just here to
-    // disable compiler warnings and errors.
-    // Delete these lines, then implement
-    // this method.
-    return 0;
+int RBQueue::size() const{
+    return (m_tail + m_capacity - m_head) % m_capacity;
 }
 
 /**
  * TODO: write a method comment
  */
 ostream& operator<<(ostream& out, const RBQueue& queue) {
-    // The following lines are just here to
-    // disable compiler warnings and errors.
-    // Delete these lines, then implement
-    // this method.
-    (void) queue;
+
+    int count = queue.size();
+    for(int i = 0; i < count; i++ )
+    {
+        int index = (queue.m_head + i) % queue.m_capacity;
+        out << queue.m_array[index] << " ";
+    }
+
     return out;
+}
+
+void RBQueue::expandCapacity()
+{
+    int *oldArray = m_array;
+    m_array = new int[m_capacity * 2];
+    int count = size();
+    for(int i = 0; i < count; i++ )
+    {
+        int index = (m_head + i) % m_capacity;
+        m_array[i] = oldArray[index];
+    }
+    m_capacity *= 2;
+    m_head = 0;
+    m_tail = count;
+    delete[] oldArray;
 }
 
 /* Provided Tests Below This Line */

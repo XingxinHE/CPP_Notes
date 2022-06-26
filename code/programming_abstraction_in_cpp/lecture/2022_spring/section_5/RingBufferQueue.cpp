@@ -8,7 +8,7 @@ using namespace std;
  */
 RBQueue::RBQueue()
        :m_head(0), m_tail(0), m_capacity(INITIAL_CAPACITY),
-        m_array(nullptr)
+        m_count(0)
 {
     m_array = new int[m_capacity];
 }
@@ -27,8 +27,8 @@ void RBQueue::enqueue(int elem) {
     if(!this->isFull())
     {
         m_count++;
-        m_tail = nextIndex(m_tail + 1);
         m_array[m_tail] = elem;
+        m_tail = nextIndex(m_tail + 1);
     }
 }
 
@@ -40,7 +40,7 @@ int RBQueue::dequeue() {
     {
         m_count--;
         int result = m_array[m_head];
-        m_head = nextIndex(m_head - 1);
+        m_head = nextIndex(m_head + 1);
         return result;
     }
     else
@@ -93,11 +93,13 @@ int RBQueue::nextIndex(int index)
  * TODO: write a method comment
  */
 ostream& operator<<(ostream& out, const RBQueue& queue) {
-    // The following lines are just here to
-    // disable compiler warnings and errors.
-    // Delete these lines, then implement
-    // this method.
-    (void) queue;
+
+    for(int i = queue.m_head; i < queue.m_head + queue.m_count; i++ )
+    {
+        int index = i % queue.m_capacity;
+        out << queue.m_array[index] << " ";
+    }
+
     return out;
 }
 

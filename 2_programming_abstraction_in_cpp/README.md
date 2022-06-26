@@ -2039,6 +2039,233 @@ The preceding algorithm is kind of smart. It loops from the back and delete from
 
 
 
+# Section 7
+
+**📌Inserting into a Linked List**
+
+The comments are the equivalent code. The idea is that <u>**treat the front as a special case**</u>.
+
+```C++
+void insert(StringNode*& front, int index, string value) {
+    if(index < 0)
+    {
+        error("The index is negative.");
+    }
+    if(index == 0)
+    {
+//        StringNode *node = new StringNode;
+//        node->data = value;
+//        node->next = front;
+//        front = node;
+
+        StringNode *node = new StringNode{value, front};
+        front = node;
+    }
+    else
+    {
+        StringNode *temp = front;
+        for(int i = 1; i < index; i++)
+        {
+            temp = temp->next;
+        }
+
+        temp->next = new StringNode{value, temp->next};
+//        StringNode *node = new StringNode;
+//        node->data = value;
+//        node->next = temp->next;
+//        temp->next = node;
+    }
+}
+```
+
+
+
+**📌Remove All Threshold**
+
+The algorithm should remove numbers with threshold.
+
+```c++
+removeAllThreshold(front, 3.0, .3)
+```
+
+From:
+$$
+\{ 3.0, 9.0, 4.2, 2.1, 3.3, 2.3, 3.4, 4.0, 2.9, 2.7, 3.1, 18.2\}
+$$
+to:
+$$
+\{{9.0, 4.2, 2.1, 2.3, 3.4, 4.0, 18.2}\}
+$$
+I think my algorithm is quite elegant.
+
+```c++
+void removeAllThreshold(DoubleNode*& front, double value, double threshold) {
+    DoubleNode *prev = nullptr;
+    DoubleNode *curr = front;
+    while(curr != nullptr)
+    {
+        if(value-threshold <= curr->data && curr->data <= value+threshold)
+        {
+            DoubleNode *deleteNode = curr;
+            if(curr == front)
+            {
+                front = front->next;
+                curr = curr->next;
+            }
+            else
+            {
+                prev->next = curr->next;
+                curr = curr->next;
+            }
+            delete deleteNode;
+        }
+        else
+        {
+            prev = curr;
+            curr = curr->next;
+        }
+    }
+}
+```
+
+
+
+**📌Double List**
+
+The double list should convert:
+$$
+\{{1, 3, 2, 7}\}
+$$
+to:
+$$
+\{{1, 3, 2, 7, 1, 3, 2, 7}\}
+$$
+
+> ​	👌
+
+```c++
+void doubleList(Node*& front)
+{
+    if(front == nullptr) return;
+    Node *prevTail = nullptr;
+    Node *tail = front;
+    Node *newHead = nullptr;
+    Node *newTail = nullptr;
+    for(; tail != nullptr; prevTail = tail, tail = tail->next)
+    {
+        if(newHead == nullptr)
+        {
+            newHead = new Node{tail->data, nullptr};
+            newTail = newHead;
+        }
+        else
+        {
+            newTail->next = new Node{tail->data, nullptr};
+            newTail = newTail->next;
+        }
+    }
+    prevTail->next = newHead;
+}
+```
+
+This is quite redundant. The key issue is that:
+
+- I used `for` loop and <u>**iterate the pointer after assign the value⚠**</u>. Therefore require a "previous" node of the last node.
+
+> ​	👌+👍
+
+The following is the much more elegant algorithm. The key step is that <u>**iterate the pointer before assign the value🙌**</u>.
+
+```c++
+void doubleList(Node*& front)
+{
+    if(front == nullptr) return;
+    Node *travNode = front;
+    Node *copyHead = new Node{front->data, nullptr};
+    Node *copyTail = copyHead;
+    while(travNode->next != nullptr)
+    {
+        travNode = travNode->next;
+        copyTail->next = new Node{travNode->data, nullptr};
+        copyTail = copyTail->next;
+    }
+    travNode->next = copyHead;
+}
+```
+
+
+
+**📌Braiding a Linked List(weaving)**
+
+It does the following:
+
+<div align="center">
+    {1, 4, 2} -> {1, 2, 4, 4, 2, 1}<br>
+{3} -> {3, 3}<br>
+{1, 3, 6, 10, 15} -> {1, 15, 3, 10, 6, 6, 10, 3, 15, 1}
+</div>
+
+> ​	Not recursion version
+
+```c++
+void braid(Node*& front)
+{
+    // make a reverse order one
+    Node *reverse = nullptr;
+    for (Node *curr = front; curr != nullptr; curr = curr->next) {
+        Node *newNode = new Node{curr->data};
+        newNode->next = reverse; 
+        reverse = newNode;
+    }
+
+    // weave it
+    for (Node *curr = front; curr != nullptr; curr = curr->next->next) {
+        Node *next = reverse->next;
+        reverse->next = curr->next;
+        curr->next = reverse;
+        reverse = next;
+    }
+}
+```
+
+> ​	Recursive version
+
+```c++
+void braidHelper(Node *& main, Node *element1, Node *element2)
+{
+    if(element1 != nullptr && element2 != nullptr)
+    {
+        main = new Node{element1->data, nullptr};
+        main->next = new Node{element2->data, nullptr};
+        braidHelper(main->next->next, element1->next, element2->next);
+    }
+}
+
+void braid(Node*& front)
+{
+    Node *tail = front;
+    Node *head = front;
+    
+    // make a reverse copy
+    Node *revHead = new Node{front->data, nullptr};
+    while(tail->next != nullptr)
+    {
+        tail = tail->next;
+        Node *prevHead = revHead;
+        revHead = new Node{tail->data, prevHead};
+    }
+    
+    front = nullptr;
+    braidHelper(front, head, revHead);
+}
+```
+
+
+
+
+
+
+
 # Section 8
 
 **📌The height of that tree**

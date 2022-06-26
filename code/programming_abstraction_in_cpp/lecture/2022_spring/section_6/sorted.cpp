@@ -27,8 +27,12 @@ using namespace std;
  */
 
 bool isSorted(Node* front) {
-    (void) front;
-    return false;
+    if(front == nullptr) return true;
+    else if(front->next == nullptr) return true;
+    else
+    {
+        return front->data <= front->next->data && isSorted(front->next);
+    }
 }
 
 

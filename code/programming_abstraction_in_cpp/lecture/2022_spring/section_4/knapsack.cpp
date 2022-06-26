@@ -9,9 +9,25 @@ struct BackpackItem {
     int weight;         // You can assume this value will always >= 0
 };
 
+int fillBackpackRec(Vector<BackpackItem>& items, int capacityRemaining,
+                    int curValue, int index)
+{
+    if(capacityRemaining < 0) return 0;
+    else if(index == items.size()) return curValue;
+    else
+    {
+        BackpackItem curItem = items[index];
+        int bestValueInclude = fillBackpackRec(items, capacityRemaining - curItem.weight,
+                                               curValue + curItem.survivalValue, index + 1);
+        int bestValueExclude = fillBackpackRec(items, capacityRemaining,
+                                               curValue, index + 1);
+
+        return max(bestValueInclude, bestValueExclude);
+    }
+}
+
 int fillBackpack(Vector<BackpackItem>& items, int targetWeight){
-    // TODO: Fill me in!
-    return 0;
+    return fillBackpackRec(items, targetWeight, 0, 0);
 }
 
 PROVIDED_TEST("Simple knapsack examples.") {

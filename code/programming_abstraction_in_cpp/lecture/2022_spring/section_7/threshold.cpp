@@ -20,16 +20,30 @@
 using namespace std;
 
 void removeAllThreshold(DoubleNode*& front, double value, double threshold) {
-    DoubleNode *node = front;
-    while(node->next != nullptr)
+    DoubleNode *prev = nullptr;
+    DoubleNode *curr = front;
+    while(curr != nullptr)
     {
-        DoubleNode *temp = nullptr;
-        if(value-threshold <= node->data && node->data <= value+threshold)
+        if(value-threshold <= curr->data && curr->data <= value+threshold)
         {
-            temp = node;
+            DoubleNode *deleteNode = curr;
+            if(curr == front)
+            {
+                front = front->next;
+                curr = curr->next;
+            }
+            else
+            {
+                prev->next = curr->next;
+                curr = curr->next;
+            }
+            delete deleteNode;
         }
-        node = node->next;
-        delete temp;
+        else
+        {
+            prev = curr;
+            curr = curr->next;
+        }
     }
 }
 

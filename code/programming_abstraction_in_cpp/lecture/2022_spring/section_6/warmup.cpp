@@ -28,11 +28,26 @@ using namespace std;
  */
 
 int sumOfElementsIn(Node* list) {
-    return 0;
+    if(list == nullptr) return 0;
+    else
+    {
+        return list->data + sumOfElementsIn(list->next);
+    }
 }
 
 Node* lastElementOf(Node* list) {
-    return nullptr;
+    if(list == nullptr)
+    {
+        return nullptr;
+    }
+    else if(list->next == nullptr)
+    {
+        return list;
+    }
+    else
+    {
+        return lastElementOf(list->next);
+    }
 }
 
 

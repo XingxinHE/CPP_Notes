@@ -27,9 +27,23 @@ using namespace std;
  */
 
 bool isMeasurable(int target, Vector<int>& weights){
-    // TODO: Your code here
-    return false;
+    if(weights.isEmpty()) return target == 0;
+    else
+    {
+        int last = weights[weights.size() - 1];
+        weights.remove(weights.size() - 1);  // temp remove to throw next recursion
+
+        // all 3 possible combination
+        bool result = isMeasurable(target + last, weights) ||
+                      isMeasurable(target, weights) ||
+                      isMeasurable(target - last, weights);
+
+        // add it back to the vectors since we remove it from the last step
+        weights.add(last);
+        return result;
+    }
 }
+
 
 
 /* * * * * Provided Tests Below This Point * * * * */
