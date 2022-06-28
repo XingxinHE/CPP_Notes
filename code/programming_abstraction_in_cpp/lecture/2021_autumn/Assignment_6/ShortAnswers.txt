@@ -1,5 +1,5 @@
 Q1:
-
+Windows
 
 
 
@@ -9,22 +9,37 @@ Q1:
 
 
 Q2:
-
-
-
-
-
+			[3]	@0x1e1382413a8	DataPoint
+				_initializationFlag	13451671603782742029	uint64_t
+				name	<not accessible>	std::string
+				weight	-4.8366978272229995e-26	double
+			[4]	@0x1e1382413d8	DataPoint
+				_initializationFlag	18369900232523579118	uint64_t
+				name	<not accessible>	std::string
+				weight	0.0	double
+			[5]	@0x1e138241408	DataPoint
+				_initializationFlag	18369900232523579118	uint64_t
+				name	<not accessible>	std::string
+				weight	-2.6569842580370804e+303	double
 
 
 
 
 Q3:
-
-
-
-
-
-
+              ┌────────┐
+        ┌─────┤ Jackie ├─────┐
+        │     │ (1951) │     │
+        │     └────────┘     │
+        │                    │
+     ┌──▼───┐           ┌────▼───┐
+   ┌─┤ Tito │           │Jermaine├─┐
+   │ │(1953)│           │ (1954) │ │
+   │ └──────┘           └────────┘ │
+   │                               │
+┌──▼───┐                       ┌───▼───┐
+│Marlon│                       │Michael│
+│(1957)│                       │(1958) │
+└──────┘                       └───────┘
 
 
 

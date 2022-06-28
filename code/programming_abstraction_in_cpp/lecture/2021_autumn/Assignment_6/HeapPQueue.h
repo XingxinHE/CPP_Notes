@@ -99,6 +99,10 @@ private:
      */
     int allocatedSize = 0;
 
+    void enqueueSwap(int index);
+    void dequeueSwap(int index);
+    void expandHeapPQueue();
+
     /* Constant controlling how big the original array should be.
      *
      * We've picked this value because it's large enough to hold

@@ -1,37 +1,108 @@
 #include "HeapPQueue.h"
+#include <algorithm>
+
 using namespace std;
 
-HeapPQueue::HeapPQueue() {
-    /* TODO: Implement this. */
+HeapPQueue::HeapPQueue()
+          :logicalSize(0), allocatedSize(INITIAL_SIZE)
+{
+    elems = new DataPoint[allocatedSize];
 }
 
 HeapPQueue::~HeapPQueue() {
-    /* TODO: Implement this. */
+    delete[] elems;
 }
 
 int HeapPQueue::size() const {
-    /* TODO: Delete the next line and implement this. */
-    return 0;
+    return logicalSize;
 }
 
 bool HeapPQueue::isEmpty() const {
-    /* TODO: Delete the next line and implement this. */
-    return 0;
+    return logicalSize == 0;
+}
+
+void HeapPQueue::enqueueSwap(int index)
+{
+    if(index <= 1) return;
+    int isEven = index % 2 == 0;
+    int upperIndex = isEven? index / 2 : (index - 1) / 2;
+
+    if(elems[upperIndex].weight > elems[index].weight)
+    {
+        std::swap(elems[upperIndex], elems[index]);
+        enqueueSwap(upperIndex);
+    }
+    else
+    {
+        return;
+    }
+
+}
+
+void HeapPQueue::expandHeapPQueue()
+{
+    DataPoint* oldElems = elems;
+    allocatedSize *= 2;
+    elems = new DataPoint[allocatedSize];
+    for(int i = 1; i < logicalSize + 1; i++)
+    {
+        elems[i] = oldElems[i];
+    }
+    delete[] oldElems;
 }
 
 void HeapPQueue::enqueue(const DataPoint& data) {
-    /* TODO: Delete the next line and implement this. */
-    (void) data;
+    if (logicalSize + 1 == allocatedSize)
+    {
+        expandHeapPQueue();
+    }
+    logicalSize++;
+    elems[logicalSize].name = data.name;
+    elems[logicalSize].weight = data.weight;
+    enqueueSwap(logicalSize);
 }
 
 DataPoint HeapPQueue::peek() const {
-    /* TODO: Delete the next line and implement this. */
-    return {};
+    if(!isEmpty())
+    {
+        return elems[1];
+    }
+    else
+    {
+        error("The HeapPQueue is empty!");
+    }
+}
+
+void HeapPQueue::dequeueSwap(int index)
+{
+    if(index >= logicalSize) return;
+    int rightIndex = 2 * index + 1;
+    int leftIndex = 2 * index;
+    if(rightIndex <= logicalSize &&
+       elems[index].weight > elems[rightIndex].weight)
+    {
+        swap(elems[index], elems[rightIndex]);
+        dequeueSwap(rightIndex);
+    }
+    if(leftIndex <= logicalSize &&
+       elems[index].weight > elems[leftIndex].weight)
+    {
+        swap(elems[index], elems[leftIndex]);
+        dequeueSwap(leftIndex);
+    }
 }
 
 DataPoint HeapPQueue::dequeue() {
-    /* TODO: Delete the next line and implement this. */
-    return {};
+    if(isEmpty())
+    {
+        error("The HeapPQueue is empty!");
+    }
+    int bottomIndex = logicalSize;
+    DataPoint result = elems[1];
+    swap(elems[1], elems[bottomIndex]);
+    logicalSize--;
+    dequeueSwap(1);
+    return result;
 }
 
 /* This function is purely for you to use during testing. You can have it do whatever
