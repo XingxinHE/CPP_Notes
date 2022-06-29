@@ -78,17 +78,27 @@ void HeapPQueue::dequeueSwap(int index)
     if(index >= logicalSize) return;
     int rightIndex = 2 * index + 1;
     int leftIndex = 2 * index;
-    if(rightIndex <= logicalSize &&
-       elems[index].weight > elems[rightIndex].weight)
-    {
-        swap(elems[index], elems[rightIndex]);
-        dequeueSwap(rightIndex);
-    }
-    if(leftIndex <= logicalSize &&
-       elems[index].weight > elems[leftIndex].weight)
+
+    // condition to swap left
+    //  *1) it is a must that left is smaller than current
+    if(     leftIndex <= logicalSize &&
+            elems[leftIndex].weight < elems[index].weight &&
+            //  *2) one of the following is true
+            (rightIndex > logicalSize ||                          //  *2.1 either the right is not exist
+             elems[leftIndex].weight < elems[rightIndex].weight)) //  *2.2 or the right exist but smaller
     {
         swap(elems[index], elems[leftIndex]);
         dequeueSwap(leftIndex);
+        return;
+    }
+    // condition to swap right
+    if(rightIndex <= logicalSize &&
+       elems[rightIndex].weight < elems[index].weight &&
+       elems[rightIndex].weight < elems[leftIndex].weight)
+    {
+        swap(elems[index], elems[rightIndex]);
+        dequeueSwap(rightIndex);
+        return;
     }
 }
 
@@ -99,7 +109,7 @@ DataPoint HeapPQueue::dequeue() {
     }
     int bottomIndex = logicalSize;
     DataPoint result = elems[1];
-    swap(elems[1], elems[bottomIndex]);
+    elems[1] = elems[bottomIndex];
     logicalSize--;
     dequeueSwap(1);
     return result;
