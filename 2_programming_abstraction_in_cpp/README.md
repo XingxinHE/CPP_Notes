@@ -3100,9 +3100,15 @@ double weightOnBackOf(int row, int col, int pyramidHeight) {
 
 # Assignment 6
 
+**📌Heap Priority Queue**
+
 Very interesting assignment. But I am not sure `PROVIDED_TEST("Insert duplicate elements.")` in `HeapPQueue.cpp` does make sense in light of the diagram they drew...
 
 
+
+**📌Apportion**
+
+This is super fun since I can learn about the <u>the Huntington-Hill Method</u> which is algorithm to determine how many seats in the House of Representatives will be allocated to each state in the U.S. !
 
 
 
