@@ -3098,6 +3098,12 @@ double weightOnBackOf(int row, int col, int pyramidHeight) {
 
 
 
+# Assignment 6
+
+Very interesting assignment. But I am not sure `PROVIDED_TEST("Insert duplicate elements.")` in `HeapPQueue.cpp` does make sense in light of the diagram they drew...
+
+
+
 
 
 # End
