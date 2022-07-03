@@ -15,11 +15,22 @@ using namespace std;
  * a compiler warning message. Come talk to us over EdStem if you'd like to learn
  * more about this!
  */
-const char MyName[] = "TODO: Replace this string with your name.";
+const char MyName[] = "Xingxin";
 
 /* Change these constants to contain the paths out of your mazes. */
-const char ThePathOutOfMyMaze[] = "TODO: Replace this string with your path out of the normal maze.";
-const char ThePathOutOfMyTwistyMaze[] = "TODO: Replace this string with your path out of the twisty maze.";
+
+/* HXX_IMPLEMENTATION_NOTE: my idea is to draw a grid marking the how the maze are. */
+const char ThePathOutOfMyMaze[] = "SSESNEENNSWWNE";
+
+/* HXX_IMPLEMENTATION_NOTE: my idea is to use an excel sheet */
+/* The columns are:
+ * | CELL_NAME(pointer address) | EAST(address) | SOUTH(address) | WEST(address) | NORTH(address) |
+ *
+ * I use breadth-first search algorithm! For each cardinal direciton of each cell, if not presented
+ * in the first column, I add it to there and explore. You can see the first column is actually
+ * the queue of BFS algorithm.
+ */
+const char ThePathOutOfMyTwistyMaze[] = "NSSNNWNSSWS";
 
 PROVIDED_TEST("Escape from the labyrinth!") {
     /* A maze for you to escape from. This maze will be personalized

@@ -3112,6 +3112,22 @@ This is super fun since I can learn about the <u>the Huntington-Hill Method</u> 
 
 
 
+# Assignment 8
+
+> ​	Another interesting assignment! WOW!
+
+
+
+## Part One: The Labyrinth!
+
+
+
+
+
+## Part Two: Splicing and Dicing
+
+
+
 # End
 
 

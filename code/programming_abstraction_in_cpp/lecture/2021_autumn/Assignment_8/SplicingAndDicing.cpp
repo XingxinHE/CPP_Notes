@@ -9,8 +9,17 @@ using namespace std;
  * (e.g. Vector, HashSet, etc.).
  */
 void deleteNucleotides(Nucleotide* dna) {
-    /* TODO: Delete this comment and the next line and implement this function. */
-    (void) dna;
+    if (dna == nullptr) return;
+
+    while(dna->next != nullptr)
+    {
+        Nucleotide *old = dna;
+        dna = dna->next;
+        delete old;
+        old = nullptr;
+    }
+    delete dna;
+    dna = nullptr;
 }
 
 /**
@@ -21,9 +30,14 @@ void deleteNucleotides(Nucleotide* dna) {
  * (e.g. Vector, HashSet, etc.).
  */
 string fromDNA(Nucleotide* dna) {
-    /* TODO: Delete this comment and the next lines and implement this function. */
-    (void) dna;
-    return "";
+    if (dna == nullptr) return "";
+    string dnaStrand = "";
+    while (dna != nullptr)
+    {
+        dnaStrand += dna->value;
+        dna = dna->next;
+    }
+    return dnaStrand;
 }
 
 /**
@@ -34,9 +48,30 @@ string fromDNA(Nucleotide* dna) {
  * (e.g. Vector, HashSet, etc.).
  */
 Nucleotide* toStrand(const string& str) {
-    /* TODO: Delete this comment and the next lines and implement this function. */
-    (void) str;
-    return nullptr;
+    Nucleotide *start = nullptr;
+    Nucleotide *iter = nullptr;
+    bool isFirst = true;
+    for(char ch : str)
+    {
+        Nucleotide *node = new Nucleotide;
+        node->value = ch;
+        node->next = nullptr;
+        node->prev = nullptr;
+        if(isFirst)
+        {
+            start = node;
+            isFirst = false;
+            iter = node;
+        }
+        else
+        {
+            iter->next = node;
+            node->prev = iter;
+            iter = iter->next;
+        }
+    }
+
+    return start;
 }
 
 /**
@@ -49,10 +84,38 @@ Nucleotide* toStrand(const string& str) {
  * This function should not use any containers (e.g. Vector, HashSet, etc.)
  */
 Nucleotide* findFirst(Nucleotide* dna, Nucleotide* target) {
-    /* TODO: Delete this comment and the next lines and implement this function. */
-    (void) dna;
-    (void) target;
-    return nullptr;
+    if (dna == nullptr || target == nullptr)
+    {
+        return dna;
+    }
+
+    Nucleotide* iter = dna;
+    for(; iter != nullptr; iter = iter->next)
+    {
+        Nucleotide* source_validator = iter;
+        Nucleotide* target_validator = target;
+        while(target_validator != nullptr)
+        {
+            if(source_validator == nullptr ||
+               source_validator->value != target_validator->value)
+            {
+                break;
+            }
+            source_validator = source_validator->next;
+            target_validator = target_validator->next;
+        }
+        if(target_validator == nullptr)
+        {
+            // full iterate
+            return iter;
+        }
+        else
+        {
+            // not full iterate
+            continue;
+        }
+    }
+    return iter;
 }
 
 /**
@@ -67,10 +130,50 @@ Nucleotide* findFirst(Nucleotide* dna, Nucleotide* target) {
  * This function should not use any containers (e.g. Vector, HashSet, etc.)
  */
 bool spliceFirst(Nucleotide*& dna, Nucleotide* target) {
-    /* TODO: Delete this comment and the next lines and implement this function. */
-    (void) dna;
-    (void) target;
-    return false;
+    if (dna ==nullptr || target == nullptr)
+    {
+        return true;
+    }
+
+    Nucleotide* truncated = findFirst(dna, target);
+    if (truncated == nullptr)
+    {
+        return false;
+    }
+
+    Nucleotide* head = truncated->prev;
+    Nucleotide* tail = truncated;
+    for(Nucleotide* node = target; node != nullptr; node = node->next)
+    {
+        Nucleotide* old = tail;
+        tail = tail->next;
+        delete old;
+        old = nullptr;
+    }
+
+
+    if(head == nullptr && tail == nullptr)
+    {
+        // fully identical
+        dna = nullptr;
+    }
+    else if(head == nullptr && tail != nullptr)
+    {
+        // cut off head
+        dna = tail;
+    }
+    else if(head != nullptr && tail == nullptr)
+    {
+        // cut off end
+        head->next = nullptr;
+    }
+    else
+    {
+        // middle
+        head->next = tail;
+        tail->prev = head;
+    }
+    return true;
 }
 
 
