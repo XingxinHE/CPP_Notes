@@ -3128,6 +3128,26 @@ This is super fun since I can learn about the <u>the Huntington-Hill Method</u> 
 
 
 
+```c++
+/* Helper Function to cout the address of the pointer*/
+string address_list = "";
+for(Nucleotide* node = dna; node != nullptr; node = node->next)
+{
+    const void * address = static_cast<const void*>(node);
+    std::stringstream ss;
+    ss << address;
+    std::string name = ss.str();
+    address_list += name;
+    address_list += "\n";
+}
+```
+
+
+
+
+
+
+
 # End
 
 

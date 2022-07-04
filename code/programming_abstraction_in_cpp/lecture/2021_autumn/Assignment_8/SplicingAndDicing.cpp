@@ -1,4 +1,6 @@
 #include "SplicingAndDicing.h"
+#include <sstream>
+
 using namespace std;
 
 /**
@@ -143,12 +145,14 @@ bool spliceFirst(Nucleotide*& dna, Nucleotide* target) {
 
     Nucleotide* head = truncated->prev;
     Nucleotide* tail = truncated;
+    bool isFirst = true;
     for(Nucleotide* node = target; node != nullptr; node = node->next)
     {
         Nucleotide* old = tail;
         tail = tail->next;
         delete old;
         old = nullptr;
+
     }
 
 
@@ -161,6 +165,7 @@ bool spliceFirst(Nucleotide*& dna, Nucleotide* target) {
     {
         // cut off head
         dna = tail;
+        dna->prev = nullptr;
     }
     else if(head != nullptr && tail == nullptr)
     {
