@@ -635,7 +635,7 @@ Before talking about it, I want to introduce you that in history many programmer
 
 
 
-**📌C++ Class Boilerplate🌟 - separate the interface from the implementation**
+**📌C++ Class Boilerplate🌟🌟🌟 - separate the interface from the implementation**
 
 This idea results 2 files - header file and source file.
 
@@ -652,10 +652,10 @@ This idea results 2 files - header file and source file.
 #ifndef _point_h
 #define _point_h
 
+#include <iostream>
 #include <string>
 
-class Point
-{
+class Point {
 
 public:
 
@@ -664,37 +664,81 @@ public:
  * Usage: Point origin;
  *        Point pt(xc, yc);
  * ------------------------
- * Creates a Point object. The default constructor sets the coordinates to 0;
- * the second form sets the coordinates to xc and yc.
+ * Creates a Point object.  The default constructor sets the coordinates
+ * to 0; the second form sets the coordinates to xc and yc.
  */
-    Point();
-    Point(int xc, int yc);
-    ~Point();
+
+   Point();
+   Point(int xc, int yc);
 
 /*
  * Methods: getX, getY
  * Usage: int x = pt.getX();
  *        int y = pt.getY();
  * -------------------------
- * Return the x and y coordinates of the point, respectively.
+ * These methods return the x and y coordinates of the point.
  */
-    int getX();
-    int getY();
+
+   int getX();
+   int getY();
 
 /*
- * Methods: toString
+ * Method: toString
  * Usage: string str = pt.toString();
  * ----------------------------------
- * Return a string representation of the Point in the form "(x,y)".
+ * Returns a string representation of the Point in the form "(x,y)".
  */
-    std::string toString();
+
+   std::string toString();
+
+/* Private section */
 
 private:
-    int x;                  /* The x-coordinate */
-    int y;                  /* The y-coordinate */
+
+/* Friend declaration */
+
+   friend bool operator==(Point p1, Point p2);
+
+/* Instance variables */
+
+   int x;                    /* The x-coordinate */
+   int y;                    /* The y-coordinate */
+
 };
 
+/* ----------------⚠THINGS OUTSIDE OF HEADFILE⚠----------------- */
+
+/*
+ * Operator: <<
+ * Usage: cout << pt;
+ * ------------------
+ * Overloads the << operator so that it is able to display Point values.
+ */
+
+std::ostream & operator<<(std::ostream & os, Point pt);
+
+/*
+ * Operator: ==
+ * Usage: p1 == p2
+ * ---------------
+ * Implements the == operator for points.
+ */
+
+bool operator==(Point p1, Point p2);
+
+/*
+ * Operator: !=
+ * Usage: p1 != p2
+ * ---------------
+ * Implements the != operator for points.  It is good practice to
+ * overload this operator whenever you overload == to ensure that
+ * clients can perform either test.
+ */
+
+bool operator!=(Point p1, Point p2);
+
 #endif
+
 ```
 
 > ​	Source file:
@@ -703,72 +747,69 @@ private:
 /*
  * File: point.cpp
  * ---------------
- * This file implements the point.h interface.
+ * This file implements the point.h interface.  The comments have been
+ * eliminated from this listing so that the implementation fits on a
+ * single page.
  */
 
+#include <string>
 #include "point.h"
+#include "strlib.h"
+using namespace std;
 
-/*
- * Implementation notes: Constructors
- * ----------------------------------
- * The constructors initialize the instance variables x and y. In the
- * second form of the constructor, the parameter names are xc and yc
- * to avoid the problem of shadowing the instance variable.
- */
-
-Point::Point()
-      :x(0), y(0)
-{
+Point::Point() {
+   x = 0;
+   y = 0;
 }
 
-Point::Point(int xc, int yc)
-      :x(xc), y(yc)
-{
+Point::Point(int xc, int yc) {
+   x = xc;
+   y = yc;
 }
 
-Point::~Point(){}
-
-
-/*
- * Implementation notes: Getters
- * -----------------------------
- * The getters return the value of the corresponding instance variable.
- * No setters are provided to ensure that Point objects are immutable.
- */
-
-int Point::getX()
-{
-    return this->x;
+int Point::getX() {
+   return x;
 }
 
-int Point::getY()
-{
-    return this->y;
+int Point::getY() {
+   return y;
 }
 
-
-/*
- * Implementation notes: toString
- * -----------------------------
- * The implementation of toString uses the std::to_string function from STL.
- */
-
-std::string Point::toString()
-{
-    std::string output = 
-                        "(" + 
-                        std::to_string(this->x) + 
-                        ", " + 
-                        std::to_string(this->y) + 
-                        ")";
-
-    return output;
+string Point::toString() {
+   return "(" + integerToString(x) + "," + integerToString(y) + ")";
 }
+
+bool operator==(Point p1, Point p2) {
+   return p1.x == p2.x && p1.y == p2.y;
+}
+
+bool operator!=(Point p1, Point p2) {
+   return !(p1 == p2);
+}
+
+ostream & operator<<(ostream & os, Point pt) {
+   return os << pt.toString();
+}
+
 ```
 
 
 
 ## 6.2. Operator overloading
+
+**📌<u>Method-based style</u> vs. <u>Free function style</u>**
+
+
+
+
+
+
+
+**📌Overload `operator<<`**
+
+This is a very common task for almost every class if we want to `cout` the instance.
+
+
 
 
 

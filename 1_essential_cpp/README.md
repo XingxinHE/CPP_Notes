@@ -108,14 +108,6 @@ The preceding is very much similar to C# `List<>` initialization.
 
 
 
-**📌Why pointer?**
-
-A *pointer* introduces a level of indirection to a program. Rather than <u>manipulate an object directly</u>😑, we <u>**manipulate a pointer that holds the address of an object**</u>😍.
-
-
-
-
-
 📌**How to use a pointer?**
 
 ```c++
@@ -158,12 +150,6 @@ if (*pi != 1024)
     *pi = 1024;
 }
 ```
-
-
-
-**📌Be patient when you are learning pointer**
-
-The initial **complexity** of using a pointer comes from its <u>***confusing syntax***</u>.🤣
 
 
 
@@ -603,20 +589,6 @@ A reference always refers to some objects and therefore the <u>check for 0</u> i
 
 
 
-**📌👍Lippman's advice on passing by reference**
-
-> ​	"I recommend *not* passing built-in types by reference. The reference mechanism is primarily intended to support the passing of class objects as parameters to functions."
-
-
-
-
-
-**📌What is Storage Duration(extent)?**
-
-It refers to the period of time for which memory is allocated for an object is called its <u>*storage duration*</u> or *<u>extent</u>*.
-
-
-
 **📌Categories of Extent**
 
 There are **3** extents:
@@ -640,46 +612,6 @@ There are **3** extents:
 
 
 
-**📌Example of Dynamic Memory Allocation**
-
-The syntax is:
-
-```
-new Type(initial value);
-```
-
-Declare, but not initialized:
-
-```c++
-int *pi;
-pi = new int;
-```
-
-Declare, also initialized:
-
-```c++
-int *pi;
-pi = new int(1024);
-```
-
-Allocate an array of heap elements:
-
-```c++
-int *pia = new int[24];
-```
-
-Delete an object:
-
-```c++
-delete pi;
-```
-
-Delete an array:
-
-```c++
-delete [] pia;
-```
-
 
 
 **📌Dangerous! Memory Leak⚠**
@@ -699,32 +631,6 @@ void SomeFunction()
     // therefore it is hard to check
 }
 ```
-
-
-
-**📌`inline` Functions**
-
-- What is it?
-
-An `inline` function represents a request to the compiler to expand the function at each call point. With an `inline` function, the compiler replaces the function call with a copy of the code to be executed.
-
-
-
-- Why use it?
-
-To reduce the function call overhead[^1].
-
-
-
-- When to use it?
-
-`inline` function only suits to **small** function. 
-
-
-
-- What is its analogy?
-
-The analogy of C++ `inline` function in C# are `Action<>` and `Func<>`.
 
 
 
@@ -769,26 +675,6 @@ God damn it. This is really really hard...
 - only one definition of a function in a program
 - usually no definition in header files
 - `inline` functions definition and `template` class definition should be in header files
-
-
-
-**📌What is `extern`?**
-
-Suppose we have something in the header file:
-
-```c++
-const int seq_cnt = 6;
-const vector<int>* (*seq_array[seq_cnt])(int);
-```
-
-It is not right... Since the `seq_cnt` as 6 will be passed in the function declaration. While the declaration is merely declaration. Therefore we could use:
-
-```c++
-const int seq_cnt = 6;
-extern const vector<int>* (*seq_array[seq_cnt])(int);
-```
-
-The `extern` means the following is just declaration, please ignore the parameter name. It does not have any relationships with others.
 
 
 
