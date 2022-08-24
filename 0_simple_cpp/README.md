@@ -6,17 +6,6 @@
 
 # A. C++ Basics
 
-## 1.Environment Setup
-
-:pushpin:**Text Editor**
-
-This is where you write the source codes.
-
-:pushpin:**C++ Compiler**
-
-Visual Studio IDE, CMake, g++
-
-
 
 ## 2.Basics of C++
 
@@ -54,16 +43,6 @@ int main()
 :pushpin:**Identifier**
 
 The name you assign in C++.
-
-
-
-:pushpin:**Keywords**
-
-They are reserved by C++ program which you are not allowed to name the identifier like this. 
-
-The full keywords list is:
-
-https://docs.microsoft.com/en-us/cpp/cpp/keywords-cpp?view=msvc-160
 
 
 
