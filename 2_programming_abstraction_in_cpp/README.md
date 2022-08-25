@@ -218,12 +218,6 @@ ew...
 
 
 
-## 2.4. The mechanics of function calls
-
-**📌Stack Frame**
-
-A new space created by system for all the local variables required when calling a function. In Visual Studio debug mode, there is a tab called `Local`.
-
 
 
 # 3.Strings
@@ -267,30 +261,6 @@ The `str` will store `Eric Roberts`.
 
 
 ## 3.2. String operations
-
-**📌"methods" and "free functions"**
-
-- methods - functions defined in the class.
-- free functions - functions defined out of the class.
-
-
-
-**📌sender and receiver**
-
-- sender - the object that initiates the method is called the sender
-- receiver - the object that is the target of that transmission
-
-```c++
-receiver.name(arguments);
-```
-
-
-
-**📌lexicographic order**
-
-The order defined by the underlying ASCII codes.
-
-
 
 **📌`.at()` of `<string>` library**
 
@@ -374,18 +344,6 @@ string str2 = string("hello") + ", " + "world!";    // VALID✅
 
 
 # 5.Collections
-
-**📌ADT**
-
-A type defined in terms of its <u>**behavior**</u> rather than its representation is called ***abstract data type***, which is often abbreviated to ***ADT***.
-
-
-
-**📌STL**
-
-Standard Template Library.
-
-
 
 ## 5.1. The Vector class
 

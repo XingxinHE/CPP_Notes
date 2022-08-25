@@ -1,12 +1,5 @@
 # Chapter 1. Basic C++ Programming
 
-**📌Composition of a C++ Class**
-
-- A *header* file that provides a declaration of the operation supported by the class
-- A *program text file* that contains the implementation of those operations
-
-
-
 **📌<u>Common Initialization Syntax</u> VS <u>Constructor Syntax</u>**
 
 - common:
@@ -108,17 +101,6 @@ The preceding is very much similar to C# `List<>` initialization.
 
 
 
-📌**How to use a pointer?**
-
-```c++
-int ival = 1024;
-int* pi;             // pi is a pointer to an object of type int
-&ival;               // evaluates to the address of ival by using `&`
-pi = &ival;          // pass the address of ival to pi
-```
-
-
-
 **📌Different Style of Pointer**
 
 ```c++
@@ -202,60 +184,7 @@ vector<int>* ptrs[6] = {
 
 
 
-
-
-**📌Function using `->()` and `.()`**
-
-In C#, a function can be called like this:
-
-```c#
-number.ToString();
-```
-
-But in C++, you may see 2 ways of invoking a function:
-
-```c++
-xxx.DoSomething();
-xxx->DoSomething();
-```
-
-The difference is that:
-
-When `xxx` is an **object** of a class, it uses `xxx.Function();`
-
-When `xxx` is a **pointer** to an object, it uses `xxx->Function();`
-
-
-
 # Chapter 2. Procedural Programming
-
-**📌Definition of Function**
-
-It is composed of:
-
-1️⃣ the **return type** of a function.
-
-2️⃣ the **name** of the function.
-
-3️⃣ the **parameter list** of the function.
-
-4️⃣ the **body** of the function.
-
-```c++
-// a function calculate a fibonacci number
-int fibon_elem(int pos)
-{
-    int elem = 1;
-    int n_2 = 1, n_1 = 1;
-    for(int ix = 3; ix <= pos; ++ix)
-    {
-        elem = n_2 + n_1;
-        n_2 = n_1; n_1 = elem;
-    }
-    return elem;
-}
-```
-
 
 
 ## 2.3. Providing Default Parameter Values
@@ -872,21 +801,7 @@ inline T* begin(vector<T> &vec)
 
 ## 3.2. Iterators
 
-The iterators here are very similar to the `IEnumerable` in C#. In short, iterator is a set of classes that are programmed using the same syntax as that of a pointer to collection in STL. For example, the `++` for vector is to query the next element, so as `++` for linked list. But the next address of a linked list cannot be just incremented. Therefore, we can override their operator.
-
-```
-// a pseudo code could be like this
-for(iter = numbers.begin(); iter!=numbers.end(); iter++)
-{
-
-}
-```
-
-
-
 **📌What is an iterator?**
-
-`iter` is defined to be an iterator for vectors of `T` elements. It is initialized to address the first element of a `vector`.
 
 ```c++
 vector<int> ivec;
@@ -3261,7 +3176,7 @@ Input operators are more <u>complicated</u> to implement because of the possibil
 
 # Chapter 5. Object-Oriented Programming
 
-The object-based programming model proves cumbersome when our application begins to be filled with class types that represent an *is-a-kind-of* instance of a type.
+
 
 
 
