@@ -21,9 +21,8 @@ public:
 private:
     Ui::MiniDraw *ui;
 
-    QMenu *mp_menu; 			// 👈declare the menu pointer
-    QToolBar *mp_toolbar;    // 👈declare the toolbar pointer
-
+    QMenu *mp_menu;
+    QToolBar *mp_toolbar;
 
     ViewWidget *mp_viewwidget;
 
@@ -36,6 +35,9 @@ private:
     std::map<const char *, QAction*> actions;
     const char *ABOUT = "&About";
     const char *RECTANGLE = "&Rectangle";
+    const char *CIRCLE = "&Circle";
     const char *LINE = "&Line";
+    const char *FREEHAND = "&Free Hand";
+    const char *CLEAN = "&Clean";
 };
 #endif // MINIDRAW_H

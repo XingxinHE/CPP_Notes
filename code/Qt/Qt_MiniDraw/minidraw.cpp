@@ -20,6 +20,9 @@ void MiniDraw::createActions()
     actions[ABOUT] = new QAction(tr(ABOUT), this);
     actions[LINE] = new QAction(tr(LINE), this);
     actions[RECTANGLE] = new QAction(tr(RECTANGLE), this);
+    actions[FREEHAND] = new QAction(tr(FREEHAND), this);
+    actions[CIRCLE] = new QAction(tr(CIRCLE), this);
+    actions[CLEAN] = new QAction(tr(CLEAN), this);
 }
 
 void MiniDraw::createToolBar()

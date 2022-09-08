@@ -19,6 +19,12 @@ set(PROJECT_SOURCES
         minidraw.cpp
         minidraw.h
         minidraw.ui
+        Shape.h
+        Shape.cpp
+        Line.h
+        Line.cpp
+        Rectangle.cpp
+        Rectangle.h
         viewwidget.cpp
         viewwidget.h
         viewwidget.ui

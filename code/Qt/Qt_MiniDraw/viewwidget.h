@@ -2,6 +2,7 @@
 #define VIEWWIDGET_H
 
 #include <QWidget>
+#include "Shape.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class ViewWidget; }
@@ -35,5 +36,14 @@ private:
     bool m_drawStatus;
     QPoint m_startPoint;
     QPoint m_endPoint;
+
+    Shape::Type m_type;
+    Shape* mp_shape;
+    std::vector<Shape*> m_vectorShape;
+
+signals:
+public slots:
+    void setLine();
+    void setRect();
 };
 #endif // VIEWWIDGET_H
