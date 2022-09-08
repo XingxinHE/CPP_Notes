@@ -3,6 +3,8 @@
 
 #include <QMainWindow>
 #include "viewwidget.h"
+#include <string>
+#include <map>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MiniDraw; }
@@ -22,11 +24,6 @@ private:
     QMenu *mp_menu; 			// 👈declare the menu pointer
     QToolBar *mp_toolbar;    // 👈declare the toolbar pointer
 
-    QAction *mp_action_about;
-    QAction *mp_action_line;
-    QAction *mp_action_rectangle;
-
-
 
     ViewWidget *mp_viewwidget;
 
@@ -35,5 +32,10 @@ private:
     void createActions();
 
     void createAboutBox();
+
+    std::map<const char *, QAction*> actions;
+    const char *ABOUT = "&About";
+    const char *RECTANGLE = "&Rectangle";
+    const char *LINE = "&Line";
 };
 #endif // MINIDRAW_H
