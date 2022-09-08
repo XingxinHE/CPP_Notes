@@ -8,7 +8,7 @@ ViewWidget::ViewWidget(QWidget *parent)
     , ui(new Ui::ViewWidget)
 {
     ui->setupUi(this);
-    m_drawStatus = false;
+    setDrawStatus(false);
 }
 
 ViewWidget::~ViewWidget()
@@ -18,9 +18,9 @@ ViewWidget::~ViewWidget()
 
 void ViewWidget::mouseMoveEvent(QMouseEvent *event)
 {
-    if (m_drawStatus)
+    if (getDrawStatus())
     {
-        m_endPoint = event->pos();
+        setEndPoint(event->pos());
     }
 }
 
@@ -28,20 +28,21 @@ void ViewWidget::mousePressEvent(QMouseEvent *event)
 {
     if (Qt::LeftButton == event->button())
     {
-        m_drawStatus = true;
-        m_startPoint = m_endPoint = event->pos();
+        setDrawStatus(true);
+        setStartPoint(event->pos());
+        setEndPoint(event->pos());
     }
 }
 
 void ViewWidget::mouseReleaseEvent(QMouseEvent *event)
 {
-    m_drawStatus = false;
+    setDrawStatus(false);
 }
 
 void ViewWidget::paintEvent(QPaintEvent *event)
 {
     QPainter painter(this);
-    painter.drawLine(m_startPoint, m_endPoint);
+    painter.drawLine(getStartPoint(), getEndPoint());
     painter.end();
     update();
 }

@@ -15,10 +15,19 @@ public:
     ViewWidget(QWidget *parent = nullptr);
     ~ViewWidget();
 
-    void mousePressEvent(QMouseEvent *);
-    void mouseMoveEvent(QMouseEvent *);
-    void mouseReleaseEvent(QMouseEvent *);
-    void paintEvent(QPaintEvent *);
+    void mousePressEvent(QMouseEvent *) override;
+    void mouseMoveEvent(QMouseEvent *) override;
+    void mouseReleaseEvent(QMouseEvent *) override;
+    void paintEvent(QPaintEvent *) override;
+
+    bool getDrawStatus() const {return m_drawStatus;}
+    void setDrawStatus(bool status) {m_drawStatus= status;}
+
+    QPoint getStartPoint() const {return m_startPoint;}
+    void setStartPoint(QPoint pt) {m_startPoint = pt;}
+
+    QPoint getEndPoint() const {return m_endPoint;}
+    void setEndPoint(QPoint pt) {m_endPoint = pt;}
 
 private:
     Ui::ViewWidget *ui;

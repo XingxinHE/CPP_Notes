@@ -12,8 +12,6 @@ MiniDraw::MiniDraw(QWidget *parent)
     createMenu();
 
     mp_viewwidget = new ViewWidget();
-
-
     setCentralWidget(mp_viewwidget);
 }
 

@@ -16,8 +16,6 @@ public:
     MiniDraw(QWidget *parent = nullptr);
     ~MiniDraw();
 
-
-
 private:
     Ui::MiniDraw *ui;
 
