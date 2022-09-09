@@ -7,8 +7,6 @@
 class Rectangle : public Shape
 {
 public:
-    Rectangle();
-    ~Rectangle() override;
     void draw(QPainter& paint) override;
 protected:
 private:

@@ -1,6 +1,7 @@
 #include "minidraw.h"
 #include "./ui_minidraw.h"
 #include <QToolBar>
+#include <QMessageBox>
 
 MiniDraw::MiniDraw(QWidget *parent)
     : QMainWindow(parent)
@@ -23,6 +24,10 @@ void MiniDraw::createActions()
     actions[FREEHAND] = new QAction(tr(FREEHAND), this);
     actions[CIRCLE] = new QAction(tr(CIRCLE), this);
     actions[CLEAN] = new QAction(tr(CLEAN), this);
+
+    connect(actions[ABOUT], &QAction::triggered, this, &MiniDraw::createAboutBox);
+    connect(actions[LINE], SIGNAL(triggered()), mp_viewwidget, SLOT(setLine()));
+    connect(actions[RECTANGLE], &QAction::triggered, mp_viewwidget, &ViewWidget::setRectangle);
 }
 
 void MiniDraw::createToolBar()
@@ -41,6 +46,11 @@ void MiniDraw::createMenu()
     {
         mp_menu->addAction(action.second);
     }
+}
+
+void MiniDraw::createAboutBox()
+{
+    QMessageBox::about(this, tr("About"), tr("MiniDraw"));
 }
 
 

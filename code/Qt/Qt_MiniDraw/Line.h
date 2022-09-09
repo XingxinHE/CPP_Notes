@@ -7,8 +7,6 @@
 class Line : public Shape
 {
 public:
-    Line();
-    ~Line() override;
     void draw(QPainter& paint) override;
 protected:
 private:

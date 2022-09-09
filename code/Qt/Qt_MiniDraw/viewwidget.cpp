@@ -2,8 +2,6 @@
 #include "./ui_viewwidget.h"
 #include <QMouseEvent>
 #include <QPainter>
-#include "Line.h"
-#include "Rectangle.h"
 
 ViewWidget::ViewWidget(QWidget *parent)
     : QWidget(parent)
@@ -25,7 +23,7 @@ void ViewWidget::setLine()
     m_type = Shape::kLine;
 }
 
-void ViewWidget::setRect()
+void ViewWidget::setRectangle()
 {
     m_type = Shape::kRect;
 }
@@ -51,7 +49,7 @@ void ViewWidget::mousePressEvent(QMouseEvent *event)
                 break;
 
             case Shape::kRect:
-                mp_shape = new Rectangle();
+                mp_shape = new class Rectangle();
                 break;
     }
 
@@ -75,8 +73,16 @@ void ViewWidget::mouseReleaseEvent(QMouseEvent *event)
 void ViewWidget::paintEvent(QPaintEvent *event)
 {
     QPainter painter(this);
-    painter.drawLine(getStartPoint(), getEndPoint());
-    painter.end();
+
+    for (int i = 0; i < m_vectorShape.size(); i++)
+    {
+        m_vectorShape[i]->draw(painter);
+    }
+
+    if (mp_shape != nullptr) {
+        mp_shape->draw(painter);
+    }
+
     update();
 }
 

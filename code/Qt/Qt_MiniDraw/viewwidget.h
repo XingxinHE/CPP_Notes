@@ -3,6 +3,8 @@
 
 #include <QWidget>
 #include "Shape.h"
+#include "Line.h"
+#include "Rectangle.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class ViewWidget; }
@@ -39,11 +41,11 @@ private:
 
     Shape::Type m_type;
     Shape* mp_shape;
-    std::vector<Shape*> m_vectorShape;
+    std::vector<Shape *> m_vectorShape;
 
 signals:
 public slots:
     void setLine();
-    void setRect();
+    void setRectangle();
 };
 #endif // VIEWWIDGET_H

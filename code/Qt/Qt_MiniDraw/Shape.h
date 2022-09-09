@@ -6,8 +6,8 @@
 class Shape
 {
 public:
-    Shape();
-    virtual ~Shape();
+    Shape() {}
+    virtual ~Shape() {}
     virtual void draw(QPainter& paint) = 0;
 
     QPoint getStartPoint() const { return m_startPoint; }
