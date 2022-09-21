@@ -41,80 +41,6 @@ ostream& LIFO_Stack::print(ostream &os) const
 
 
 
-**📌⚠Warning on `&` Pass By Reference of a parameter in a function**
-
-The `&` in the declaration only declares THE parameter.
-
-```c++
-// ❌ Although the values is passed by reference.
-// The `values` does not change since it takes out the
-// elem as value, and increment the elem
-void func1(vector<int> &values)
-{
-        for(int elem : values)
-        {
-                elem++;
-        }
-}
-
-// ✅ It does change! Since it is sliced with `int &elem`
-// to indicate we slice the reference out of `values`
-void func2(vector<int> &values)
-{
-        for(int &elem : values)
-        {
-                elem++;
-        }
-}
-
-// ✅ It does change! Since `values` is passed by reference,
-// and we are modifying the `values` itself
-void func3(vector<int> &values)
-{
-        for(int i = 0; i < values.size(); i++)
-        {
-                values[i]++;
-        }
-}
-```
-
-
-
-**📌Things behind invoking a function**
-
-When we invoke a function, a special area of memory is set up on ***stack***. Within this special area of memory there is a space to hold the value of each function parameter and variables inside the scope(local variables). 
-
-```c++
-void SomeFunction(int param)
-{
-    ======================
-    ||                  ||
-    ||                  ||
-    ||      STACK       ||
-    ||                  ||
-    ||                  ||
-    ======================
-}
-```
-
-When the function completes, this area of memory is discarded.(***popped*** from the program stack)
-
-By default, an object is passed to a function, its value is copied to the local definition. That is called ***pass by value***.
-
-```c++
-// pass by value
-void SomeFunction(int num);
-```
-
-If we want to modify the original value, it is called ***pass by reference***.
-
-```c++
-// pass by reference
-void SomeFunction(int &num);
-```
-
- 
-
 **📌Can't return pointer/reference inside the stack**
 
 Due to the preceding mechanism, returning the address of one of these *local* objects results in serious run-time program errors❌.
@@ -189,20 +115,6 @@ If you don't remember to `delete` something, in the end it will cause ***memory 
 
 
 
-**📌Lippman' advice on designing a function**👍
-
-> ​	"It is better to communicate between functions using parameters rather than use objects defined at file scope. Since function dependent on file scope is harder to reuse in a different context."
-
-```c++
-void SomeFunction()
-{
-    // here use some value in file scope
-    // therefore it is hard to check
-}
-```
-
-
-
 
 
 **📌Template Functions**
@@ -229,38 +141,14 @@ void ReverseVector(vector<T> &vec)
 
 
 
-**📌Pointers to Functions**
-
-God damn it. This is really really hard...
-
-//TODO well explained next time...
-
-
-
 **📌Header Files**
 
 - use ".h" as suffix by convention
 - ok to multiple declarations
 - only one definition of a function in a program
 - usually no definition in header files
-- `inline` functions definition and `template` class definition should be in header files
 
 
-
-**📌Different `include`**
-
-You might see:
-
-```c++
-#include <iostream>
-#include "igl_mesh"
-```
-
-The short answer is:
-
-Use `" "`, if the header file is in the same directory as the program text file including it.
-
-Use `< >`, if the header file is anywhere else.
 
 
 
@@ -306,21 +194,6 @@ T* find(const vector<T> &vec, const T &value)
     return 0;
 }
 ```
-
-
-
-**📌The magic and fun fact of pointer**
-
-Do you know in C++, an array is also a pointer? This is so much fun. The followings are the same!
-
-```c++
-array[2]
-*(array + 2)
-```
-
-If you are a C# programmer, you would say what the heck?? 😨😨
-
-That's because an <u>array is a pointer which records the 1st address of that array</u>. Therefore, they are the same.
 
 
 

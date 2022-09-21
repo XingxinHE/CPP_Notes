@@ -875,27 +875,6 @@ x+=3;
 
 
 
-> ​	26.What for loop control line would you use in each of the following situations?
-
-a.	Counting from 1 to 100
-
-```c++
-for (int i = 1; i <= 100; i++)
-```
-
-b.	Counting by sevens starting at 0 until the number has more than two digits
-
-```c++
-for (int i = 0; i < 100; i += 7)
-```
-
-c.	Counting backward by twos from 100 to 0
-
-```c++
-for (int i = 100; i >= 0; i -= 2)
-```
-
-
 
 
 
@@ -945,19 +924,6 @@ char cha = tolower('A');   //'a'
 
 
 
-> ​	23.How can you convert a primitive string value to a C++ string? How can you specify a conversion in the opposite direction?
-
-```c++
-// C => C++
-string str = string(cstr);
-
-// C++ => C
-str.c_str();
-```
-
-
-
-
 
 ## Chapter 5
 
@@ -976,10 +942,6 @@ str.c_str();
 
 
 ## Chapter 6
-
-> ​	8.What does it mean for a class to be *immutable*?
-
-A class whose internal state can't be modified after initialization. It's kind of like `readonly` in C#.
 
 
 
@@ -1021,19 +983,6 @@ They are:
 > ​	22.In the `rational.h` file, why is it necessary to designate the operator methods for `+,-,*,/` as `friend` but not the operator method for the `<<` insertion operator?
 
 Because the `<<` operator does not access the private data member.
-
-
-
-## Chapter 11
-
-> ​	2.
-
-
-
-# Exercises
-
-
-
 
 
 
