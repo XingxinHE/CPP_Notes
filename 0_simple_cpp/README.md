@@ -9,7 +9,7 @@
 
 
 
-:pushpin:**The structure of a C++ program**
+📌**The structure of a C++ program**
 
 ```c++
 #include <iostream>
@@ -31,7 +31,7 @@ int main()
 
 
 
-:pushpin:**Trigraph三字符**
+📌**Trigraph三字符**
 
 What is the purpose of trigraph?
 
@@ -57,28 +57,7 @@ What is trigraph anyway?
 
 
 
-
-
-:pushpin:**Comments**
-
-Single line comment
-
-```c++
-//Single line comment
-```
-
-Block of comments
-
-```c++
-/*
- * This is a block of comments
- *
- */
-```
-
-
-
-:pushpin:**Conditional inclusion**
+📌**Conditional inclusion**
 
 It uses `#ifdef`
 
@@ -124,7 +103,7 @@ The output will be
 
 ## 3.Data Type
 
-:pushpin:**Fundamental Primitive Data Type**
+📌**Fundamental Primitive Data Type**
 
 | Type                  | Keywords |
 | --------------------- | -------- |
@@ -138,7 +117,7 @@ The output will be
 
 
 
-:pushpin:**What is `typedef`**
+📌**What is `typedef`**
 
 It literally define a type with custom name. The syntax is 
 
@@ -161,7 +140,7 @@ feet age;
 
 
 
-:pushpin:**Type decorator**
+📌**Type decorator**
 
 This can be conceived of as the *adjective(形容词)* of type.
 
@@ -172,7 +151,7 @@ This can be conceived of as the *adjective(形容词)* of type.
 
 
 
-:pushpin:**Frequently Used Data Type**
+📌**Frequently Used Data Type**
 
 | Type                 | Length      | Range                                                        |
 | -------------------- | ----------- | ------------------------------------------------------------ |
@@ -195,7 +174,7 @@ This can be conceived of as the *adjective(形容词)* of type.
 
 
 
-:pushpin:**`sizeof()`**
+📌**`sizeof()`**
 
 Return how many bytes will be taken of. e.g.
 
@@ -207,7 +186,7 @@ The answer is 1 Byte.
 
 
 
-:pushpin:**Enumeration**
+📌**Enumeration**
 
 It is a set of enumerated constants.
 
@@ -232,7 +211,7 @@ enum color { red, green=5, blue };
 
 
 
-:pushpin:**Difference between `typedef` and `#define`** 
+📌**Difference between `typedef` and `#define`** 
 
 > ​	1.Different in execute time
 
@@ -345,7 +324,7 @@ A variable is really nothing more than the name of a storage area. Each variable
 | `void`    |                          |
 | `wchar_t` |                          |
 
-:pushpin:**How to declare a variable?**
+📌**How to declare a variable?**
 
 > ​	The syntax is following:
 
@@ -374,7 +353,7 @@ char x = 'x';
 
 
 
-:pushpin:**Difference among declare, define, init**
+📌**Difference among declare, define, init**
 
 From top to bottom, they are `declare`->`define`  -> `init`.
 
@@ -413,7 +392,7 @@ You can see `extern` as telling the compiler that I will have a variable called 
 
 :star:Big picture: A trick to find out the scope of a variable - The variable only affects inside its nearest curly bracket `{}`.
 
-:pushpin:**Local variable and Global variable**
+📌**Local variable and Global variable**
 
 > ​	Local
 
@@ -465,7 +444,7 @@ int main ()
 
 > ​	:warning: Unlike C#, you can declare one variable twice in global and local scope. BUT! The local will overwrite global one.
 
-:pushpin:**Initial value**
+📌**Initial value**
 
 | Data Type | Initial Value |
 | --------- | ------------- |
@@ -497,7 +476,7 @@ There are some general knowledge listing here. In computers, there are 3 differe
 
 
 
-:pushpin:**Integer Literals**
+📌**Integer Literals**
 
 ```c++
 85         // decimal
@@ -512,13 +491,13 @@ There are some general knowledge listing here. In computers, there are 3 differe
 
 
 
-:pushpin:**Floating Literals**
+📌**Floating Literals**
 
 A floating-point constant consists of an **integer part整数部分**, a **decimal separator小数点**, a **decimal小数部分**, and an **exponential part指数部分**. You can use either the *decimal form* or the *exponential form* to represent floating-point constants.
 
 
 
-:pushpin:**Character Literals**
+📌**Character Literals**
 
 Wide character `wchar_t` , normally starts with `L` and single quote `''`	 e.g. `L'x'`
 
@@ -526,7 +505,7 @@ Normal character `char`, single quote,	e.g. `'x'`
 
 
 
-:pushpin:**Escape Sequence**
+📌**Escape Sequence**
 
 :star:Big picture: What *escape character* really means is that the C++ compiler would take these character then translate to another form. For example, I wrote
 
@@ -558,7 +537,7 @@ This is escape character. \
 
 
 
-:pushpin:**Define Constant**
+📌**Define Constant**
 
 There are **2** ways of defining constant.
 
@@ -609,7 +588,7 @@ int main()
 
 ## 7.Modifier
 
-:pushpin:**In front of what?**
+📌**In front of what?**
 
 The modifier is in front of:
 
@@ -619,7 +598,7 @@ The modifier is in front of:
 
 
 
-:pushpin:**They are?**
+📌**They are?**
 
 The modifiers are: 
 
@@ -630,7 +609,7 @@ The modifiers are:
 
 
 
-:pushpin:**Type qualifier**
+📌**Type qualifier**
 
 - `const`: short for CONSTANT, can't be modified during execution
 - `volatile`: ask compiler not to optimize this variable, just read from the memory. 
@@ -640,13 +619,13 @@ The modifiers are:
 
 ## 8.Storage Class
 
-:pushpin:**What is storage class**
+📌**What is storage class**
 
 A storage class defines the **scope** (visibility) and **life-time** of variables and/or functions.
 
 
 
-:pushpin:**They are ?...**
+📌**They are ?...**
 
 - `auto`
 - `register`
@@ -656,7 +635,7 @@ A storage class defines the **scope** (visibility) and **life-time** of variable
 
 
 
-:pushpin:**`auto`, the default**
+📌**`auto`, the default**
 
 There is no difference between following variables.
 
@@ -669,7 +648,7 @@ There is no difference between following variables.
 
 
 
-:pushpin:**`register`**
+📌**`register`**
 
 The **register** storage class is used to define local variables that should be **stored in a register(寄存器)** instead of RAM.
 
@@ -687,7 +666,7 @@ It has following properties:
 
 
 
-:pushpin:**`static` **
+📌**`static` **
 
 :warning: The `static` in C++ is very **different** from the `static` in C#.
 
@@ -725,7 +704,7 @@ void func( void )
 
 
 
-:pushpin:**`extern`**
+📌**`extern`**
 
 The **extern** storage class is used to give a reference of a global variable that is visible to ALL the program files.
 
@@ -775,13 +754,13 @@ Use `int count` **FROM** `main.cpp` **IN** `support.cpp`
 
 
 
-:pushpin:**`mutable`**
+📌**`mutable`**
 
 To be continued...
 
 
 
-:pushpin:**`thread_local` **
+📌**`thread_local` **
 
 It deals with threads.    To be continued...
 
@@ -800,7 +779,7 @@ There are:
 
 
 
-:pushpin:**Arithmetic Operators**
+📌**Arithmetic Operators**
 
 - `+`
 - `-`
@@ -814,7 +793,7 @@ These are no difference with most languages.
 
 
 
-:pushpin:**Relational Operators**
+📌**Relational Operators**
 
 - `==`
 - `!=`
@@ -827,7 +806,7 @@ These are no difference with most languages.
 
 
 
-:pushpin:**Logical Operators**
+📌**Logical Operators**
 
 - `&&`
 - `||`
@@ -835,7 +814,7 @@ These are no difference with most languages.
 
 
 
-:pushpin:**Bitwise Operators**
+📌**Bitwise Operators**
 
 - `&`, binary AND
 - `|`, binary OR
@@ -856,7 +835,7 @@ A^B = 0011 0001
 
 
 
-:pushpin:**Assignment Operators**
+📌**Assignment Operators**
 
 - `=`
 - `+=`, `-=`, `*=`, `/=`, `%=`
@@ -868,7 +847,7 @@ A^B = 0011 0001
 
 
 
-:pushpin:**Misc Operators**
+📌**Misc Operators**
 
 - `sizeof()` , return the size of such variable
 - `<condition>? X:Y` , similar to C#,  e.g. `bool gender = flag? true:false;`
@@ -881,14 +860,14 @@ A^B = 0011 0001
 
 ## 10.Loop Types
 
-:pushpin:**What are they?**
+📌**What are they?**
 
 - `for`, `while`, `do-while`
 - `break`, `continue`, `goto`
 
 
 
-:pushpin:**The Infinite Loop**
+📌**The Infinite Loop**
 
 C++ programmers use `; ;` to indicate infinity.
 
@@ -912,7 +891,7 @@ int main ()
 
 ## 11.Decision Making
 
-:pushpin:**What are they?**
+📌**What are they?**
 
 - `if`, `if-else`, `switch`
 - `Exp1 ? Exp2 : Exp3;`
@@ -921,7 +900,7 @@ int main ()
 
 ## 12.Functions
 
-:pushpin:**Defining a Function**
+📌**Defining a Function**
 
 ```c++
 return_type function_name( parameter list )
@@ -932,7 +911,7 @@ return_type function_name( parameter list )
 
 
 
-:pushpin:**Example of Defining a Function**
+📌**Example of Defining a Function**
 
 ```c++
 // function returning the max between two numbers
@@ -953,7 +932,7 @@ int max(int num1, int num2)
 
 
 
-:pushpin:**What's difference between declaration and definition?**
+📌**What's difference between declaration and definition?**
 
 ```c++
 #include <iostream>
@@ -996,7 +975,7 @@ int max(int num1, int num2)
 
 ## 13.Numbers
 
-:pushpin:**Defining Numbers in C++**
+📌**Defining Numbers in C++**
 
 ```c++
 #include <iostream>
@@ -1030,7 +1009,7 @@ int main () {
 
 
 
-:pushpin:**Math Operations in C++**
+📌**Math Operations in C++**
 
 The default math library in C++ is **cmath**.
 
@@ -1060,7 +1039,7 @@ int main () {
 
 
 
-:pushpin:**Random Numbers in C++**
+📌**Random Numbers in C++**
 
 There are **2** ways calling random numbers:
 
@@ -1069,7 +1048,7 @@ There are **2** ways calling random numbers:
 
 
 
-:pushpin:**Example**
+📌**Example**
 
 To avoid pseudo random number, you can do it like this:
 
@@ -1106,13 +1085,13 @@ int main ()
 
 ## 14.Arrays
 
-:pushpin:**What is it?**
+📌**What is it?**
 
 **Array** stores a fixed-size sequential collection of elements of the same type.
 
 
 
-:pushpin:**Declaring Arrays**
+📌**Declaring Arrays**
 
 Template of Definition:
 
@@ -1128,7 +1107,7 @@ double balance[10];
 
 
 
-:pushpin:**Initializing Arrays**
+📌**Initializing Arrays**
 
 - Initialize whole array with `{ }`
 
@@ -1144,7 +1123,7 @@ balance[4] = 50.0;
 
 
 
-:pushpin:**Accessing Array Elements**
+📌**Accessing Array Elements**
 
 ```c++
 double salary = balance[9];
@@ -1152,7 +1131,7 @@ double salary = balance[9];
 
 
 
-:pushpin:**Example**
+📌**Example**
 
 ```c++
 #include <iostream>
@@ -1184,7 +1163,7 @@ int main ()
 
 
 
-:pushpin:**What is `setw()` function?**
+📌**What is `setw()` function?**
 
 It is for layout.  `setw(n)`,  n is number for how many spaces it should be.
 
@@ -1202,11 +1181,11 @@ https://www.tutorialspoint.com/cplusplus/cpp_arrays.htm
 
 //TODO
 
-:pushpin:****
+📌****
 
 ## 16.Strings
 
-:pushpin:**The C-Style Character String**
+📌**The C-Style Character String**
 
 In short, the string is terminated by a **null** character `\0`. 
 
@@ -1219,7 +1198,7 @@ char greeting[] = "Hello";
 
 
 
-:pushpin:**Regular String function of C-Style Character String**
+📌**Regular String function of C-Style Character String**
 
 `strcpy(string s1, string s2)`
 
@@ -1257,7 +1236,7 @@ Returns a pointer to the first occurrence of string s2 in string s1.
 
 
 
-:pushpin:**Example**
+📌**Example**
 
 ```c++
 #include <iostream>
@@ -1290,7 +1269,7 @@ int main () {
 
 
 
-:pushpin:**The String Class in C++**
+📌**The String Class in C++**
 
 ```c++
 #include <iostream>
@@ -1327,7 +1306,7 @@ int main () {
 
 In short, `pointer` is important! Use `*` to interact with pointer.
 
-:pushpin:**Example**
+📌**Example**
 
 ```c++
 #include <iostream>
@@ -1358,7 +1337,7 @@ Address of var2 variable: 0xbfebd5b6
 
 
 
-:pushpin:**What is pointer?**
+📌**What is pointer?**
 
 :star:A **pointer** is a variable whose value is the address of another variable. Different from normal variable, use `*` to identify this is a pointer.
 
@@ -1377,7 +1356,7 @@ char   *ch     // pointer to character
 
 
 
-:pushpin:**Using Pointers in C++**
+📌**Using Pointers in C++**
 
 In C++, using pointers have followings:
 
@@ -1415,7 +1394,7 @@ int main () {
 
 
 
-:pushpin:**`*` and `&`** 
+📌**`*` and `&`** 
 
 `*` can:
 
@@ -1428,7 +1407,7 @@ int main () {
 
 ## 18.Advanced Pointers
 
-:pushpin: **`NULL` pointer**
+📌 **`NULL` pointer**
 
 It is a good practice to assign `null` pointer if there is no address.
 
@@ -1460,7 +1439,7 @@ The value is: 00000000
 
 
 
-:pushpin:**Increment Pointer**
+📌**Increment Pointer**
 
 Pointer points to the 1st element in default implicitly!! (even in an array):star:
 
@@ -1509,7 +1488,7 @@ Value of num_array[2]: 30
 
 
 
-:pushpin:**Array of Pointers**
+📌**Array of Pointers**
 
 You may be confused by the preceding code:
 
@@ -1538,7 +1517,7 @@ Actually not, in C++, the name of an array is considered as a pointer!:star::sta
 
 
 
-:pushpin:**Out of index**
+📌**Out of index**
 
 Since an array is just a pointer points to the 1st element, therefore you can access index out of range without a warning!!:warning: Because they are merely  addresses. This is typically dangerous!
 
@@ -1582,7 +1561,7 @@ Address: 006FF838
 
 
 
-:pushpin:**Decrement Pointer**
+📌**Decrement Pointer**
 
 Now it is much more easier to understand decrementing pointer.
 
@@ -1626,7 +1605,7 @@ Value of num_array[0]: 10
 
 
 
-:pushpin:**Difference between `Pointer` and `Pointer of Array`**
+📌**Difference between `Pointer` and `Pointer of Array`**
 
 In short, 
 
@@ -1705,7 +1684,7 @@ As you can see, the array(is a **CONSTANT** pointer) never change but we can acc
 
 
 
-:pushpin:**Array of Pointers**
+📌**Array of Pointers**
 
 In short, each element in that array is a pointer.
 
@@ -1748,7 +1727,7 @@ Value: 25
 
 
 
-:pushpin:**Pointer to Pointer**(Multiple Indirection)
+📌**Pointer to Pointer**(Multiple Indirection)
 
 One `*` stands for one pointer. Therefore, two `*` stands for pointer to pointer which is a form of multiple indirection or a chain of pointers.
 
@@ -1782,7 +1761,7 @@ pp_num: 008FF814
 
 
 
-:pushpin:**A pointer in a function declaration**
+📌**A pointer in a function declaration**
 
 In short, a pointer as a parameter in a function declaration.
 
@@ -1827,7 +1806,7 @@ Therefore, inside the function, `*num = 0` means assign `0` to what `num` points
 
 
 
-:pushpin:**Array as parameter in a function**
+📌**Array as parameter in a function**
 
 In C++,
 
@@ -1884,7 +1863,7 @@ In comparison!
 
 
 
-:pushpin:**`static` shxt in a function**
+📌**`static` shxt in a function**
 
 Considering you want to design a function which:
 
@@ -2028,7 +2007,7 @@ Access Value -> *(ptr + 4) :20190
 
 
 
-:pushpin:**References VS Pointers**
+📌**References VS Pointers**
 
 | References                             | Pointers                            |
 | -------------------------------------- | ----------------------------------- |
@@ -2040,13 +2019,13 @@ It's very easy to understand why there is no NULL references. Because `reference
 
 
 
-:pushpin:**`&`**
+📌**`&`**
 
 Use `&` to refer value.
 
 
 
-:pushpin:**Example**
+📌**Example**
 
 ```c++
 #include <iostream>
@@ -2082,7 +2061,7 @@ Include `<ctime>` header file. Please refer to the document when you need to use
 
 
 
-:pushpin:**Current Date and Time**
+📌**Current Date and Time**
 
 ```c++
 #include <iostream>
@@ -2108,7 +2087,7 @@ int main() {
 
 
 
-:pushpin:**Format Time using `struct` tm**
+📌**Format Time using `struct` tm**
 
 ```c++
 #include <iostream>
@@ -2138,7 +2117,7 @@ int main() {
 
 ## 21.Basic Input/Output
 
-:pushpin:**I/O Library Header Files**
+📌**I/O Library Header Files**
 
 There are:
 
@@ -2148,7 +2127,7 @@ There are:
 
 
 
-:pushpin:**The Standard Output Stream (cout)**
+📌**The Standard Output Stream (cout)**
 
 When you saw `<<` , it means the stream is flow out of the screen... :laughing:
 
@@ -2167,7 +2146,7 @@ int main( )
 
 
 
-:pushpin:**The Standard Input Stream (cin)**
+📌**The Standard Input Stream (cin)**
 
 When you saw `>>` , it means the stream is flow into the screen... :laughing:
 
@@ -2188,7 +2167,7 @@ int main() {
 
 
 
-:pushpin:**The Standard Error Stream (cerr)**
+📌**The Standard Error Stream (cerr)**
 
 Display **error** messages using `cerr` stream
 
@@ -2207,7 +2186,7 @@ int main( )
 
 
 
-:pushpin:**The Standard Log Stream (clog)**
+📌**The Standard Log Stream (clog)**
 
 Display **log** messages using `clog` stream
 
@@ -2227,7 +2206,7 @@ int main() {
 
 ## 22.Data Structure
 
-:pushpin:**What is a structure? (`struct`)**
+📌**What is a structure? (`struct`)**
 
 **Structure** is **a user-defined data type** which allows you to combine data items of different kinds.
 
@@ -2255,7 +2234,7 @@ struct Books {
 
 
 
-:pushpin:**Pointers to Structures**
+📌**Pointers to Structures**
 
 No difference with defining a pointer to other variables
 
@@ -2277,7 +2256,7 @@ struct_pointer->title;
 
 
 
-:pushpin:**Access `struct` members with `.`**
+📌**Access `struct` members with `.`**
 
 There is no difference doing it in C#.
 
@@ -2328,7 +2307,7 @@ int main() {
 
 
 
-:pushpin:**Access `struct` member with `&`** 
+📌**Access `struct` member with `&`** 
 
 ```c++
 #include <iostream>
@@ -2379,7 +2358,7 @@ void printBook( struct Books *book ) {
 
 
 
-:pushpin:**What is the difference?**
+📌**What is the difference?**
 
 1.Function declaration
 
@@ -2413,7 +2392,7 @@ cout << "Book subject : " << book->subject <<endl;
 
 
 
-:pushpin:**The `typedef` Keyword**
+📌**The `typedef` Keyword**
 
 You can use `typedef` to define a `struct`.
 
@@ -2450,7 +2429,7 @@ Books Book1, Book2;
 
 
 
-:pushpin:**Misc of `typedef`**
+📌**Misc of `typedef`**
 
 You can also use `typedef` in non-structs:
 
@@ -2468,7 +2447,7 @@ pint32 x, y, z;
 
 ## 1.Classes&Objects
 
-:pushpin:**How to define a class?**
+📌**How to define a class?**
 
 ```c++
 class ClassName
@@ -2486,7 +2465,7 @@ class ClassName
 
 
 
-:pushpin:**Example of class definition**
+📌**Example of class definition**
 
 ```c++
 class Box
@@ -2500,7 +2479,7 @@ class Box
 
 
 
-:pushpin:**Define C++ Objects(Create Instance)**
+📌**Define C++ Objects(Create Instance)**
 
 ```c++
 Box Box1;          // Declare Box1 of type Box
@@ -2509,7 +2488,7 @@ Box Box2;          // Declare Box2 of type Box
 
 
 
-:pushpin:**Accessing the Data Members**
+📌**Accessing the Data Members**
 
 If the members are decorated with `public`, you can access them via `.`
 
@@ -2557,7 +2536,7 @@ https://www.tutorialspoint.com/cplusplus/cpp_classes_objects.htm
 
 ## 3.Inheritance
 
-:pushpin:**Base and Derived Classes**
+📌**Base and Derived Classes**
 
 Similar to C#, you can also have inheritance in C++.
 
@@ -2610,7 +2589,7 @@ int main(void) {
 
 
 
-:pushpin:**Access Control and Inheritance**
+📌**Access Control and Inheritance**
 
 The following is the table illustrating the access among `public`, `protected`, and `private`.
 
@@ -2630,7 +2609,7 @@ A derived class inherits all base class methods with the following exceptions �
 
 
 
-:pushpin:**Type of Inheritance**
+📌**Type of Inheritance**
 
 In practice, the frequency of use are:
 
@@ -2682,7 +2661,7 @@ class DerivedClass: private BaseClass
 
 
 
-:pushpin:**Multiple Inheritance**
+📌**Multiple Inheritance**
 
 A C++ Class can inherit members from more than one class!
 
@@ -2756,7 +2735,7 @@ Overloading has no difference with its concept in C#. The elements can be overlo
 - function
 - operator
 
-:pushpin:**Function Overloading**
+📌**Function Overloading**
 
 The params vary in the function declaration. See the `print()` function, it can receive `int`, `double`, and `char*`.
 
@@ -2795,7 +2774,7 @@ int main(void) {
 
 
 
-:pushpin:**Operator Overloading**
+📌**Operator Overloading**
 
 Operator overloading can be defined like this:
 
@@ -2910,7 +2889,7 @@ See this line `box.length = this->length + b.length;`
 
 
 
-:pushpin:**Overloadable/Non-overloadable Operators**
+📌**Overloadable/Non-overloadable Operators**
 
 Following is the list of operators which can be overloaded −
 
@@ -2936,7 +2915,7 @@ Following is the list of operators, which can not be overloaded −
 
 https://www.tutorialspoint.com/cplusplus/cpp_overloading.htm
 
-:pushpin:****
+📌****
 
 
 
@@ -2948,7 +2927,7 @@ In Chinese, polymorphism is 多态。 In short, polymorphism is just a concept p
 
 
 
-:pushpin:**Example of `virtual` function** 
+📌**Example of `virtual` function** 
 
 ```c++
 #include <iostream> 
@@ -3082,7 +3061,7 @@ One pointer variable can call different functions based on the address of derive
 
 
 
-:pushpin:**early binding & late binding**
+📌**early binding & late binding**
 
 These 2 concepts are in together. 
 
@@ -3094,7 +3073,7 @@ early binding + static linkage VS late binding + dynamic linkage
 
 
 
-:pushpin:**What is Pure Virtual Functions?**
+📌**What is Pure Virtual Functions?**
 
 Function has no body and following virtual function will be called **pure virtual function**.
 
@@ -3112,7 +3091,7 @@ Alright, what is this so-called abstraction? It is a philosophy playing `public`
 
 
 
-:pushpin:**Data Abstraction Example**
+📌**Data Abstraction Example**
 
 ```c++
 #include <iostream>
@@ -3186,7 +3165,7 @@ Programmer will update all the shit, the user only needs to know how to use it. 
 
 
 
-:pushpin:**Designing Strategy**
+📌**Designing Strategy**
 
 *Abstraction* **separates** code into **interface** and **implementation**. So while designing your component, you:warning: **must keep interface independent of the implementation**:warning:.
 
@@ -3200,14 +3179,14 @@ OK, another "new" concept. What the heck is encapsulation? Don't be afraid man, 
 
 
 
-:pushpin:**Fundamental Elements in C++ Program**
+📌**Fundamental Elements in C++ Program**
 
 - :one: **Program statements (code)** − This is the part of a program that performs actions and they are called functions.
 - :two: **Program data** − The data is the information of the program which gets affected by the program functions.
 
 
 
-:pushpin:**What is encapsulation?**
+📌**What is encapsulation?**
 
 [`data`:heavy_plus_sign:`functions` ]
 
@@ -3215,7 +3194,7 @@ Encapsulation is an Object Oriented Programming concept that **binds together th
 
 
 
-:pushpin:**What is `data encapsulation` & `data abstraction`?**
+📌**What is `data encapsulation` & `data abstraction`?**
 
 **Data encapsulation** led to the important OOP concept of **data hiding**.
 
@@ -3223,13 +3202,13 @@ Encapsulation is an Object Oriented Programming concept that **binds together th
 
 
 
-:pushpin:**What is the tool to tackle encapsulation?**
+📌**What is the tool to tackle encapsulation?**
 
 Nothing mysterious! Just `public`, `protected`, and `private`!
 
 
 
-:pushpin:**Designing Strategy**
+📌**Designing Strategy**
 
 Most of us have learnt to make class members `private` by default unless we really need to expose them. That's just good **encapsulation**.
 
@@ -3239,7 +3218,7 @@ This is applied most frequently to data members, but it applies equally to all m
 
 ## 9.Abstract & Interfaces
 
-:pushpin:**Achtung! Disclaimer!!**
+📌**Achtung! Disclaimer!!**
 
 The noun *interface* has different meaning regarding different contexts.
 
@@ -3257,7 +3236,7 @@ So you see the difference! It is super important!!
 
 
 
-:pushpin:**Abstract Class Example in C++**
+📌**Abstract Class Example in C++**
 
 ```c++
 #include <iostream>
@@ -3327,7 +3306,7 @@ int main()
 
 
 
-:pushpin:**Difference of Abstract and Interface  in C# & C++**  :star::star::star:
+📌**Difference of Abstract and Interface  in C# & C++**  :star::star::star:
 
 This is super IMPORTANT!
 
@@ -3354,7 +3333,7 @@ For instance, the concept of abstract and interface is originated in C++ but C# 
 
 ## 1.Files and Streams
 
-:pushpin:**What are they?**
+📌**What are they?**
 
 They are:
 
@@ -3364,7 +3343,7 @@ They are:
 
 
 
-:pushpin:**Opening a File**
+📌**Opening a File**
 
 Opening is always the first step.
 
@@ -3382,7 +3361,7 @@ void open(const char *filename, ios::openmode mode);
 
 
 
-:pushpin:**Model Flag & Operation**
+📌**Model Flag & Operation**
 
 | flag         | function                                                     |
 | ------------ | ------------------------------------------------------------ |
@@ -3394,7 +3373,7 @@ void open(const char *filename, ios::openmode mode);
 
 
 
-:pushpin:**Combine different flag**
+📌**Combine different flag**
 
 ```c++
 //Example 1
@@ -3408,7 +3387,7 @@ afile.open("file.dat", ios::out | ios::in );
 
 
 
-:pushpin:**Closing a File**
+📌**Closing a File**
 
 A programmer should close all the opened files before program termination.
 
@@ -3420,7 +3399,7 @@ void close();
 
 
 
-:pushpin:**Write to and Read from files **
+📌**Write to and Read from files **
 
 `<<`  ,  this is for writing
 
@@ -3428,7 +3407,7 @@ void close();
 
 
 
-:pushpin:**Read and Write Example**
+📌**Read and Write Example**
 
 ```c++
 #include <fstream>
@@ -3482,7 +3461,7 @@ int main () {
 
 
 
-:pushpin:**File Position Pointers**
+📌**File Position Pointers**
 
 It is a function to locate the pointer at stream.
 
@@ -3508,7 +3487,7 @@ fileObject.seekg( 0, ios::end );
 
 ## 2.Exception Handling
 
-:pushpin:**The difference with C#**
+📌**The difference with C#**
 
 C++ does not support `finally`, only supports the following:
 
@@ -3520,7 +3499,7 @@ C# supports the following:
 
 
 
-:pushpin:**`throw` example**
+📌**`throw` example**
 
 It is no big difference with C#.
 
@@ -3537,7 +3516,7 @@ double division(int a, int b)
 
 
 
-:pushpin:**`try-catch` solution**
+📌**`try-catch` solution**
 
 - explicitly catch the exception
 
@@ -3565,7 +3544,7 @@ try
 
 
 
-:pushpin: **Example**
+📌 **Example**
 
 ```c++
 #include <iostream>
@@ -3596,7 +3575,7 @@ int main () {
 
 
 
-:pushpin:**Define New Exceptions**
+📌**Define New Exceptions**
 
 ```c++
 #include <iostream>
@@ -3628,32 +3607,32 @@ int main() {
 
 
 
-:pushpin:****
+📌****
 
 
 
-:pushpin:****
+📌****
 
 
 
-:pushpin:****
+📌****
 
 
 
-:pushpin:****
+📌****
 
 
 
 ## 3.Dynamic Memory
 
-:pushpin:**stack & heap**
+📌**stack & heap**
 
 - **The stack** − All variables declared inside the function will take up memory from the stack.
 - **The heap** − This is unused memory of the program and can be used to allocate the memory dynamically when program runs.
 
 
 
-:pushpin:**`new` & `delete`**
+📌**`new` & `delete`**
 
 `new`: **allocate** memory at run time within the heap for the variable and return the address of the space allocated
 
@@ -3671,7 +3650,7 @@ The **data-type** could be **any built-in data type** including an array or any 
 
 
 
-:pushpin:**`new` and `delete` example**
+📌**`new` and `delete` example**
 
 ```c++
 #include <iostream>
@@ -3692,7 +3671,7 @@ int main () {
 
 
 
-:pushpin:**Good practice of checking if `NULL`**
+📌**Good practice of checking if `NULL`**
 
 It is always a good practice to check the variable if it is `null`.
 
@@ -3706,7 +3685,7 @@ if( !(pvalue  = new double )) {
 
 
 
-:pushpin:**Dynamic Memory Allocation for Arrays**
+📌**Dynamic Memory Allocation for Arrays**
 
 In short, the `*` stands for $k$-dimensional array.
 
@@ -3813,7 +3792,7 @@ int main()
 
 
 
-:pushpin:**Dynamic Memory Allocation for Objects**
+📌**Dynamic Memory Allocation for Objects**
 
 ```c++
 #include <iostream>
@@ -3859,7 +3838,7 @@ Destructor called!
 
 The methodology behind is self-evident like in C#.
 
-:pushpin:**Define Namespace**
+📌**Define Namespace**
 
 Define like following:
 
@@ -3879,7 +3858,7 @@ SimplicialComplexOperators::boundary(const MeshSubset& subset);  // an example f
 
 
 
-:pushpin:**Example**
+📌**Example**
 
 ```c++
 #include <iostream>
@@ -3914,7 +3893,7 @@ int main()
 
 
 
-:pushpin:**`using` directive**
+📌**`using` directive**
 
 This directive tells the compiler that the subsequent code is making use of names in the specified namespace.
 
@@ -3977,7 +3956,7 @@ int main () {
 
 
 
-:pushpin:**Discontiguous Namespaces**
+📌**Discontiguous Namespaces**
 
 In short, it allows you to define functions in **different files** but in the **same namespace**.
 
@@ -4013,7 +3992,7 @@ int main()
 
 
 
-:pushpin:**Nested Namespaces**
+📌**Nested Namespaces**
 
 ```c++
 #include <iostream>
@@ -4036,7 +4015,6 @@ int main()
 	return 0;
 }
 ```
-
 
 
 
