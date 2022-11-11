@@ -4,62 +4,6 @@
 
 
 
-**📌Instance Variable**
-
-The fields of a class are called instance variables.
-
-```c++
-class Point
-{
-    public:
-    	int x;
-    	int y;
-    private:
-    	double a;
-    	double b;
-}
-```
-
-However, `public` instance variables are discouraged in modern object-oriented programming. Therefore, the following is more appropriate:
-
-```c++
-class Point
-{
-    public:
-    // ..methods here
-    
-    private:
-    	int x;
-    	int y;
-};
-```
-
-
-
-**📌A typical class skeleton**
-
-<img src="img/image-20220523224910183.png" alt="image-20220523224910183" style="zoom:67%;" />
-
-
-
-**📌getter and setter**
-
-Methods that retrieve the values of instance variables are formally called *accessors*, but are more often known as ***getters***.
-
-Methods that set the values of specific instance variables are called *mutators* or ***setters***.
-
-> ​	💡These concepts are the same as in `get` and `set` properties in C#.
-
-
-
-**📌immutable**
-
-Before talking about it, I want to introduce you that in history many programmers insist that instance member should not be modified one initialized since it is private. Such class are said to be **immutable**. The preceding diagram of `Point` class is a good example.
-
-> ​	💡However, this is just one of opinion. You are free to choose the strategies.
-
-
-
 **📌C++ Class Boilerplate🌟🌟🌟 - separate the interface from the implementation**
 
 This idea results 2 files - header file and source file.
@@ -863,23 +807,6 @@ void LinkedIntList::release(LinkNode *&currNode)
 
 # Review Questions
 
-## Chapter 1
-
-> ​	20.How do you specify a shorthand assignment operation?
-
-The shorthand assignment operation is the following
-
-```c++
-x+=3;
-```
-
-
-
-
-
-
-## Chapter 2
-
 
 
 ## Chapter 3
@@ -926,12 +853,6 @@ char cha = tolower('A');   //'a'
 
 
 ## Chapter 5
-
-> ​	2.What three advantages does this chapter cite for separating the behavior of a class from its underlying implementation?
-
-- Simplicity
-- Flexibility
-- Security
 
 
 
