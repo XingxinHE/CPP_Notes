@@ -1967,7 +1967,7 @@ Access Value -> *(ptr + 3) :1012813
 Access Value -> *(ptr + 4) :992734
 ```
 
-:mag: The value does not change before jumping out of the function!! See double check. But they are changed outside of the scope.
+🔎 The value does not change before jumping out of the function!! See double check. But they are changed outside of the scope.
 
 :warning:Because the array you create inside `get_random()` is not static!! Do the following changes:
 
@@ -2785,7 +2785,7 @@ Box operator+(const Box&);
 Box operator+(const Box&, const Box&);
 ```
 
-:question: What is the difference above?
+❓ What is the difference above?
 
 - The former is defined as a **member** function.
 
@@ -2793,7 +2793,7 @@ Box operator+(const Box&, const Box&);
 
 
 
-:book: Example:
+📖 Example:
 
 ```c++
 #include <iostream>
@@ -2865,7 +2865,7 @@ int main() {
 }
 ```
 
-:mag: Take a deep look on these code
+🔎 Take a deep look on these code
 
 ```c++
 Box operator+(const Box& b) {
@@ -3625,10 +3625,7 @@ int main() {
 
 ## 3.Dynamic Memory
 
-📌**stack & heap**
 
-- **The stack** − All variables declared inside the function will take up memory from the stack.
-- **The heap** − This is unused memory of the program and can be used to allocate the memory dynamically when program runs.
 
 
 
@@ -3666,20 +3663,6 @@ int main () {
    delete pvalue;         // free up the memory.
 
    return 0;
-}
-```
-
-
-
-📌**Good practice of checking if `NULL`**
-
-It is always a good practice to check the variable if it is `null`.
-
-```c++
-double* pvalue  = NULL;
-if( !(pvalue  = new double )) {
-   cout << "Error: out of memory." <<endl;
-   exit(1);
 }
 ```
 
