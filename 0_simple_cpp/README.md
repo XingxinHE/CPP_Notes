@@ -9,25 +9,7 @@
 
 
 
-📌**The structure of a C++ program**
 
-```c++
-#include <iostream>
-using namespace std;
- 
-// main() is the MAIN entry of a C++ program
- 
-int main()
-{
-   cout << "Hello World"; // output Hello World
-   return 0;
-}
-```
-
-- header`#include <iostream>`, the decoration at the beginning of the `.cpp` file. It is either a library or a header file `.h`
-- namespace `using namespace std`, tell the compiler which namespace to use
-- main function`int main()`, the main function is a `int` type function.
-- return value`return 0`, it means this program runs successfully.
 
 
 
@@ -1302,142 +1284,9 @@ int main () {
 
 
 
-## 17.Pointers
 
-In short, `pointer` is important! Use `*` to interact with pointer.
-
-📌**Example**
-
-```c++
-#include <iostream>
- 
-using namespace std;
- 
-int main ()
-{
-   int  var1;
-   char var2[10];
- 
-   cout << "Address of var1 variable: ";
-   cout << &var1 << endl;
- 
-   cout << "Address of var2 variable: ";
-   cout << &var2 << endl;
- 
-   return 0;
-}
-```
-
-Then we have:
-
-```
-Address of var1 variable: 0xbfebd5c0
-Address of var2 variable: 0xbfebd5b6
-```
-
-
-
-📌**What is pointer?**
-
-:star:A **pointer** is a variable whose value is the address of another variable. Different from normal variable, use `*` to identify this is a pointer.
-
-```
-type *var-name;
-```
-
-A clear example:
-
-```c++
-int    *ip;    // pointer to an integer
-double *dp;    // pointer to a double
-float  *fp;    // pointer to a float
-char   *ch     // pointer to character
-```
-
-
-
-📌**Using Pointers in C++**
-
-In C++, using pointers have followings:
-
-- Define a pointer variable.
-- Assign the address of a variable to a pointer
-- Access the value at the address available in the pointer variable
-
-Example:
-
-```c++
-#include <iostream>
-
-using namespace std;
-
-int main () {
-   int  var = 20;   // actual variable declaration.
-   int  *ip;        // pointer variable 
-
-   ip = &var;       // store address of var in pointer variable
-
-   cout << "Value of var variable: ";
-   cout << var << endl;
-
-   // print the address stored in ip pointer variable
-   cout << "Address stored in ip variable: ";
-   cout << ip << endl;
-
-   // access the value at the address available in pointer
-   cout << "Value of *ip variable: ";
-   cout << *ip << endl;
-
-   return 0;
-}
-```
-
-
-
-📌**`*` and `&`** 
-
-`*` can:
-
-1. it appears in pointer declaration
-2. it can access the value from the pointer
-
-`&`:
-
-1. read the address of this variable
 
 ## 18.Advanced Pointers
-
-📌 **`NULL` pointer**
-
-It is a good practice to assign `null` pointer if there is no address.
-
-```c++
-int main()
-{
-	int* p = NULL;
-	
-	if (p)
-	{
-		cout << "Pointer is not NULL." << endl;
-	}
-	else
-	{
-		cout << "Pointer is NULL." << endl;
-        cout << "The value is: " << p << endl;
-	}
-
-	return 0;
-}
-```
-
-The output would be:
-
-```
-Pointer is NULL.
-The value is: 00000000
-```
-
-
 
 📌**Increment Pointer**
 
@@ -1761,49 +1610,6 @@ pp_num: 008FF814
 
 
 
-📌**A pointer in a function declaration**
-
-In short, a pointer as a parameter in a function declaration.
-
-```c++
-#include <iostream>
-using namespace std;
-
-void set_zero(int* num);
-
-int main()
-{
-    //1. Init value is 100
-	int number = 100;
-	//2. Set as zero
-	set_zero(&number);
-    //3. Print
-	cout << number << endl;
-
-	return 0;
-}
-
-//the parameter is a pointer
-void set_zero(int* num)
-{
-    //the pointer points to
-	*num = 0;
-}
-```
-
-I really appreciate Visual IDE's formatting which illustrates the idea properly.:smile:
-
-The following are the same, which declare an `int` pointer and its name is `ptr`.
-
-```c++
-int* ptr;
-int *ptr;
-```
-
-But! The former one is clearer. `int* ptr`, the `*` right after `int` indicates it is a pointer!
-
-Therefore, inside the function, `*num = 0` means assign `0` to what `num` points to.
-
 
 
 📌**Array as parameter in a function**
@@ -2018,10 +1824,6 @@ Access Value -> *(ptr + 4) :20190
 It's very easy to understand why there is no NULL references. Because `reference` literally means reference, if it has nothing to be referred, it makes no sense.
 
 
-
-📌**`&`**
-
-Use `&` to refer value.
 
 
 
